@@ -510,9 +510,19 @@
                 </div>
             </div>
         </div>
-        <footer class="hidden lg:flex px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-surface items-center justify-between text-xxs text-gray-400">
-            <span>Trading Journal Pro — Dashboard Performa Harian</span>
-            <span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · &copy; 2026</span>
+
+        <!-- Footer Profesional -->
+        <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
+            <div class="flex items-center gap-2">
+                <span class="hidden lg:inline">Trading Journal Pro — Dashboard Performa Harian</span>
+                <span class="lg:hidden text-tiny">TradeJournal Pro</span>
+                <span class="text-gray-300 dark:text-gray-600">|</span>
+                <span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span>
+            </div>
+            <div class="flex items-center gap-1">
+                <span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span>
+                <span>&copy; <span id="footerYear">2026</span></span>
+            </div>
         </footer>
     </main>
 
@@ -1203,6 +1213,8 @@
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTradeModal(); });
 
             async function init() {
+                // Set tahun dinamis di footer
+                document.getElementById('footerYear').textContent = new Date().getFullYear();
                 lucide.createIcons();
                 if (localStorage.theme === 'light') document.documentElement.classList.remove('dark');
                 if (state.autoRefreshEnabled) {
