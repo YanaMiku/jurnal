@@ -51,12 +51,14 @@
                         'slide-up': 'slideUp 0.35s ease-out',
                         'pulse-soft': 'pulseSoft 2s infinite',
                         'shimmer': 'shimmer 2s infinite',
+                        'highlight': 'highlight 0.5s ease-out',
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0', transform: 'translateY(6px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
                         slideUp: { '0%': { opacity: '0', transform: 'translateY(16px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
                         pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } },
                         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+                        highlight: { '0%': { boxShadow: '0 0 0 0 rgba(59, 130, 246, 0.4)' }, '100%': { boxShadow: '0 0 0 8px rgba(59, 130, 246, 0)' } },
                     },
                 },
             },
@@ -277,7 +279,11 @@
             pointer-events: none;
         }
         .number-animate {
-            transition: all 0.2s ease;
+            transition: color 0.2s ease;
+        }
+        .highlight-change {
+            animation: highlight 0.6s ease-out;
+            border-radius: inherit;
         }
     </style>
 </head>
@@ -376,8 +382,8 @@
                         <span id="autoRefreshKnob" class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transform transition-transform duration-200"></span>
                     </button>
                 </div>
-                <p class="text-tiny text-gray-500 dark:text-gray-400">Refresh setiap 5 detik</p>
-                <div id="countdownDisplay" class="hidden text-tiny text-blue-500 mt-1">Refresh dalam 5s...</div>
+                <p class="text-tiny text-gray-500 dark:text-gray-400">Refresh setiap 3 detik</p>
+                <div id="countdownDisplay" class="hidden text-tiny text-blue-500 mt-1">Refresh dalam 3s...</div>
             </div>
             <div class="space-y-2">
                 <button id="exportCSVBtn" class="w-full py-2.5 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
@@ -389,7 +395,7 @@
             </div>
         </div>
         <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center">
-            <p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> • v2.0</p>
+            <p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> • v2.1</p>
         </div>
     </aside>
 
@@ -620,8 +626,8 @@
 
         <!-- Footer -->
         <footer class="hidden lg:flex px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-surface items-center justify-between text-xxs text-gray-400">
-            <span>Trading Journal Pro — Dashboard Performa Harian</span>
-            <span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> • &copy; 2026</span>
+            <span>Trading Journal Pro — MIT License</span>
+            <span>© <span id="currentYear"></span> YanaMiku</span>
         </footer>
     </main>
 
@@ -680,7 +686,7 @@
             // ==================== KONFIGURASI ====================
             const CONFIG = {
                 DATA_BASE_PATH: './database/json/',
-                AUTO_REFRESH_INTERVAL: 5000,
+                AUTO_REFRESH_INTERVAL: 3000, // 3 detik
             };
 
             // ==================== STATE ====================
@@ -688,14 +694,16 @@
                 currentDate: new Date(),
                 selectedDateStr: '',
                 currentData: null,
+                previousData: null,
                 filteredTrades: [],
                 charts: { equity: null, result: null },
                 autoRefreshEnabled: true,
                 refreshIntervalId: null,
                 countdownIntervalId: null,
-                countdownValue: 5,
+                countdownValue: 3,
                 isFetching: false,
                 calendarProfitData: {},
+                previousValues: {}, // cache nilai sebelumnya untuk animasi
             };
 
             // ==================== UTILS ====================
@@ -732,28 +740,46 @@
                     setTimeout(() => toast.remove(), 300); }, 3000);
             }
 
-            // Animated number counter
+            // Deep compare sederhana untuk data trades
+            function isDataEqual(a, b) {
+                return JSON.stringify(a?.trades || []) === JSON.stringify(b?.trades || []) &&
+                       JSON.stringify(a?.deposits || []) === JSON.stringify(b?.deposits || []) &&
+                       JSON.stringify(a?.withdrawals || []) === JSON.stringify(b?.withdrawals || []) &&
+                       JSON.stringify(a?.account_summary || {}) === JSON.stringify(b?.account_summary || {}) &&
+                       JSON.stringify(a?.statistics || {}) === JSON.stringify(b?.statistics || {});
+            }
+
+            // Animated number counter (hanya jika start !== end)
             function animateNumber(el, start, end, duration = 400, formatter = (v) => v) {
                 if (!el) return;
-                const range = end - start;
-                if (range === 0) {
+                if (start === end) {
                     el.textContent = formatter(end);
                     return;
                 }
+                const range = end - start;
                 const startTime = performance.now();
                 const step = (currentTime) => {
                     const elapsed = currentTime - startTime;
                     const progress = Math.min(elapsed / duration, 1);
-                    const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                    const eased = 1 - Math.pow(1 - progress, 3);
                     const current = start + range * eased;
                     el.textContent = formatter(current);
                     if (progress < 1) {
                         requestAnimationFrame(step);
                     } else {
                         el.textContent = formatter(end);
+                        // Efek highlight singkat
+                        el.classList.add('highlight-change');
+                        setTimeout(() => el.classList.remove('highlight-change'), 600);
                     }
                 };
                 requestAnimationFrame(step);
+            }
+
+            function parseNumericFromEl(el) {
+                if (!el) return 0;
+                const text = el.textContent.replace(/[^0-9.\-]+/g, '');
+                return parseFloat(text) || 0;
             }
 
             // ==================== FETCHING ====================
@@ -782,16 +808,16 @@
                 if (state.refreshIntervalId) clearInterval(state.refreshIntervalId);
                 if (state.countdownIntervalId) clearInterval(state.countdownIntervalId);
                 if (state.autoRefreshEnabled) {
-                    state.countdownValue = 5;
+                    state.countdownValue = 3;
                     updateCountdownDisplay();
                     state.countdownIntervalId = setInterval(() => {
                         state.countdownValue--;
-                        if (state.countdownValue <= 0) state.countdownValue = 5;
+                        if (state.countdownValue <= 0) state.countdownValue = 3;
                         updateCountdownDisplay();
                     }, 1000);
                     state.refreshIntervalId = setInterval(async () => {
                         if (!state.isFetching) { await refreshCurrentDate(true);
-                            state.countdownValue = 5; }
+                            state.countdownValue = 3; }
                     }, CONFIG.AUTO_REFRESH_INTERVAL);
                     updateLiveIndicator(true);
                 }
@@ -816,7 +842,7 @@
                     knob.classList.add('translate-x-5');
                     document.getElementById('countdownDisplay').classList.remove('hidden');
                     startAutoRefresh();
-                    showToast('Auto-refresh ON (5s)', 'info');
+                    showToast('Auto-refresh ON (3s)', 'info');
                 } else {
                     toggle.classList.add('bg-gray-300', 'dark:bg-gray-600');
                     toggle.classList.remove('bg-profit');
@@ -854,6 +880,17 @@
                     }
                     const data = await fetchDailyData(state.selectedDateStr);
                     if (!silent) document.getElementById('loadingState').classList.add('hidden');
+
+                    // Cek apakah data berubah
+                    const dataChanged = !isDataEqual(data, state.currentData);
+                    if (!dataChanged && silent) {
+                        // Data sama, tidak ada perubahan visual
+                        document.getElementById('lastUpdatedTime').textContent = `Updated ${formatTime()}`;
+                        document.getElementById('lastUpdatedTime').classList.remove('hidden');
+                        state.isFetching = false;
+                        return;
+                    }
+
                     if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
                         document.getElementById('dataContent').classList.add('hidden');
                         document.getElementById('emptyState').classList.remove('hidden');
@@ -867,9 +904,10 @@
                         updateDashboard(data);
                         renderTradeList();
                         renderActivityLog();
-                        renderCharts(false); // false = update without destroying
+                        renderCharts(false); // update tanpa destroy
                         if (!silent) showToast(`${data.trades?.length || 0} trades loaded`, 'success');
                     }
+                    state.previousData = state.currentData;
                     state.currentData = data;
                     document.getElementById('lastUpdatedTime').textContent = `Updated ${formatTime()}`;
                     document.getElementById('lastUpdatedTime').classList.remove('hidden');
@@ -927,10 +965,6 @@
                     grid.innerHTML +=
                         `<button onclick="selectDate('${ds}')" class="w-full aspect-square flex flex-col items-center justify-center rounded-lg transition text-tiny ${sel ? 'bg-blue-500 text-white font-bold shadow-md shadow-blue-500/30' : 'hover:bg-gray-200 dark:hover:bg-gray-800 ' + todayRing}">${i}${dot}</button>`;
                 }
-                // Set empty date display if empty state visible
-                if (!document.getElementById('dataContent').classList.contains('hidden') === false) {
-                    document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr);
-                }
             }
 
             // ==================== SELECT DATE ====================
@@ -939,6 +973,7 @@
                 state.selectedDateStr = dateStr;
                 const [y, m, d] = dateStr.split('-');
                 state.currentDate = new Date(+y, +m - 1, +d);
+                state.previousValues = {}; // reset cache
                 renderCalendar();
                 const displayDate = formatDisplayDate(dateStr);
                 document.getElementById('selectedDateTitleMobile').textContent = displayDate;
@@ -967,61 +1002,55 @@
                 const lossTotal = losses.reduce((a, t) => a + (t.profit || 0), 0);
                 const bepTotal = beps.reduce((a, t) => a + (t.profit || 0), 0);
 
-                // Animate numbers
-                const prevWin = parseInt(document.getElementById('sumWin').textContent) || 0;
-                const prevLoss = parseInt(document.getElementById('sumLoss').textContent) || 0;
-                const prevBEP = parseInt(document.getElementById('sumBEP').textContent) || 0;
+                // Gunakan cache nilai sebelumnya untuk animasi yang akurat
+                const prev = state.previousValues;
 
-                animateNumber(document.getElementById('sumWin'), prevWin, wins.length, 350,
-                v => Math.round(v));
-                animateNumber(document.getElementById('sumLoss'), prevLoss, losses.length, 350,
-                v => Math.round(v));
-                animateNumber(document.getElementById('sumBEP'), prevBEP, beps.length, 350, v => Math.round(v));
+                function cachedAnimate(id, newVal, formatter) {
+                    const el = document.getElementById(id);
+                    const prevVal = prev[id] !== undefined ? prev[id] : parseNumericFromEl(el);
+                    if (prevVal !== newVal) {
+                        animateNumber(el, prevVal, newVal, 400, formatter);
+                    } else {
+                        el.textContent = formatter(newVal);
+                    }
+                    prev[id] = newVal;
+                }
 
-                // Animate currency values
-                const prevWinAmt = parseFloat(document.getElementById('sumWinAmount').textContent.replace(
-                    /[^0-9.-]+/g, '')) || 0;
-                const prevLossAmt = parseFloat(document.getElementById('sumLossAmount').textContent.replace(
-                    /[^0-9.-]+/g, '')) || 0;
-                const prevBepAmt = parseFloat(document.getElementById('sumBEPAmount').textContent.replace(
-                    /[^0-9.-]+/g, '')) || 0;
-                animateNumber(document.getElementById('sumWinAmount'), prevWinAmt, winTotal, 400,
-                formatShortCurrency);
-                animateNumber(document.getElementById('sumLossAmount'), prevLossAmt, lossTotal, 400,
-                formatShortCurrency);
-                animateNumber(document.getElementById('sumBEPAmount'), prevBepAmt, bepTotal, 400,
-                formatShortCurrency);
+                cachedAnimate('sumWin', wins.length, v => Math.round(v));
+                cachedAnimate('sumLoss', losses.length, v => Math.round(v));
+                cachedAnimate('sumBEP', beps.length, v => Math.round(v));
+                cachedAnimate('sumWinAmount', winTotal, formatShortCurrency);
+                cachedAnimate('sumLossAmount', lossTotal, formatShortCurrency);
+                cachedAnimate('sumBEPAmount', bepTotal, formatShortCurrency);
 
                 const net = s.trading_profit || s.net_profit || 0;
-                const prevNet = parseFloat(document.getElementById('sumNetProfit').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
+                const prevNet = prev['sumNetProfit'] !== undefined ? prev['sumNetProfit'] : parseNumericFromEl(document.getElementById('sumNetProfit'));
                 const profitEl = document.getElementById('sumNetProfit');
-                animateNumber(profitEl, prevNet, net, 500, formatCurrency);
+                cachedAnimate('sumNetProfit', net, formatCurrency);
                 profitEl.className =
                     `text-base lg:text-2xl font-bold number-animate ${net > 0 ? 'text-profit' : (net < 0 ? 'text-loss' : 'text-bep')}`;
+                prev['sumNetProfit'] = net;
 
-                const prevPct = parseFloat(document.getElementById('sumProfitPct').textContent) || 0;
                 const newPct = s.profit_percent || 0;
-                animateNumber(document.getElementById('sumProfitPct'), prevPct, newPct, 400, v => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`);
+                cachedAnimate('sumProfitPct', newPct, v => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`);
                 document.getElementById('sumProfitPct').className =
                     `text-xxs lg:text-xs mt-0.5 number-animate ${net > 0 ? 'text-profit' : (net < 0 ? 'text-loss' : 'text-bep')}`;
 
                 const totalDeposit = deposits.reduce((a, d) => a + d.amount, 0) || s.deposit || 0;
                 const totalWithdraw = withdrawals.reduce((a, w) => a + w.amount, 0) || s.withdraw || 0;
-                const prevDep = parseFloat(document.getElementById('sumDeposit').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
-                const prevWit = parseFloat(document.getElementById('sumWithdraw').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
-                animateNumber(document.getElementById('sumDeposit'), prevDep, totalDeposit, 400, formatCurrency);
-                animateNumber(document.getElementById('sumWithdraw'), prevWit, totalWithdraw, 400, formatCurrency);
-
+                cachedAnimate('sumDeposit', totalDeposit, formatCurrency);
+                cachedAnimate('sumWithdraw', totalWithdraw, formatCurrency);
                 const netCash = totalDeposit - totalWithdraw;
-                const prevCash = parseFloat(document.getElementById('sumNetCash').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
-                const netCashEl = document.getElementById('sumNetCash');
-                animateNumber(netCashEl, prevCash, netCash, 400, formatCurrency);
-                netCashEl.className =
+                cachedAnimate('sumNetCash', netCash, formatCurrency);
+                document.getElementById('sumNetCash').className =
                     `text-base lg:text-xl font-bold number-animate ${netCash > 0 ? 'text-profit' : (netCash < 0 ? 'text-loss' : '')}`;
+
+                cachedAnimate('sumTotalTrades', st.total_trades || trades.length, v => Math.round(v));
+                cachedAnimate('sumWinRate', st.win_rate || 0, v => `${v.toFixed(1)}%`);
+                cachedAnimate('statAvgWin', st.average_win || 0, formatShortCurrency);
+                cachedAnimate('statAvgLoss', st.average_loss || 0, formatShortCurrency);
+                cachedAnimate('sumBalance', s.ending_balance || s.balance || 0, formatShortCurrency);
+                cachedAnimate('sumStartBalance', s.starting_balance || 0, formatShortCurrency);
 
                 const hs = document.getElementById('headerStatus');
                 const hst = document.getElementById('headerStatusText');
@@ -1046,31 +1075,6 @@
                 }
                 hs.className =
                     'flex items-center gap-1.5 text-tiny lg:text-sm px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium';
-
-                const prevTotalTrades = parseInt(document.getElementById('sumTotalTrades').textContent) || 0;
-                animateNumber(document.getElementById('sumTotalTrades'), prevTotalTrades, st.total_trades || trades
-                    .length, 350, v => Math.round(v));
-
-                const prevWinRate = parseFloat(document.getElementById('sumWinRate').textContent) || 0;
-                animateNumber(document.getElementById('sumWinRate'), prevWinRate, st.win_rate || 0, 400, v => `${v.toFixed(1)}%`);
-
-                const prevAvgWin = parseFloat(document.getElementById('statAvgWin').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
-                animateNumber(document.getElementById('statAvgWin'), prevAvgWin, st.average_win || 0, 400,
-                formatShortCurrency);
-                const prevAvgLoss = parseFloat(document.getElementById('statAvgLoss').textContent.replace(
-                    /[^0-9.-]+/g, '')) || 0;
-                animateNumber(document.getElementById('statAvgLoss'), prevAvgLoss, st.average_loss || 0, 400,
-                formatShortCurrency);
-
-                const prevBalance = parseFloat(document.getElementById('sumBalance').textContent.replace(/[^0-9.-]+/g,
-                    '')) || 0;
-                animateNumber(document.getElementById('sumBalance'), prevBalance, s.ending_balance || s.balance || 0,
-                    400, formatShortCurrency);
-                const prevStart = parseFloat(document.getElementById('sumStartBalance').textContent.replace(
-                    /[^0-9.-]+/g, '')) || 0;
-                animateNumber(document.getElementById('sumStartBalance'), prevStart, s.starting_balance || 0, 400,
-                formatShortCurrency);
 
                 const notes = data.notes || {};
                 document.getElementById('noteDaily').textContent = notes.daily_summary || '-';
@@ -1216,7 +1220,6 @@
                 const textColor = isDark ? '#9ca3af' : '#4b5563';
                 const gridColor = isDark ? '#374151' : '#e5e7eb';
 
-                // Equity Curve
                 const ctxE = document.getElementById('equityChart')?.getContext('2d');
                 if (ctxE) {
                     let eqData = state.currentData?.chart_data?.equity_curve;
@@ -1231,7 +1234,6 @@
                     const eqColor = eqData[eqData.length - 1] >= eqData[0] ? '#10B981' : '#EF4444';
 
                     if (state.charts.equity && !destroy) {
-                        // Update data tanpa destroy
                         const chart = state.charts.equity;
                         chart.data.labels = labels;
                         chart.data.datasets[0].data = eqData;
@@ -1294,7 +1296,6 @@
                     }
                 }
 
-                // Pie Chart
                 const ctxR = document.getElementById('resultChart')?.getContext('2d');
                 if (ctxR) {
                     const trades = state.currentData?.trades || [];
@@ -1484,6 +1485,7 @@
             // ==================== INIT ====================
             async function init() {
                 lucide.createIcons();
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
                 if (localStorage.theme === 'light') document.documentElement.classList.remove('dark');
                 if (state.autoRefreshEnabled) {
                     document.getElementById('autoRefreshToggle').classList.remove('bg-gray-300',
