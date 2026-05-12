@@ -1,0 +1,194 @@
+{
+  "date": "2026-05-12",
+  "platform": {
+    "name": "MetaTrader 5",
+    "account_currency": "USD"
+  },
+  "account_summary": {
+    "profit": 150.15,
+    "deposit": 572.0,
+    "withdraw": 0.0,
+    "swap": 0.0,
+    "commission": 0.0,
+    "balance": 722.15,
+    "starting_balance": 572.0,
+    "ending_balance": 722.15,
+    "trading_profit": 150.15,
+    "net_profit": 150.15,
+    "profit_percent": 26.25
+  },
+  "statistics": {
+    "total_trades": 5,
+    "winning_trades": 5,
+    "losing_trades": 0,
+    "break_even_trades": 0,
+    "win_rate": 100.0,
+    "gross_profit": 150.15,
+    "gross_loss": 0.0,
+    "largest_win": 57.4,
+    "largest_loss": 0.0,
+    "average_win": 30.03,
+    "average_loss": 0.0,
+    "average_bep": 0.0,
+    "net_profit": 150.15,
+    "buy_trades": 2,
+    "sell_trades": 3
+  },
+  "deposits": [
+    {
+      "id": "DEP-17799092481",
+      "time": "14:02:48",
+      "amount": 572.0,
+      "type": "deposit",
+      "method": "Int. Trans. (Add Funds)",
+      "reference": "17799092481",
+      "note": "Initial Deposit"
+    }
+  ],
+  "withdrawals": [],
+  "activity_history": [
+    {
+      "category": "deposit",
+      "time": "14:02:48",
+      "amount": 572.0,
+      "description": "Int. Trans. (Add Funds)"
+    },
+    {
+      "category": "trade",
+      "time": "14:30:16",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 50.0
+    },
+    {
+      "category": "trade",
+      "time": "16:07:29",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 57.4
+    },
+    {
+      "category": "trade",
+      "time": "16:07:29",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 2.4
+    },
+    {
+      "category": "trade",
+      "time": "16:26:17",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 2.5
+    },
+    {
+      "category": "trade",
+      "time": "16:52:43",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 37.85
+    }
+  ],
+  "trades": [
+    {
+      "id": "TRD-17808554315",
+      "time": "14:30:16",
+      "symbol": "XAUUSDc",
+      "type": "buy",
+      "lot": 0.05,
+      "entry_price": 4690.3,
+      "exit_price": 4700.3,
+      "profit_loss": 50.0,
+      "status": "WIN",
+      "swap": 0.0,
+      "commission": 0.0,
+      "session": "London",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-17809302721",
+      "time": "16:07:29",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4706.0,
+      "exit_price": 4694.52,
+      "profit_loss": 57.4,
+      "status": "WIN",
+      "swap": 0.0,
+      "commission": 0.0,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-17809167359",
+      "time": "16:07:29",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4695.0,
+      "exit_price": 4694.52,
+      "profit_loss": 2.4,
+      "status": "WIN",
+      "swap": 0.0,
+      "commission": 0.0,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-17809594694",
+      "time": "16:26:17",
+      "symbol": "XAUUSDc",
+      "type": "buy",
+      "lot": 0.05,
+      "entry_price": 4694.01,
+      "exit_price": 4694.51,
+      "profit_loss": 2.5,
+      "status": "WIN",
+      "swap": 0.0,
+      "commission": 0.0,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-17809939675",
+      "time": "16:52:43",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4696.46,
+      "exit_price": 4688.89,
+      "profit_loss": 37.85,
+      "status": "WIN",
+      "swap": 0.0,
+      "commission": 0.0,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    }
+  ],
+  "chart_data": {
+    "equity_curve": [
+      572.0,
+      622.0,
+      679.4,
+      681.8,
+      684.3,
+      722.15
+    ],
+    "profit_distribution": {
+      "win": 5,
+      "loss": 0,
+      "bep": 0
+    }
+  },
+  "notes": {
+    "daily_summary": "Strong day with 100% win rate on XAUUSDc.",
+    "psychology": "Disciplined execution.",
+    "strategy": "Scalping/Day Trading Gold."
+  }
+}
