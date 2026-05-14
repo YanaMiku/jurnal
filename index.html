@@ -20,56 +20,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    fontSize: {
-                        'xxs': '0.625rem',
-                        'tiny': '0.7rem',
-                    },
-                    colors: {
-                        dark: {
-                            bg: '#0B0F19',
-                            surface: '#111827',
-                            border: '#1F2937',
-                            card: '#0F172A',
-                        },
-                        profit: '#10B981',
-                        loss: '#EF4444',
-                        neutral: '#6B7280',
-                        bep: '#F59E0B',
-                        accent: '#3B82F6',
-                    },
-                    backdropBlur: { xs: '2px' },
-                    animation: {
-                        'fade-in': 'fadeIn 0.4s ease-out',
-                        'slide-up': 'slideUp 0.35s ease-out',
-                        'pulse-soft': 'pulseSoft 2s infinite',
-                        'shimmer': 'shimmer 2s infinite',
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(6px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(16px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.4' } },
-                        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
-                        float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-6px)' } },
-                    },
-                },
-            },
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js">
-    </script>
-    <script src="https://unpkg.com/lucide@latest">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
             -webkit-tap-highlight-color: transparent;
@@ -187,18 +141,45 @@
             visibility: hidden;
             pointer-events: none;
         }
+        .skeleton {
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            background-size: 200% 100%;
+            animation: 1.5s shimmer linear infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(110deg, #1f2937 8%, #374151 18%, #1f2937 33%);
+            background-size: 200% 100%;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden">
 
     <!-- Splash Screen -->
-    <div id="splashScreen" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-white dark:bg-dark-bg transition-all duration-500">
-        <div class="flex flex-col items-center gap-4 animate-fade-in">
+    <div id="splashScreen" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-white dark:bg-[#0B0F19] transition-all duration-500">
+        <div class="flex flex-col items-center gap-4 fade-in">
             <div class="relative">
                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/25">
                     <i data-lucide="line-chart" class="w-7 h-7 text-white"></i>
                 </div>
-                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-profit border-2 border-white dark:border-dark-bg flex items-center justify-center">
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#10B981] border-2 border-white dark:border-[#0B0F19] flex items-center justify-center">
                     <div class="w-2 h-2 rounded-full bg-white live-indicator"></div>
                 </div>
             </div>
@@ -211,12 +192,12 @@
                 <div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.15s"></div>
                 <div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.3s"></div>
             </div>
-            <p class="text-xxs text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
+            <p class="text-[0.625rem] text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
         </div>
     </div>
 
     <!-- Mobile Header -->
-    <div class="lg:hidden fixed top-0 left-0 w-full h-12 z-40 flex items-center justify-between px-3 glass-header border-b border-gray-200/60 dark:border-dark-border/60">
+    <div class="lg:hidden fixed top-0 left-0 w-full h-12 z-40 flex items-center justify-between px-3 glass-header border-b border-gray-200/60 dark:border-[#1F2937]/60">
         <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm">
                 <i data-lucide="line-chart" class="w-3.5 h-3.5 text-white"></i>
@@ -224,8 +205,8 @@
             <span class="font-bold text-sm tracking-tight">TradeJournal</span>
         </div>
         <div class="flex items-center gap-1.5">
-            <div id="mobileLiveIndicator" class="hidden flex items-center gap-1 text-tiny text-profit">
-                <div class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></div>
+            <div id="mobileLiveIndicator" class="hidden flex items-center gap-1 text-[0.7rem] text-[#10B981]">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#10B981] live-indicator"></div>
                 <span>LIVE</span>
             </div>
             <button id="mobileMenuBtn" class="p-1.5 rounded-lg bg-gray-100/70 dark:bg-gray-800/70" aria-label="Buka menu">
@@ -235,20 +216,20 @@
     </div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed lg:static top-0 left-0 w-72 lg:w-80 h-full bg-white dark:bg-dark-surface border-r border-gray-200 dark:border-dark-border z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col pt-12 lg:pt-0 text-sm">
-        <div class="p-4 lg:p-5 hidden lg:flex items-center justify-between border-b border-gray-200 dark:border-dark-border">
+    <aside id="sidebar" class="fixed lg:static top-0 left-0 w-72 lg:w-80 h-full bg-white dark:bg-[#111827] border-r border-gray-200 dark:border-[#1F2937] z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col pt-12 lg:pt-0 text-sm">
+        <div class="p-4 lg:p-5 hidden lg:flex items-center justify-between border-b border-gray-200 dark:border-[#1F2937]">
             <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20">
                     <i data-lucide="line-chart" class="w-4 h-4 text-white"></i>
                 </div>
                 <div>
                     <span class="font-bold text-base tracking-tight">TradeJournal</span>
-                    <p class="text-xxs text-gray-400 leading-none">Pro Dashboard</p>
+                    <p class="text-[0.625rem] text-gray-400 leading-none">Pro Dashboard</p>
                 </div>
             </div>
             <div class="flex items-center gap-1">
-                <div id="desktopLiveIndicator" class="hidden flex items-center gap-1 text-tiny text-profit mr-1">
-                    <div class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></div>
+                <div id="desktopLiveIndicator" class="hidden flex items-center gap-1 text-[0.7rem] text-[#10B981] mr-1">
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#10B981] live-indicator"></div>
                     <span>LIVE</span>
                 </div>
                 <button id="themeToggle" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-label="Toggle theme">
@@ -266,15 +247,15 @@
                         <button id="nextMonth" class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Bulan berikutnya"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium">
+                <div class="grid grid-cols-7 gap-0.5 text-center text-[0.7rem] text-gray-400 dark:text-gray-500 mb-1.5 font-medium">
                     <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
                 </div>
-                <div id="calendarGrid" class="grid grid-cols-7 gap-0.5 text-tiny"></div>
-                <div class="flex items-center justify-center gap-3 mt-3 text-tiny text-gray-400 dark:text-gray-500">
-                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-profit"></div>Win</div>
-                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-loss"></div>Loss</div>
-                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-bep"></div>BEP</div>
-                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-neutral"></div>-</div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-0.5 text-[0.7rem]"></div>
+                <div class="flex items-center justify-center gap-3 mt-3 text-[0.7rem] text-gray-400 dark:text-gray-500">
+                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></div>Win</div>
+                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-[#EF4444]"></div>Loss</div>
+                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-[#F59E0B]"></div>BEP</div>
+                    <div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-[#6B7280]"></div>-</div>
                 </div>
             </div>
             <div class="p-3 bg-gray-50 dark:bg-gray-800/60 rounded-xl">
@@ -284,48 +265,48 @@
                         <span id="autoRefreshKnob" class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transform transition-transform duration-200"></span>
                     </button>
                 </div>
-                <p class="text-tiny text-gray-500 dark:text-gray-400">Refresh setiap 5 detik</p>
-                <div id="countdownDisplay" class="hidden text-tiny text-blue-500 mt-1">Refresh dalam 5s...</div>
+                <p class="text-[0.7rem] text-gray-500 dark:text-gray-400">Refresh setiap 5 detik</p>
+                <div id="countdownDisplay" class="hidden text-[0.7rem] text-blue-500 mt-1">Refresh dalam 5s...</div>
             </div>
             <div class="space-y-2">
                 <button id="exportCSVBtn" class="w-full py-2.5 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
                 <button id="refreshNowBtn" class="w-full py-2.5 px-3 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm text-blue-700 dark:text-blue-400"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now</button>
-                <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center">
+                <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-[#1F2937] flex justify-between items-center">
                     <span class="text-sm">Tema</span>
                     <button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button>
                 </div>
             </div>
         </div>
-        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center">
-            <p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v2.0</p>
+        <div class="p-3 border-t border-gray-200 dark:border-[#1F2937] text-center">
+            <p class="text-[0.625rem] text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v2.0</p>
         </div>
     </aside>
 
     <!-- Overlay -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-sm" aria-hidden="true"></div>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-dark-bg">
-        <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-dark-border glass-header sticky top-0 z-20 items-center justify-between">
+    <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-[#0B0F19]">
+        <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-[#1F2937] glass-header sticky top-0 z-20 items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20">
                     <i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i>
                 </div>
                 <div>
                     <h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1>
-                    <p class="text-xxs text-gray-500 dark:text-gray-400">Ringkasan performa harian</p>
+                    <p class="text-[0.625rem] text-gray-500 dark:text-gray-400">Ringkasan performa harian</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div>
-                <div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium">
+                <div id="lastUpdatedTime" class="text-[0.625rem] text-gray-400 hidden">Update: --</div>
+                <div id="headerStatus" class="hidden items-center gap-1.5 text-[0.7rem] px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium">
                     <div class="w-1.5 h-1.5 rounded-full"></div> <span id="headerStatusText">No Data</span>
                 </div>
             </div>
         </header>
-        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border">
+        <div class="lg:hidden px-3 py-2 bg-white dark:bg-[#111827] border-b border-gray-100 dark:border-[#1F2937]">
             <h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1>
-            <p class="text-xxs text-gray-500 dark:text-gray-400" id="headerSubtitleMobile">Ringkasan performa harian</p>
+            <p class="text-[0.625rem] text-gray-500 dark:text-gray-400" id="headerSubtitleMobile">Ringkasan performa harian</p>
         </div>
 
         <div class="flex-1 overflow-y-auto p-2 lg:p-6" id="mainContentArea">
@@ -346,13 +327,13 @@
                 <div class="h-36 lg:h-52 rounded-xl skeleton"></div>
             </div>
 
-            <!-- Empty State (Profesional) -->
-            <div id="emptyState" class="hidden h-full flex flex-col items-center justify-center text-center fade-in py-10 lg:py-16">
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden h-full flex flex-col items-center justify-center text-center py-10 lg:py-16">
                 <div class="relative mb-6">
                     <div class="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-gray-100 dark:bg-gray-800/40 flex items-center justify-center animate-float">
                         <i data-lucide="calendar-search" class="w-12 h-12 lg:w-16 lg:h-16 text-gray-300 dark:text-gray-600"></i>
                     </div>
-                    <div class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-dark-surface shadow-md flex items-center justify-center">
+                    <div class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-[#111827] shadow-md flex items-center justify-center">
                         <i data-lucide="sparkles" class="w-4 h-4 text-blue-500"></i>
                     </div>
                 </div>
@@ -362,10 +343,10 @@
                     <span id="emptyDateDisplay"></span>
                 </div>
                 <div class="flex gap-3 mt-6">
-                    <button onclick="selectDate(getTodayStr())" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-blue-500/20 flex items-center gap-2">
+                    <button onclick="window.selectDate(window.getTodayStr())" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-blue-500/20 flex items-center gap-2">
                         <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Hari Ini
                     </button>
-                    <button onclick="jumpToPreviousTradingDay()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-sm font-medium transition flex items-center gap-2">
+                    <button onclick="window.jumpToPreviousTradingDay()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-sm font-medium transition flex items-center gap-2">
                         <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Hari Sebelumnya
                     </button>
                 </div>
@@ -374,113 +355,113 @@
             <!-- Data Content -->
             <div id="dataContent" class="hidden space-y-3 lg:space-y-5 fade-in">
                 <div class="grid grid-cols-4 gap-1.5 lg:gap-4">
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">WIN</p>
-                        <h3 class="text-base lg:text-2xl font-bold text-profit" id="sumWin">0</h3>
-                        <p class="text-xxs lg:text-xs text-profit mt-0.5" id="sumWinAmount">$0.00</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">WIN</p>
+                        <h3 class="text-base lg:text-2xl font-bold text-[#10B981]" id="sumWin">0</h3>
+                        <p class="text-[0.625rem] lg:text-xs text-[#10B981] mt-0.5" id="sumWinAmount">$0.00</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">LOSS</p>
-                        <h3 class="text-base lg:text-2xl font-bold text-loss" id="sumLoss">0</h3>
-                        <p class="text-xxs lg:text-xs text-loss mt-0.5" id="sumLossAmount">$0.00</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">LOSS</p>
+                        <h3 class="text-base lg:text-2xl font-bold text-[#EF4444]" id="sumLoss">0</h3>
+                        <p class="text-[0.625rem] lg:text-xs text-[#EF4444] mt-0.5" id="sumLossAmount">$0.00</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">BEP</p>
-                        <h3 class="text-base lg:text-2xl font-bold text-bep" id="sumBEP">0</h3>
-                        <p class="text-xxs lg:text-xs text-bep mt-0.5" id="sumBEPAmount">$0.00</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">BEP</p>
+                        <h3 class="text-base lg:text-2xl font-bold text-[#F59E0B]" id="sumBEP">0</h3>
+                        <p class="text-[0.625rem] lg:text-xs text-[#F59E0B] mt-0.5" id="sumBEPAmount">$0.00</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET P/L</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET P/L</p>
                         <h3 class="text-base lg:text-2xl font-bold" id="sumNetProfit">$0.00</h3>
-                        <p class="text-xxs lg:text-xs mt-0.5" id="sumProfitPct">0%</p>
+                        <p class="text-[0.625rem] lg:text-xs mt-0.5" id="sumProfitPct">0%</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-1.5 lg:gap-4">
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-down-circle" class="w-3 h-3 text-blue-500"></i> DEPOSIT</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-down-circle" class="w-3 h-3 text-blue-500"></i> DEPOSIT</p>
                         <h3 class="text-base lg:text-xl font-bold text-blue-500" id="sumDeposit">$0.00</h3>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-up-circle" class="w-3 h-3 text-orange-500"></i> WITHDRAW</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-up-circle" class="w-3 h-3 text-orange-500"></i> WITHDRAW</p>
                         <h3 class="text-base lg:text-xl font-bold text-orange-500" id="sumWithdraw">$0.00</h3>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET CASH</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET CASH</p>
                         <h3 class="text-base lg:text-xl font-bold" id="sumNetCash">$0.00</h3>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 lg:grid-cols-6 gap-1.5 lg:gap-3">
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Total Trades</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Total Trades</p>
                         <p class="font-bold text-sm lg:text-lg" id="sumTotalTrades">0</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Win Rate</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Win Rate</p>
                         <p class="font-bold text-sm lg:text-lg" id="sumWinRate">0%</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Avg Win</p>
-                        <p class="font-bold text-sm lg:text-lg text-profit" id="statAvgWin">$0</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Avg Win</p>
+                        <p class="font-bold text-sm lg:text-lg text-[#10B981]" id="statAvgWin">$0</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Avg Loss</p>
-                        <p class="font-bold text-sm lg:text-lg text-loss" id="statAvgLoss">$0</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Avg Loss</p>
+                        <p class="font-bold text-sm lg:text-lg text-[#EF4444]" id="statAvgLoss">$0</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Balance</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Balance</p>
                         <p class="font-bold text-sm lg:text-lg" id="sumBalance">$0</p>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center">
-                        <p class="text-xxs lg:text-xs text-gray-500">Start</p>
+                    <div class="bg-white dark:bg-[#0F172A] p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium text-center">
+                        <p class="text-[0.625rem] lg:text-xs text-gray-500">Start</p>
                         <p class="font-bold text-sm lg:text-lg" id="sumStartBalance">$0</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-5">
-                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium lg:col-span-2">
+                    <div class="bg-white dark:bg-[#0F172A] p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium lg:col-span-2">
                         <div class="flex justify-between items-center mb-2 lg:mb-4">
                             <h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Kurva Ekuitas</h3>
-                            <span class="text-xxs text-gray-400">Geser & pinch untuk zoom</span>
+                            <span class="text-[0.625rem] text-gray-400">Geser & pinch untuk zoom</span>
                         </div>
                         <div class="chart-container h-40 lg:h-64">
                             <canvas id="equityChart"></canvas>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium">
+                    <div class="bg-white dark:bg-[#0F172A] p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium">
                         <h3 class="font-semibold text-xs lg:text-sm mb-2 lg:mb-4 flex items-center gap-1.5"><i data-lucide="pie-chart" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Distribusi Hasil</h3>
                         <div class="h-32 lg:h-48 relative w-full flex justify-center">
                             <canvas id="resultChart"></canvas>
                         </div>
-                        <div class="mt-2 lg:mt-4 grid grid-cols-3 gap-1 lg:gap-2 text-xxs lg:text-xs">
-                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-profit font-semibold">Win<br><span id="pieWin">0</span></div>
-                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-loss font-semibold">Loss<br><span id="pieLoss">0</span></div>
-                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-bep font-semibold">BEP<br><span id="pieBEP">0</span></div>
+                        <div class="mt-2 lg:mt-4 grid grid-cols-3 gap-1 lg:gap-2 text-[0.625rem] lg:text-xs">
+                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-[#10B981] font-semibold">Win<br><span id="pieWin">0</span></div>
+                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-[#EF4444] font-semibold">Loss<br><span id="pieLoss">0</span></div>
+                            <div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-[#F59E0B] font-semibold">BEP<br><span id="pieBEP">0</span></div>
                         </div>
                     </div>
                 </div>
-                <div id="notesSection" class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium hidden">
+                <div id="notesSection" class="bg-white dark:bg-[#0F172A] p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm card-premium hidden">
                     <h3 class="font-semibold text-xs lg:text-sm mb-3 flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Catatan Harian</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Ringkasan</p><p class="text-sm font-medium" id="noteDaily">-</p></div>
-                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Psikologi</p><p class="text-sm font-medium" id="notePsych">-</p></div>
-                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Strategi</p><p class="text-sm font-medium" id="noteStrategy">-</p></div>
+                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-[0.625rem] text-gray-500 uppercase mb-1">Ringkasan</p><p class="text-sm font-medium" id="noteDaily">-</p></div>
+                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-[0.625rem] text-gray-500 uppercase mb-1">Psikologi</p><p class="text-sm font-medium" id="notePsych">-</p></div>
+                        <div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-[0.625rem] text-gray-500 uppercase mb-1">Strategi</p><p class="text-sm font-medium" id="noteStrategy">-</p></div>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm flex flex-col md:flex-row gap-2 items-center justify-between">
+                <div class="bg-white dark:bg-[#0F172A] p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm flex flex-col md:flex-row gap-2 items-center justify-between">
                     <div class="relative w-full md:w-48 lg:w-64">
                         <i data-lucide="search" class="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3 h-3 lg:w-4 lg:h-4 text-gray-400"></i>
-                        <input type="text" id="searchTrade" placeholder="Cari trade..." class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg pl-7 lg:pl-9 pr-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition">
+                        <input type="text" id="searchTrade" placeholder="Cari trade..." class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg pl-7 lg:pl-9 pr-2 py-1.5 lg:py-2 text-[0.7rem] lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition">
                     </div>
                     <div class="flex gap-1.5 w-full md:w-auto overflow-x-auto hide-scroll">
-                        <select id="filterType" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
+                        <select id="filterType" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-[0.7rem] lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
                             <option value="all">Semua Tipe</option><option value="buy">Buy</option><option value="sell">Sell</option>
                         </select>
-                        <select id="filterResult" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
+                        <select id="filterResult" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-[0.7rem] lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
                             <option value="all">Semua Hasil</option><option value="WIN">Win</option><option value="LOSS">Loss</option><option value="BEP">BEP</option>
                         </select>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm overflow-hidden">
-                    <div class="hidden md:block table-container">
+                <div class="bg-white dark:bg-[#0F172A] rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm overflow-hidden">
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap text-sm">
                             <thead class="bg-gray-50 dark:bg-gray-900 text-xs uppercase text-gray-500 dark:text-gray-400">
                                 <tr>
@@ -499,10 +480,10 @@
                     </div>
                     <div id="tradeMobileList" class="md:hidden divide-y divide-gray-100 dark:divide-gray-800"></div>
                 </div>
-                <div class="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm p-3 lg:p-5 card-premium">
+                <div class="bg-white dark:bg-[#0F172A] rounded-xl lg:rounded-2xl border border-gray-100 dark:border-[#1F2937] shadow-sm p-3 lg:p-5 card-premium">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Activity Log</h3>
-                        <select id="filterActivityCategory" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
+                        <select id="filterActivityCategory" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-[0.7rem] lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none">
                             <option value="all">All</option><option value="trade">Trade</option><option value="deposit">Deposit</option><option value="withdraw">Withdraw</option>
                         </select>
                     </div>
@@ -511,13 +492,13 @@
             </div>
         </div>
 
-        <!-- Footer Profesional -->
-        <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
+        <!-- Footer -->
+        <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-[#1F2937] bg-white/80 dark:bg-[#111827]/80 backdrop-blur-sm text-[0.625rem] text-gray-400 gap-1 lg:gap-0">
             <div class="flex items-center gap-2">
                 <span class="hidden lg:inline">Trading Journal Pro — Dashboard Performa Harian</span>
-                <span class="lg:hidden text-tiny">TradeJournal Pro</span>
+                <span class="lg:hidden text-[0.7rem]">TradeJournal Pro</span>
                 <span class="text-gray-300 dark:text-gray-600">|</span>
-                <span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span>
+                <span class="flex items-center gap-1 text-[#10B981]"><span class="w-1.5 h-1.5 rounded-full bg-[#10B981] live-indicator"></span> LIVE</span>
             </div>
             <div class="flex items-center gap-1">
                 <span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span>
@@ -529,28 +510,28 @@
     <!-- Trade Detail Modal -->
     <div id="tradeModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="tradeModalBackdrop"></div>
-        <div class="absolute bottom-0 md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-full md:w-[500px] bg-white dark:bg-dark-surface rounded-t-2xl md:rounded-2xl shadow-2xl transition-transform duration-300 translate-y-full md:translate-y-4 border border-gray-200 dark:border-dark-border flex flex-col max-h-[88vh]">
-            <div class="p-3 lg:p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center sticky top-0 bg-white dark:bg-dark-surface z-10 rounded-t-2xl">
+        <div class="absolute bottom-0 md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-full md:w-[500px] bg-white dark:bg-[#111827] rounded-t-2xl md:rounded-2xl shadow-2xl transition-transform duration-300 translate-y-full md:translate-y-4 border border-gray-200 dark:border-[#1F2937] flex flex-col max-h-[88vh]">
+            <div class="p-3 lg:p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center sticky top-0 bg-white dark:bg-[#111827] z-10 rounded-t-2xl">
                 <div class="flex items-center gap-2.5">
                     <div id="modalResultBadge" class="w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full"></div>
-                    <h3 class="font-bold text-sm lg:text-base">Detail Trade <span id="modalTradeId" class="text-gray-500 font-normal text-tiny lg:text-sm ml-1"></span></h3>
+                    <h3 class="font-bold text-sm lg:text-base">Detail Trade <span id="modalTradeId" class="text-gray-500 font-normal text-[0.7rem] lg:text-sm ml-1"></span></h3>
                 </div>
                 <button id="closeModalBtn" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-label="Tutup"><i data-lucide="x" class="w-4 h-4 lg:w-5 lg:h-5"></i></button>
             </div>
             <div class="p-3 lg:p-5 overflow-y-auto hide-scroll flex-1 text-sm">
                 <div class="flex justify-between items-end mb-4">
-                    <div><p class="text-tiny text-gray-500 mb-0.5">Symbol & Waktu</p><h4 class="text-base lg:text-xl font-bold" id="modalSymbol">-</h4><p class="text-tiny" id="modalTime">-</p></div>
-                    <div class="text-right"><p class="text-tiny text-gray-500 mb-0.5">Profit / Loss</p><h4 class="text-lg lg:text-2xl font-bold" id="modalProfit">$0.00</h4><span id="modalStatusBadge" class="text-xxs px-2 py-0.5 rounded-full font-bold uppercase">-</span></div>
+                    <div><p class="text-[0.7rem] text-gray-500 mb-0.5">Symbol & Waktu</p><h4 class="text-base lg:text-xl font-bold" id="modalSymbol">-</h4><p class="text-[0.7rem]" id="modalTime">-</p></div>
+                    <div class="text-right"><p class="text-[0.7rem] text-gray-500 mb-0.5">Profit / Loss</p><h4 class="text-lg lg:text-2xl font-bold" id="modalProfit">$0.00</h4><span id="modalStatusBadge" class="text-[0.625rem] px-2 py-0.5 rounded-full font-bold uppercase">-</span></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 lg:gap-4 mb-4">
-                    <div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-xxs text-gray-500 uppercase">Tipe</span><p class="font-semibold text-sm lg:text-lg capitalize" id="modalType">-</p></div>
-                    <div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-xxs text-gray-500 uppercase">Lot</span><p class="font-semibold text-sm lg:text-lg" id="modalLot">-</p></div>
+                    <div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-[0.625rem] text-gray-500 uppercase">Tipe</span><p class="font-semibold text-sm lg:text-lg capitalize" id="modalType">-</p></div>
+                    <div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-[0.625rem] text-gray-500 uppercase">Lot</span><p class="font-semibold text-sm lg:text-lg" id="modalLot">-</p></div>
                 </div>
                 <div class="relative pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-3 mb-4">
-                    <div class="relative"><div class="absolute w-2.5 h-2.5 lg:w-3 lg:h-3 bg-blue-500 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-dark-surface"></div><p class="text-xxs text-gray-500">Entry</p><p class="font-mono font-medium text-sm" id="modalEntry">-</p></div>
-                    <div class="relative"><div id="modalExitDot" class="absolute w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-dark-surface"></div><p class="text-xxs text-gray-500">Exit</p><p class="font-mono font-medium text-sm" id="modalExit">-</p></div>
+                    <div class="relative"><div class="absolute w-2.5 h-2.5 lg:w-3 lg:h-3 bg-blue-500 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-[#111827]"></div><p class="text-[0.625rem] text-gray-500">Entry</p><p class="font-mono font-medium text-sm" id="modalEntry">-</p></div>
+                    <div class="relative"><div id="modalExitDot" class="absolute w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-[#111827]"></div><p class="text-[0.625rem] text-gray-500">Exit</p><p class="font-mono font-medium text-sm" id="modalExit">-</p></div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 text-tiny mb-4">
+                <div class="grid grid-cols-2 gap-2 text-[0.7rem] mb-4">
                     <div><span class="text-gray-500">Swap:</span> <span id="modalSwap" class="font-medium">$0.00</span></div>
                     <div><span class="text-gray-500">Commission:</span> <span id="modalCommission" class="font-medium">$0.00</span></div>
                     <div><span class="text-gray-500">Session:</span> <span id="modalSession" class="font-medium">-</span></div>
@@ -656,7 +637,8 @@
                 state.refreshIntervalId = null;
                 state.countdownIntervalId = null;
                 updateLiveIndicator(false);
-                document.getElementById('countdownDisplay').classList.add('hidden');
+                const countdownDisplay = document.getElementById('countdownDisplay');
+                if (countdownDisplay) countdownDisplay.classList.add('hidden');
             }
 
             function toggleAutoRefresh() {
@@ -665,16 +647,18 @@
                 const toggle = document.getElementById('autoRefreshToggle');
                 if (state.autoRefreshEnabled) {
                     toggle.classList.remove('bg-gray-300', 'dark:bg-gray-600');
-                    toggle.classList.add('bg-profit');
+                    toggle.classList.add('bg-[#10B981]');
                     knob.classList.add('translate-x-5');
-                    document.getElementById('countdownDisplay').classList.remove('hidden');
+                    const countdownDisplay = document.getElementById('countdownDisplay');
+                    if (countdownDisplay) countdownDisplay.classList.remove('hidden');
                     startAutoRefresh();
                     showToast('Auto-refresh ON (5s)', 'info');
                 } else {
                     toggle.classList.add('bg-gray-300', 'dark:bg-gray-600');
-                    toggle.classList.remove('bg-profit');
+                    toggle.classList.remove('bg-[#10B981]');
                     knob.classList.remove('translate-x-5');
-                    document.getElementById('countdownDisplay').classList.add('hidden');
+                    const countdownDisplay = document.getElementById('countdownDisplay');
+                    if (countdownDisplay) countdownDisplay.classList.add('hidden');
                     stopAutoRefresh();
                     showToast('Auto-refresh OFF', 'info');
                 }
@@ -682,13 +666,15 @@
 
             function updateLiveIndicator(active) {
                 const method = active && state.autoRefreshEnabled ? 'remove' : 'add';
-                document.getElementById('mobileLiveIndicator')?.classList[method]('hidden');
-                document.getElementById('desktopLiveIndicator')?.classList[method]('hidden');
+                const mobileIndicator = document.getElementById('mobileLiveIndicator');
+                const desktopIndicator = document.getElementById('desktopLiveIndicator');
+                if (mobileIndicator) mobileIndicator.classList[method]('hidden');
+                if (desktopIndicator) desktopIndicator.classList[method]('hidden');
             }
 
             function updateCountdownDisplay() {
                 const d = document.getElementById('countdownDisplay');
-                if (state.autoRefreshEnabled) {
+                if (d && state.autoRefreshEnabled) {
                     d.classList.remove('hidden');
                     d.textContent = `Refresh dalam ${state.countdownValue}s...`;
                 }
@@ -698,37 +684,55 @@
                 if (state.isFetching) return;
                 state.isFetching = true;
                 if (!silent) {
-                    document.getElementById('loadingState').classList.remove('hidden');
-                    document.getElementById('dataContent').classList.add('hidden');
-                    document.getElementById('emptyState').classList.add('hidden');
+                    const loadingState = document.getElementById('loadingState');
+                    const dataContent = document.getElementById('dataContent');
+                    const emptyState = document.getElementById('emptyState');
+                    if (loadingState) loadingState.classList.remove('hidden');
+                    if (dataContent) dataContent.classList.add('hidden');
+                    if (emptyState) emptyState.classList.add('hidden');
                 }
                 try {
                     const data = await fetchDailyData(state.selectedDateStr);
                     const prevData = state.currentData;
                     state.currentData = data;
-                    if (!silent) document.getElementById('loadingState').classList.add('hidden');
+                    if (!silent) {
+                        const loadingState = document.getElementById('loadingState');
+                        if (loadingState) loadingState.classList.add('hidden');
+                    }
                     if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
-                        document.getElementById('dataContent').classList.add('hidden');
-                        document.getElementById('emptyState').classList.remove('hidden');
-                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr);
-                        document.getElementById('headerStatus').classList.add('hidden');
+                        const dataContent = document.getElementById('dataContent');
+                        const emptyState = document.getElementById('emptyState');
+                        const emptyDateDisplay = document.getElementById('emptyDateDisplay');
+                        const headerStatus = document.getElementById('headerStatus');
+                        if (dataContent) dataContent.classList.add('hidden');
+                        if (emptyState) emptyState.classList.remove('hidden');
+                        if (emptyDateDisplay) emptyDateDisplay.textContent = formatDisplayDate(state.selectedDateStr);
+                        if (headerStatus) headerStatus.classList.add('hidden');
                     } else {
-                        if (document.getElementById('dataContent').classList.contains('hidden')) {
-                            document.getElementById('dataContent').classList.remove('hidden');
-                            document.getElementById('emptyState').classList.add('hidden');
+                        const dataContent = document.getElementById('dataContent');
+                        const emptyState = document.getElementById('emptyState');
+                        if (dataContent && dataContent.classList.contains('hidden')) {
+                            dataContent.classList.remove('hidden');
+                            if (emptyState) emptyState.classList.add('hidden');
                             fullUpdate(data);
                         } else {
                             incrementalUpdate(data, prevData);
                         }
                     }
-                    document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`;
-                    document.getElementById('lastUpdatedTime').classList.remove('hidden');
+                    const lastUpdated = document.getElementById('lastUpdatedTime');
+                    if (lastUpdated) {
+                        lastUpdated.textContent = `Update: ${formatTime()}`;
+                        lastUpdated.classList.remove('hidden');
+                    }
                     renderCalendar();
                 } catch (e) {
                     if (!silent) {
-                        document.getElementById('loadingState').classList.add('hidden');
-                        document.getElementById('emptyState').classList.remove('hidden');
-                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr);
+                        const loadingState = document.getElementById('loadingState');
+                        const emptyState = document.getElementById('emptyState');
+                        const emptyDateDisplay = document.getElementById('emptyDateDisplay');
+                        if (loadingState) loadingState.classList.add('hidden');
+                        if (emptyState) emptyState.classList.remove('hidden');
+                        if (emptyDateDisplay) emptyDateDisplay.textContent = formatDisplayDate(state.selectedDateStr);
                     }
                 } finally { state.isFetching = false; }
             }
@@ -742,21 +746,30 @@
                     const prevData = state.currentData;
                     state.currentData = data;
                     if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
-                        document.getElementById('dataContent').classList.add('hidden');
-                        document.getElementById('emptyState').classList.remove('hidden');
-                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr);
-                        document.getElementById('headerStatus').classList.add('hidden');
+                        const dataContent = document.getElementById('dataContent');
+                        const emptyState = document.getElementById('emptyState');
+                        const emptyDateDisplay = document.getElementById('emptyDateDisplay');
+                        const headerStatus = document.getElementById('headerStatus');
+                        if (dataContent) dataContent.classList.add('hidden');
+                        if (emptyState) emptyState.classList.remove('hidden');
+                        if (emptyDateDisplay) emptyDateDisplay.textContent = formatDisplayDate(state.selectedDateStr);
+                        if (headerStatus) headerStatus.classList.add('hidden');
                     } else {
-                        if (document.getElementById('dataContent').classList.contains('hidden')) {
-                            document.getElementById('dataContent').classList.remove('hidden');
-                            document.getElementById('emptyState').classList.add('hidden');
+                        const dataContent = document.getElementById('dataContent');
+                        const emptyState = document.getElementById('emptyState');
+                        if (dataContent && dataContent.classList.contains('hidden')) {
+                            dataContent.classList.remove('hidden');
+                            if (emptyState) emptyState.classList.add('hidden');
                             fullUpdate(data);
                         } else {
                             incrementalUpdate(data, prevData);
                         }
                     }
-                    document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`;
-                    document.getElementById('lastUpdatedTime').classList.remove('hidden');
+                    const lastUpdated = document.getElementById('lastUpdatedTime');
+                    if (lastUpdated) {
+                        lastUpdated.textContent = `Update: ${formatTime()}`;
+                        lastUpdated.classList.remove('hidden');
+                    }
                     renderCalendar();
                 } catch (e) {} finally { state.isFetching = false; }
             }
@@ -800,119 +813,153 @@
                 const lossTotal = losses.reduce((a, t) => a + (t.profit || 0), 0);
                 const bepTotal = beps.reduce((a, t) => a + (t.profit || 0), 0);
 
-                document.getElementById('sumWin').textContent = wins.length;
-                document.getElementById('sumWinAmount').textContent = formatShortCurrency(winTotal);
-                document.getElementById('sumLoss').textContent = losses.length;
-                document.getElementById('sumLossAmount').textContent = formatShortCurrency(lossTotal);
-                document.getElementById('sumBEP').textContent = beps.length;
-                document.getElementById('sumBEPAmount').textContent = formatShortCurrency(bepTotal);
+                const sumWin = document.getElementById('sumWin');
+                const sumWinAmount = document.getElementById('sumWinAmount');
+                const sumLoss = document.getElementById('sumLoss');
+                const sumLossAmount = document.getElementById('sumLossAmount');
+                const sumBEP = document.getElementById('sumBEP');
+                const sumBEPAmount = document.getElementById('sumBEPAmount');
+                if (sumWin) sumWin.textContent = wins.length;
+                if (sumWinAmount) sumWinAmount.textContent = formatShortCurrency(winTotal);
+                if (sumLoss) sumLoss.textContent = losses.length;
+                if (sumLossAmount) sumLossAmount.textContent = formatShortCurrency(lossTotal);
+                if (sumBEP) sumBEP.textContent = beps.length;
+                if (sumBEPAmount) sumBEPAmount.textContent = formatShortCurrency(bepTotal);
 
                 const net = s.trading_profit || s.net_profit || 0;
                 const profitEl = document.getElementById('sumNetProfit');
-                profitEl.textContent = formatCurrency(net);
-                profitEl.className = `text-base lg:text-2xl font-bold ${net > 0 ? 'text-profit' : (net < 0 ? 'text-loss' : 'text-bep')}`;
-                document.getElementById('sumProfitPct').textContent = `${net >= 0 ? '+' : ''}${s.profit_percent || 0}%`;
-                document.getElementById('sumProfitPct').className = `text-xxs lg:text-xs mt-0.5 ${net > 0 ? 'text-profit' : (net < 0 ? 'text-loss' : 'text-bep')}`;
+                if (profitEl) {
+                    profitEl.textContent = formatCurrency(net);
+                    profitEl.className = `text-base lg:text-2xl font-bold ${net > 0 ? 'text-[#10B981]' : (net < 0 ? 'text-[#EF4444]' : 'text-[#F59E0B]')}`;
+                }
+                const profitPct = document.getElementById('sumProfitPct');
+                if (profitPct) {
+                    profitPct.textContent = `${net >= 0 ? '+' : ''}${s.profit_percent || 0}%`;
+                    profitPct.className = `text-[0.625rem] lg:text-xs mt-0.5 ${net > 0 ? 'text-[#10B981]' : (net < 0 ? 'text-[#EF4444]' : 'text-[#F59E0B]')}`;
+                }
 
                 const totalDeposit = deposits.reduce((a, d) => a + d.amount, 0) || s.deposit || 0;
                 const totalWithdraw = withdrawals.reduce((a, w) => a + w.amount, 0) || s.withdraw || 0;
-                document.getElementById('sumDeposit').textContent = formatCurrency(totalDeposit);
-                document.getElementById('sumWithdraw').textContent = formatCurrency(totalWithdraw);
+                const sumDeposit = document.getElementById('sumDeposit');
+                const sumWithdraw = document.getElementById('sumWithdraw');
+                if (sumDeposit) sumDeposit.textContent = formatCurrency(totalDeposit);
+                if (sumWithdraw) sumWithdraw.textContent = formatCurrency(totalWithdraw);
                 const netCash = totalDeposit - totalWithdraw;
                 const netCashEl = document.getElementById('sumNetCash');
-                netCashEl.textContent = formatCurrency(netCash);
-                netCashEl.className = `text-base lg:text-xl font-bold ${netCash > 0 ? 'text-profit' : (netCash < 0 ? 'text-loss' : '')}`;
+                if (netCashEl) {
+                    netCashEl.textContent = formatCurrency(netCash);
+                    netCashEl.className = `text-base lg:text-xl font-bold ${netCash > 0 ? 'text-[#10B981]' : (netCash < 0 ? 'text-[#EF4444]' : '')}`;
+                }
 
                 const hs = document.getElementById('headerStatus');
                 const hst = document.getElementById('headerStatusText');
-                hs.classList.remove('hidden');
-                const dot = hs.querySelector('div');
-                if (net > 0) {
-                    dot.className = 'w-1.5 h-1.5 rounded-full bg-profit animate-pulse';
-                    hst.textContent = 'PROFIT'; hst.className = 'text-profit text-tiny lg:text-sm';
-                } else if (net < 0) {
-                    dot.className = 'w-1.5 h-1.5 rounded-full bg-loss animate-pulse';
-                    hst.textContent = 'LOSS'; hst.className = 'text-loss text-tiny lg:text-sm';
-                } else if (trades.length > 0) {
-                    dot.className = 'w-1.5 h-1.5 rounded-full bg-bep';
-                    hst.textContent = 'BEP'; hst.className = 'text-bep text-tiny lg:text-sm';
-                } else {
-                    dot.className = 'w-1.5 h-1.5 rounded-full bg-neutral';
-                    hst.textContent = 'NO DATA'; hst.className = 'text-neutral text-tiny lg:text-sm';
+                if (hs && hst) {
+                    hs.classList.remove('hidden');
+                    const dot = hs.querySelector('div');
+                    if (net > 0) {
+                        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse';
+                        hst.textContent = 'PROFIT';
+                        hst.className = 'text-[#10B981] text-[0.7rem] lg:text-sm';
+                    } else if (net < 0) {
+                        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse';
+                        hst.textContent = 'LOSS';
+                        hst.className = 'text-[#EF4444] text-[0.7rem] lg:text-sm';
+                    } else if (trades.length > 0) {
+                        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#F59E0B]';
+                        hst.textContent = 'BEP';
+                        hst.className = 'text-[#F59E0B] text-[0.7rem] lg:text-sm';
+                    } else {
+                        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#6B7280]';
+                        hst.textContent = 'NO DATA';
+                        hst.className = 'text-[#6B7280] text-[0.7rem] lg:text-sm';
+                    }
+                    hs.className = 'flex items-center gap-1.5 text-[0.7rem] lg:text-sm px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium';
                 }
-                hs.className = 'flex items-center gap-1.5 text-tiny lg:text-sm px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium';
 
-                document.getElementById('sumTotalTrades').textContent = st.total_trades || trades.length;
-                document.getElementById('sumWinRate').textContent = `${st.win_rate || 0}%`;
-                document.getElementById('statAvgWin').textContent = formatShortCurrency(st.average_win || 0);
-                document.getElementById('statAvgLoss').textContent = formatShortCurrency(st.average_loss || 0);
-                document.getElementById('sumBalance').textContent = formatShortCurrency(s.ending_balance || s.balance || 0);
-                document.getElementById('sumStartBalance').textContent = formatShortCurrency(s.starting_balance || 0);
+                const sumTotalTrades = document.getElementById('sumTotalTrades');
+                const sumWinRate = document.getElementById('sumWinRate');
+                const statAvgWin = document.getElementById('statAvgWin');
+                const statAvgLoss = document.getElementById('statAvgLoss');
+                const sumBalance = document.getElementById('sumBalance');
+                const sumStartBalance = document.getElementById('sumStartBalance');
+                if (sumTotalTrades) sumTotalTrades.textContent = st.total_trades || trades.length;
+                if (sumWinRate) sumWinRate.textContent = `${st.win_rate || 0}%`;
+                if (statAvgWin) statAvgWin.textContent = formatShortCurrency(st.average_win || 0);
+                if (statAvgLoss) statAvgLoss.textContent = formatShortCurrency(st.average_loss || 0);
+                if (sumBalance) sumBalance.textContent = formatShortCurrency(s.ending_balance || s.balance || 0);
+                if (sumStartBalance) sumStartBalance.textContent = formatShortCurrency(s.starting_balance || 0);
 
                 const notes = data.notes || {};
-                document.getElementById('noteDaily').textContent = notes.daily_summary || '-';
-                document.getElementById('notePsych').textContent = notes.psychology || '-';
-                document.getElementById('noteStrategy').textContent = notes.strategy || '-';
+                const noteDaily = document.getElementById('noteDaily');
+                const notePsych = document.getElementById('notePsych');
+                const noteStrategy = document.getElementById('noteStrategy');
+                if (noteDaily) noteDaily.textContent = notes.daily_summary || '-';
+                if (notePsych) notePsych.textContent = notes.psychology || '-';
+                if (noteStrategy) noteStrategy.textContent = notes.strategy || '-';
                 const notesSection = document.getElementById('notesSection');
-                notesSection.classList.toggle('hidden', !(notes.daily_summary || notes.psychology || notes.strategy));
+                if (notesSection) notesSection.classList.toggle('hidden', !(notes.daily_summary || notes.psychology || notes.strategy));
             }
 
             function renderTradeList() {
                 const tbody = document.getElementById('tradeTableBody');
                 const mobile = document.getElementById('tradeMobileList');
-                tbody.innerHTML = '';
-                mobile.innerHTML = '';
+                if (tbody) tbody.innerHTML = '';
+                if (mobile) mobile.innerHTML = '';
                 if (state.filteredTrades.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-400 text-sm">Tidak ada trade ditemukan.</td></tr>';
-                    mobile.innerHTML = '<div class="p-8 text-center text-gray-400 text-sm">Tidak ada trade ditemukan.</div>';
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-400 text-sm">Tidak ada trade ditemukan.</td></tr>';
+                    if (mobile) mobile.innerHTML = '<div class="p-8 text-center text-gray-400 text-sm">Tidak ada trade ditemukan.</div>';
                     return;
                 }
                 state.filteredTrades.forEach(t => {
                     const isWin = t.result === 'WIN';
                     const isLoss = t.result === 'LOSS';
-                    const pnlColor = isWin ? 'text-profit' : (isLoss ? 'text-loss' : 'text-bep');
-                    const statusBadge = isWin ? 'bg-profit/10 text-profit border border-profit/20' : (isLoss ? 'bg-loss/10 text-loss border border-loss/20' : 'bg-bep/10 text-bep border border-bep/20');
+                    const pnlColor = isWin ? 'text-[#10B981]' : (isLoss ? 'text-[#EF4444]' : 'text-[#F59E0B]');
+                    const statusBadge = isWin ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20' : (isLoss ? 'bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20' : 'bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20');
                     const typeColor = t.type === 'buy' ? 'text-blue-500' : 'text-purple-500';
 
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer";
-                    tr.onclick = () => openTradeModal(t);
-                    tr.innerHTML = `
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3"><div class="font-medium text-sm">#${t.id}</div><div class="text-xxs text-gray-500">${t.time}</div></td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-semibold text-sm">${t.symbol}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 uppercase text-xs font-bold ${typeColor}">${t.type}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-sm">${t.lot}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-mono text-sm">${t.entry_price}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-mono text-sm">${t.exit_price}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-right font-bold ${pnlColor} text-sm">${formatCurrency(t.profit)}</td>
-                        <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-center"><span class="inline-block px-2.5 py-0.5 rounded-full text-xxs font-bold ${statusBadge}">${t.result}</span></td>
-                    `;
-                    tbody.appendChild(tr);
+                    if (tbody) {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer";
+                        tr.onclick = () => openTradeModal(t);
+                        tr.innerHTML = `
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3"><div class="font-medium text-sm">#${t.id}</div><div class="text-[0.625rem] text-gray-500">${t.time}</div></td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-semibold text-sm">${t.symbol}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 uppercase text-xs font-bold ${typeColor}">${t.type}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-sm">${t.lot}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-mono text-sm">${t.entry_price}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 font-mono text-sm">${t.exit_price}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-right font-bold ${pnlColor} text-sm">${formatCurrency(t.profit)}</td>
+                            <td class="px-4 lg:px-6 py-2.5 lg:py-3 text-center"><span class="inline-block px-2.5 py-0.5 rounded-full text-[0.625rem] font-bold ${statusBadge}">${t.result}</span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
 
-                    const card = document.createElement('div');
-                    card.className = "p-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer";
-                    card.onclick = () => openTradeModal(t);
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start mb-1.5">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="uppercase text-xxs font-bold px-1.5 py-0.5 rounded ${t.type==='buy' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">${t.type}</span>
-                                <span class="font-bold text-sm">${t.symbol}</span>
-                                <span class="text-xxs text-gray-400">#${t.id}</span>
+                    if (mobile) {
+                        const card = document.createElement('div');
+                        card.className = "p-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer";
+                        card.onclick = () => openTradeModal(t);
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start mb-1.5">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="uppercase text-[0.625rem] font-bold px-1.5 py-0.5 rounded ${t.type==='buy' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">${t.type}</span>
+                                    <span class="font-bold text-sm">${t.symbol}</span>
+                                    <span class="text-[0.625rem] text-gray-400">#${t.id}</span>
+                                </div>
+                                <span class="inline-block px-2 py-0.5 rounded-full text-[0.625rem] font-bold ${statusBadge}">${t.result}</span>
                             </div>
-                            <span class="inline-block px-2 py-0.5 rounded-full text-xxs font-bold ${statusBadge}">${t.result}</span>
-                        </div>
-                        <div class="flex justify-between text-tiny text-gray-500 mb-1.5"><span>${t.time}</span><span class="font-bold ${pnlColor}">${formatCurrency(t.profit)}</span></div>
-                        <div class="flex justify-between text-tiny font-mono bg-gray-50 dark:bg-gray-900 p-1.5 rounded-lg"><div>Entry: ${t.entry_price}</div><div>Exit: ${t.exit_price} (${t.lot}L)</div></div>
-                    `;
-                    mobile.appendChild(card);
+                            <div class="flex justify-between text-[0.7rem] text-gray-500 mb-1.5"><span>${t.time}</span><span class="font-bold ${pnlColor}">${formatCurrency(t.profit)}</span></div>
+                            <div class="flex justify-between text-[0.7rem] font-mono bg-gray-50 dark:bg-gray-900 p-1.5 rounded-lg"><div>Entry: ${t.entry_price}</div><div>Exit: ${t.exit_price} (${t.lot}L)</div></div>
+                        `;
+                        mobile.appendChild(card);
+                    }
                 });
             }
 
             function applyFilters() {
                 if (!state.currentData) return;
-                const term = document.getElementById('searchTrade').value.toLowerCase();
-                const type = document.getElementById('filterType').value;
-                const result = document.getElementById('filterResult').value;
+                const term = document.getElementById('searchTrade')?.value.toLowerCase() || '';
+                const type = document.getElementById('filterType')?.value || 'all';
+                const result = document.getElementById('filterResult')?.value || 'all';
                 const trades = state.currentData.trades || [];
                 state.filteredTrades = trades.filter(t => {
                     return (t.symbol?.toLowerCase().includes(term) || t.id?.toString().includes(term)) &&
@@ -924,12 +971,12 @@
 
             function renderActivityLog() {
                 const container = document.getElementById('activityLogContainer');
-                const category = document.getElementById('filterActivityCategory').value;
+                const category = document.getElementById('filterActivityCategory')?.value || 'all';
                 const activities = state.currentData?.activity_history || [];
                 let filtered = category === 'all' ? activities : activities.filter(a => a.category === category);
-                container.innerHTML = '';
+                if (container) container.innerHTML = '';
                 if (filtered.length === 0) {
-                    container.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Tidak ada aktivitas.</div>';
+                    if (container) container.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Tidak ada aktivitas.</div>';
                     return;
                 }
                 filtered.forEach(act => {
@@ -940,20 +987,22 @@
                     else if (cat === 'withdraw') { icon = 'arrow-up-circle'; colorClass = 'text-orange-500'; bgClass = 'bg-orange-50 dark:bg-orange-900/15'; }
                     const desc = act.description || act.symbol || cat;
                     const amount = act.amount || act.profit_loss || 0;
-                    const amountColor = amount > 0 ? 'text-profit' : (amount < 0 ? 'text-loss' : 'text-gray-600 dark:text-gray-300');
-                    const statusBadge = act.status ? `<span class="text-xxs px-1.5 py-0.5 rounded-full font-bold ${act.status==='WIN'?'bg-profit/10 text-profit':(act.status==='LOSS'?'bg-loss/10 text-loss':'bg-bep/10 text-bep')}">${act.status}</span>` : '';
-                    container.innerHTML += `
-                        <div class="flex items-center gap-3 p-2.5 ${bgClass} rounded-xl transition">
-                            <div class="w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm"><i data-lucide="${icon}" class="w-4 h-4 ${colorClass}"></i></div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between text-xs"><span class="font-medium truncate">${desc}</span><span class="font-bold ml-2 ${amountColor}">${formatCurrency(amount)}</span></div>
-                                <div class="flex justify-between text-xxs text-gray-500 mt-0.5"><span>${act.time||''}</span><span class="uppercase">${cat}</span></div>
-                                ${statusBadge?`<div class="mt-1">${statusBadge}</div>`:''}
+                    const amountColor = amount > 0 ? 'text-[#10B981]' : (amount < 0 ? 'text-[#EF4444]' : 'text-gray-600 dark:text-gray-300');
+                    const statusBadge = act.status ? `<span class="text-[0.625rem] px-1.5 py-0.5 rounded-full font-bold ${act.status==='WIN'?'bg-[#10B981]/10 text-[#10B981]':(act.status==='LOSS'?'bg-[#EF4444]/10 text-[#EF4444]':'bg-[#F59E0B]/10 text-[#F59E0B]')}">${act.status}</span>` : '';
+                    if (container) {
+                        container.innerHTML += `
+                            <div class="flex items-center gap-3 p-2.5 ${bgClass} rounded-xl transition">
+                                <div class="w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm"><i data-lucide="${icon}" class="w-4 h-4 ${colorClass}"></i></div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between text-xs"><span class="font-medium truncate">${desc}</span><span class="font-bold ml-2 ${amountColor}">${formatCurrency(amount)}</span></div>
+                                    <div class="flex justify-between text-[0.625rem] text-gray-500 mt-0.5"><span>${act.time||''}</span><span class="uppercase">${cat}</span></div>
+                                    ${statusBadge?`<div class="mt-1">${statusBadge}</div>`:''}
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    }
                 });
-                lucide.createIcons({ nodes: Array.from(container.querySelectorAll('[data-lucide]')) });
+                if (container) lucide.createIcons({ nodes: Array.from(container.querySelectorAll('[data-lucide]')) });
             }
 
             function renderCharts(forceRebuild = false) {
@@ -1005,9 +1054,12 @@
                     const trades = state.currentData?.trades || [];
                     let w = 0, l = 0, be = 0;
                     trades.forEach(t => { if (t.result === 'WIN') w++; else if (t.result === 'LOSS') l++; else be++; });
-                    document.getElementById('pieWin').textContent = w;
-                    document.getElementById('pieLoss').textContent = l;
-                    document.getElementById('pieBEP').textContent = be;
+                    const pieWin = document.getElementById('pieWin');
+                    const pieLoss = document.getElementById('pieLoss');
+                    const pieBEP = document.getElementById('pieBEP');
+                    if (pieWin) pieWin.textContent = w;
+                    if (pieLoss) pieLoss.textContent = l;
+                    if (pieBEP) pieBEP.textContent = be;
                     if (forceRebuild || !state.charts.result) {
                         if (state.charts.result) state.charts.result.destroy();
                         state.charts.result = new Chart(ctxR, {
@@ -1022,56 +1074,87 @@
                 }
             }
 
+            let currentModalTrade = null;
+
             function openTradeModal(trade) {
-                document.getElementById('modalTradeId').textContent = `#${trade.id}`;
-                document.getElementById('modalSymbol').textContent = trade.symbol;
-                document.getElementById('modalTime').textContent = trade.time;
+                currentModalTrade = trade;
+                const modalTradeId = document.getElementById('modalTradeId');
+                const modalSymbol = document.getElementById('modalSymbol');
+                const modalTime = document.getElementById('modalTime');
+                const modalProfit = document.getElementById('modalProfit');
+                const modalResultBadge = document.getElementById('modalResultBadge');
+                const modalStatusBadge = document.getElementById('modalStatusBadge');
+                const modalType = document.getElementById('modalType');
+                const modalLot = document.getElementById('modalLot');
+                const modalEntry = document.getElementById('modalEntry');
+                const modalExit = document.getElementById('modalExit');
+                const modalSwap = document.getElementById('modalSwap');
+                const modalCommission = document.getElementById('modalCommission');
+                const modalSession = document.getElementById('modalSession');
+                const modalMarket = document.getElementById('modalMarket');
+                const modalSource = document.getElementById('modalSource');
+                const modalExitDot = document.getElementById('modalExitDot');
+
+                if (modalTradeId) modalTradeId.textContent = `#${trade.id}`;
+                if (modalSymbol) modalSymbol.textContent = trade.symbol;
+                if (modalTime) modalTime.textContent = trade.time;
                 const isWin = trade.result === 'WIN';
                 const isLoss = trade.result === 'LOSS';
-                const pnlColor = isWin ? 'text-profit' : (isLoss ? 'text-loss' : 'text-bep');
-                const badgeColor = isWin ? 'bg-profit' : (isLoss ? 'bg-loss' : 'bg-bep');
-                document.getElementById('modalProfit').textContent = formatCurrency(trade.profit);
-                document.getElementById('modalProfit').className = `text-lg lg:text-2xl font-bold ${pnlColor}`;
-                document.getElementById('modalResultBadge').className = `w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full ${badgeColor}`;
-                document.getElementById('modalStatusBadge').textContent = trade.result;
-                document.getElementById('modalStatusBadge').className = `text-xxs px-2 py-0.5 rounded-full font-bold uppercase ${badgeColor==='bg-profit'?'bg-profit/10 text-profit border border-profit/20':(badgeColor==='bg-loss'?'bg-loss/10 text-loss border border-loss/20':'bg-bep/10 text-bep border border-bep/20')}`;
-                document.getElementById('modalType').textContent = trade.type;
-                document.getElementById('modalLot').textContent = trade.lot;
-                document.getElementById('modalEntry').textContent = trade.entry_price;
-                document.getElementById('modalExit').textContent = trade.exit_price;
-                document.getElementById('modalSwap').textContent = formatCurrency(trade.swap || 0);
-                document.getElementById('modalCommission').textContent = formatCurrency(trade.commission || 0);
-                document.getElementById('modalSession').textContent = trade.session || '-';
-                document.getElementById('modalMarket').textContent = trade.market_type || '-';
-                document.getElementById('modalSource').textContent = trade.source || '-';
-                document.getElementById('modalExitDot').className = `absolute w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-dark-surface ${badgeColor}`;
+                const pnlColor = isWin ? 'text-[#10B981]' : (isLoss ? 'text-[#EF4444]' : 'text-[#F59E0B]');
+                const badgeColor = isWin ? 'bg-[#10B981]' : (isLoss ? 'bg-[#EF4444]' : 'bg-[#F59E0B]');
+                if (modalProfit) {
+                    modalProfit.textContent = formatCurrency(trade.profit);
+                    modalProfit.className = `text-lg lg:text-2xl font-bold ${pnlColor}`;
+                }
+                if (modalResultBadge) modalResultBadge.className = `w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full ${badgeColor}`;
+                if (modalStatusBadge) {
+                    modalStatusBadge.textContent = trade.result;
+                    modalStatusBadge.className = `text-[0.625rem] px-2 py-0.5 rounded-full font-bold uppercase ${badgeColor==='bg-[#10B981]'?'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20':(badgeColor==='bg-[#EF4444]'?'bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20':'bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20')}`;
+                }
+                if (modalType) modalType.textContent = trade.type;
+                if (modalLot) modalLot.textContent = trade.lot;
+                if (modalEntry) modalEntry.textContent = trade.entry_price;
+                if (modalExit) modalExit.textContent = trade.exit_price;
+                if (modalSwap) modalSwap.textContent = formatCurrency(trade.swap || 0);
+                if (modalCommission) modalCommission.textContent = formatCurrency(trade.commission || 0);
+                if (modalSession) modalSession.textContent = trade.session || '-';
+                if (modalMarket) modalMarket.textContent = trade.market_type || '-';
+                if (modalSource) modalSource.textContent = trade.source || '-';
+                if (modalExitDot) modalExitDot.className = `absolute w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full -left-[21px] lg:-left-[23px] top-1 ring-2 lg:ring-4 ring-white dark:ring-[#111827] ${badgeColor}`;
                 const modal = document.getElementById('tradeModal');
-                const inner = modal.querySelector('div:nth-child(2)');
-                modal.classList.remove('hidden');
-                void modal.offsetWidth;
-                modal.classList.remove('opacity-0');
-                inner.classList.remove('translate-y-full', 'md:translate-y-4');
-                inner.classList.add('translate-y-0');
-                window._currentModalTrade = trade;
+                if (modal) {
+                    const inner = modal.querySelector('div:nth-child(2)');
+                    modal.classList.remove('hidden');
+                    void modal.offsetWidth;
+                    modal.classList.remove('opacity-0');
+                    if (inner) {
+                        inner.classList.remove('translate-y-full', 'md:translate-y-4');
+                        inner.classList.add('translate-y-0');
+                    }
+                }
             }
 
             function closeTradeModal() {
                 const modal = document.getElementById('tradeModal');
-                const inner = modal.querySelector('div:nth-child(2)');
-                modal.classList.add('opacity-0');
-                inner.classList.remove('translate-y-0');
-                inner.classList.add('translate-y-full', 'md:translate-y-4');
-                setTimeout(() => modal.classList.add('hidden'), 300);
+                if (modal) {
+                    const inner = modal.querySelector('div:nth-child(2)');
+                    modal.classList.add('opacity-0');
+                    if (inner) {
+                        inner.classList.remove('translate-y-0');
+                        inner.classList.add('translate-y-full', 'md:translate-y-4');
+                    }
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
             }
 
             function copyTradeId() {
-                if (window._currentModalTrade) {
-                    navigator.clipboard.writeText(window._currentModalTrade.id).then(() => showToast('Trade ID disalin', 'success'));
+                if (currentModalTrade) {
+                    navigator.clipboard.writeText(currentModalTrade.id).then(() => showToast('Trade ID disalin', 'success'));
                 }
             }
 
             function exportTradeDetail() {
-                const trade = window._currentModalTrade;
+                const trade = currentModalTrade;
                 if (!trade) return;
                 const text = `Trade ID: ${trade.id}\nTime: ${trade.time}\nSymbol: ${trade.symbol}\nType: ${trade.type}\nLot: ${trade.lot}\nEntry: ${trade.entry_price}\nExit: ${trade.exit_price}\nProfit: ${trade.profit}\nStatus: ${trade.result}\nSwap: ${trade.swap||0}\nCommission: ${trade.commission||0}\nSession: ${trade.session||'-'}\nMarket: ${trade.market_type||'-'}\nSource: ${trade.source||'-'}`;
                 const blob = new Blob([text], { type: 'text/plain' });
@@ -1103,6 +1186,7 @@
             function toggleMobileMenu(force) {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebarOverlay');
+                if (!sidebar || !overlay) return;
                 const isOpen = !sidebar.classList.contains('-translate-x-full');
                 const target = force !== undefined ? force : !isOpen;
                 if (target) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
@@ -1122,13 +1206,20 @@
                 const [y, m, d] = dateStr.split('-');
                 state.currentDate = new Date(+y, +m - 1, +d);
                 renderCalendar();
-                document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(dateStr);
-                document.getElementById('loadingState').classList.remove('hidden');
-                document.getElementById('dataContent').classList.add('hidden');
-                document.getElementById('emptyState').classList.add('hidden');
-                document.getElementById('searchTrade').value = '';
-                document.getElementById('filterType').value = 'all';
-                document.getElementById('filterResult').value = 'all';
+                const selectedDateTitle = document.getElementById('selectedDateTitleMobile');
+                if (selectedDateTitle) selectedDateTitle.textContent = formatDisplayDate(dateStr);
+                const loadingState = document.getElementById('loadingState');
+                const dataContent = document.getElementById('dataContent');
+                const emptyState = document.getElementById('emptyState');
+                const searchTrade = document.getElementById('searchTrade');
+                const filterType = document.getElementById('filterType');
+                const filterResult = document.getElementById('filterResult');
+                if (loadingState) loadingState.classList.remove('hidden');
+                if (dataContent) dataContent.classList.add('hidden');
+                if (emptyState) emptyState.classList.add('hidden');
+                if (searchTrade) searchTrade.value = '';
+                if (filterType) filterType.value = 'all';
+                if (filterResult) filterResult.value = 'all';
                 await refreshCurrentDate();
                 if (window.innerWidth < 1024) toggleMobileMenu(false);
             }
@@ -1148,6 +1239,7 @@
             function renderCalendar() {
                 const grid = document.getElementById('calendarGrid');
                 const label = document.getElementById('calendarMonthYear');
+                if (!grid || !label) return;
                 const y = state.currentDate.getFullYear();
                 const m = state.currentDate.getMonth();
                 label.textContent = new Date(y, m).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
@@ -1164,70 +1256,98 @@
                     const profit = state.calendarProfitData[ds];
                     let dot = '';
                     if (profit !== undefined) {
-                        const cls = profit > 0 ? 'bg-profit' : (profit < 0 ? 'bg-loss' : 'bg-bep');
+                        const cls = profit > 0 ? 'bg-[#10B981]' : (profit < 0 ? 'bg-[#EF4444]' : 'bg-[#F59E0B]');
                         dot = `<div class="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full ${cls} mt-0.5 mx-auto"></div>`;
                     }
                     const todayRing = isToday && !sel ? 'ring-1 ring-blue-400 dark:ring-blue-500' : '';
-                    grid.innerHTML += `<button onclick="selectDate('${ds}')" class="w-full aspect-square flex flex-col items-center justify-center rounded-lg transition text-tiny ${sel ? 'bg-blue-500 text-white font-bold shadow-md shadow-blue-500/30' : 'hover:bg-gray-200 dark:hover:bg-gray-800 ' + todayRing}">${i}${dot}</button>`;
+                    grid.innerHTML += `<button onclick="window.selectDate('${ds}')" class="w-full aspect-square flex flex-col items-center justify-center rounded-lg transition text-[0.7rem] ${sel ? 'bg-blue-500 text-white font-bold shadow-md shadow-blue-500/30' : 'hover:bg-gray-200 dark:hover:bg-gray-800 ' + todayRing}">${i}${dot}</button>`;
                 }
             }
 
             function hideSplash() {
                 const splash = document.getElementById('splashScreen');
-                splash.classList.add('hidden-splash');
-                setTimeout(() => { splash.style.display = 'none'; }, 500);
+                if (splash) {
+                    splash.classList.add('hidden-splash');
+                    setTimeout(() => { splash.style.display = 'none'; }, 500);
+                }
             }
 
             // Event bindings
-            document.getElementById('prevMonth').onclick = () => {
+            const prevMonth = document.getElementById('prevMonth');
+            const nextMonth = document.getElementById('nextMonth');
+            if (prevMonth) prevMonth.onclick = () => {
                 state.currentDate.setMonth(state.currentDate.getMonth() - 1);
                 renderCalendar();
                 fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth());
             };
-            document.getElementById('nextMonth').onclick = () => {
+            if (nextMonth) nextMonth.onclick = () => {
                 state.currentDate.setMonth(state.currentDate.getMonth() + 1);
                 renderCalendar();
                 fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth());
             };
-            document.getElementById('autoRefreshToggle').onclick = toggleAutoRefresh;
-            document.getElementById('refreshNowBtn').onclick = () => refreshCurrentDate();
-            document.getElementById('exportCSVBtn').onclick = exportCSV;
-            document.getElementById('closeModalBtn').onclick = closeTradeModal;
-            document.getElementById('tradeModalBackdrop').onclick = closeTradeModal;
-            document.getElementById('searchTrade').oninput = applyFilters;
-            document.getElementById('filterType').onchange = applyFilters;
-            document.getElementById('filterResult').onchange = applyFilters;
-            document.getElementById('filterActivityCategory').onchange = renderActivityLog;
-            document.getElementById('themeToggle').onclick = toggleTheme;
-            document.getElementById('themeToggleMobile').onclick = toggleTheme;
-            document.getElementById('mobileMenuBtn').onclick = () => toggleMobileMenu();
-            document.getElementById('sidebarOverlay').onclick = () => toggleMobileMenu(false);
-            document.getElementById('copyTradeIdBtn').onclick = copyTradeId;
-            document.getElementById('exportTradeBtn').onclick = exportTradeDetail;
+            const autoRefreshToggle = document.getElementById('autoRefreshToggle');
+            if (autoRefreshToggle) autoRefreshToggle.onclick = toggleAutoRefresh;
+            const refreshNowBtn = document.getElementById('refreshNowBtn');
+            if (refreshNowBtn) refreshNowBtn.onclick = () => refreshCurrentDate();
+            const exportCSVBtn = document.getElementById('exportCSVBtn');
+            if (exportCSVBtn) exportCSVBtn.onclick = exportCSV;
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            if (closeModalBtn) closeModalBtn.onclick = closeTradeModal;
+            const tradeModalBackdrop = document.getElementById('tradeModalBackdrop');
+            if (tradeModalBackdrop) tradeModalBackdrop.onclick = closeTradeModal;
+            const searchTrade = document.getElementById('searchTrade');
+            if (searchTrade) searchTrade.oninput = applyFilters;
+            const filterType = document.getElementById('filterType');
+            if (filterType) filterType.onchange = applyFilters;
+            const filterResult = document.getElementById('filterResult');
+            if (filterResult) filterResult.onchange = applyFilters;
+            const filterActivityCategory = document.getElementById('filterActivityCategory');
+            if (filterActivityCategory) filterActivityCategory.onchange = renderActivityLog;
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) themeToggle.onclick = toggleTheme;
+            const themeToggleMobile = document.getElementById('themeToggleMobile');
+            if (themeToggleMobile) themeToggleMobile.onclick = toggleTheme;
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenuBtn) mobileMenuBtn.onclick = () => toggleMobileMenu();
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            if (sidebarOverlay) sidebarOverlay.onclick = () => toggleMobileMenu(false);
+            const copyTradeIdBtn = document.getElementById('copyTradeIdBtn');
+            if (copyTradeIdBtn) copyTradeIdBtn.onclick = copyTradeId;
+            const exportTradeBtn = document.getElementById('exportTradeBtn');
+            if (exportTradeBtn) exportTradeBtn.onclick = exportTradeDetail;
+            
             window.selectDate = selectDate;
             window.openTradeModal = openTradeModal;
             window.refreshCurrentDate = refreshCurrentDate;
             window.getTodayStr = getTodayStr;
             window.jumpToPreviousTradingDay = jumpToPreviousTradingDay;
+            
             window.addEventListener('resize', () => { if (state.currentData) renderCharts(true); });
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTradeModal(); });
 
             async function init() {
                 // Set tahun dinamis di footer
-                document.getElementById('footerYear').textContent = new Date().getFullYear();
+                const footerYear = document.getElementById('footerYear');
+                if (footerYear) footerYear.textContent = new Date().getFullYear();
                 lucide.createIcons();
                 if (localStorage.theme === 'light') document.documentElement.classList.remove('dark');
                 if (state.autoRefreshEnabled) {
-                    document.getElementById('autoRefreshToggle').classList.remove('bg-gray-300', 'dark:bg-gray-600');
-                    document.getElementById('autoRefreshToggle').classList.add('bg-profit');
-                    document.getElementById('autoRefreshKnob').classList.add('translate-x-5');
-                    document.getElementById('countdownDisplay').classList.remove('hidden');
+                    const autoRefreshToggleBtn = document.getElementById('autoRefreshToggle');
+                    const autoRefreshKnob = document.getElementById('autoRefreshKnob');
+                    if (autoRefreshToggleBtn) {
+                        autoRefreshToggleBtn.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                        autoRefreshToggleBtn.classList.add('bg-[#10B981]');
+                    }
+                    if (autoRefreshKnob) autoRefreshKnob.classList.add('translate-x-5');
+                    const countdownDisplay = document.getElementById('countdownDisplay');
+                    if (countdownDisplay) countdownDisplay.classList.remove('hidden');
                 }
                 state.selectedDateStr = getTodayStr();
                 const [y, m, d] = state.selectedDateStr.split('-');
                 state.currentDate = new Date(+y, +m - 1, +d);
                 renderCalendar();
-                document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(state.selectedDateStr);
+                const selectedDateTitle = document.getElementById('selectedDateTitleMobile');
+                if (selectedDateTitle) selectedDateTitle.textContent = formatDisplayDate(state.selectedDateStr);
                 await refreshCurrentDate();
                 fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth());
                 startAutoRefresh();
