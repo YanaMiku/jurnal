@@ -21,6 +21,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -35,6 +39,7 @@
                     animation: {
                         'fade-in': 'fadeIn 0.4s ease-out', 'slide-up': 'slideUp 0.35s ease-out',
                         'pulse-soft': 'pulseSoft 2s infinite', 'shimmer': 'shimmer 2s infinite', 'float': 'float 3s ease-in-out infinite',
+                        'shine': 'shine 3s infinite',
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0', transform: 'translateY(6px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
@@ -42,14 +47,12 @@
                         pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.4' } },
                         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
                         float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-6px)' } },
+                        shine: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
                     },
                 },
             },
         };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * { -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -63,8 +66,8 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .glass-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(255,255,255,0.72); }
         .dark .glass-header { background: rgba(17,24,39,0.78); }
-        .card-premium { transition: all 0.2s ease; border: 1px solid transparent; }
-        .card-premium:hover { border-color: rgba(59,130,246,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+        .card-premium { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; border: 1px solid transparent; }
+        .card-premium:hover { transform: translateY(-2px); border-color: rgba(59,130,246,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
         .dark .card-premium:hover { border-color: rgba(59,130,246,0.12); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .live-indicator { animation: pulseLive 1.8s infinite; }
         @keyframes pulseLive { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -81,6 +84,11 @@
         .loader-dot:nth-child(1) { animation-delay: -0.32s; }
         .loader-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes dotPulse { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        .dark .skeleton { background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%); background-size: 200% 100%; }
+        .performance-badge { position: relative; overflow: hidden; }
+        .performance-badge::after { content: ''; position: absolute; top: -50%; left: -60%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg); animation: shine 3s infinite; }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden">
@@ -94,6 +102,7 @@
             <div class="text-center"><h2 class="text-lg font-bold tracking-tight">Trading Journal Pro</h2><p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Dashboard performa harian</p></div>
             <div class="flex gap-1.5 mt-2"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
             <p class="text-xxs text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
+            <div class="text-xxs text-gray-400 mt-2">⌨️ Shortcuts: Ctrl+R (refresh) | Ctrl+E (export) | Ctrl+D (today) | ←/→ (month)</div>
         </div>
     </div>
 
@@ -132,14 +141,19 @@
                 <div class="flex items-center justify-between mb-1.5"><span class="text-sm font-medium">Auto Refresh</span><button id="autoRefreshToggle" class="relative w-10 h-5 rounded-full bg-gray-300 dark:bg-gray-600 transition-colors duration-200 focus:outline-none" aria-label="Toggle refresh"><span id="autoRefreshKnob" class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transform transition-transform duration-200"></span></button></div>
                 <p class="text-tiny text-gray-500 dark:text-gray-400">Refresh setiap 30 detik</p>
                 <div id="countdownDisplay" class="hidden text-tiny text-blue-500 mt-1">Refresh dalam 30s...</div>
+                <button id="requestNotificationBtn" class="w-full mt-3 py-1.5 px-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-tiny hover:bg-gray-200 transition">🔔 Enable Notifications</button>
             </div>
             <div class="space-y-2">
-                <button id="exportCSVBtn" class="w-full py-2.5 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
-                <button id="refreshNowBtn" class="w-full py-2.5 px-3 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm text-blue-700 dark:text-blue-400"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="exportCSVBtn" class="py-2.5 px-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs"><i data-lucide="download" class="w-3.5 h-3.5"></i> CSV</button>
+                    <button id="exportPDFBtn" class="py-2.5 px-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> PDF</button>
+                    <button id="exportJSONBtn" class="py-2.5 px-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs"><i data-lucide="code" class="w-3.5 h-3.5"></i> JSON</button>
+                    <button id="refreshNowBtn" class="py-2.5 px-2 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs text-blue-700 dark:text-blue-400"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh</button>
+                </div>
                 <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center"><span class="text-sm">Tema</span><button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button></div>
             </div>
         </div>
-        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v3.1</p></div>
+        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v4.0</p></div>
     </aside>
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
@@ -147,7 +161,7 @@
     <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-dark-bg">
         <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-dark-border glass-header sticky top-0 z-20 items-center justify-between">
             <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div></div>
-            <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div></div>
+            <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div><div class="text-xxs text-gray-400 hidden lg:block">⌨️ Ctrl+R | Ctrl+E | Ctrl+D | ←/→</div></div>
         </header>
         <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div>
 
@@ -178,6 +192,15 @@
                     <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-up-circle" class="w-3 h-3 text-orange-500"></i> WITHDRAW</p><h3 class="text-base lg:text-xl font-bold text-orange-500" id="sumWithdraw">$0.00</h3></div>
                     <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET CASH</p><h3 class="text-base lg:text-xl font-bold" id="sumNetCash">$0.00</h3></div>
                 </div>
+                
+                <!-- Advanced Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-1.5 lg:gap-3">
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Profit Factor</p><p class="font-bold text-sm lg:text-lg" id="profitFactor">0.00</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Expectancy</p><p class="font-bold text-sm lg:text-lg" id="expectancy">$0</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Max Drawdown</p><p class="font-bold text-sm lg:text-lg text-loss" id="maxDrawdown">0%</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Sharpe Ratio</p><p class="font-bold text-sm lg:text-lg" id="sharpeRatio">0.00</p></div>
+                </div>
+                
                 <div class="grid grid-cols-3 lg:grid-cols-6 gap-1.5 lg:gap-3">
                     <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Total Trades</p><p class="font-bold text-sm lg:text-lg" id="sumTotalTrades">0</p></div>
                     <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Win Rate</p><p class="font-bold text-sm lg:text-lg" id="sumWinRate">0%</p></div>
@@ -207,7 +230,7 @@
 
         <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
             <div class="flex items-center gap-2"><span class="hidden lg:inline">Trading Journal Pro — Real-time Dashboard</span><span class="lg:hidden text-tiny">TradeJournal Pro</span><span class="text-gray-300 dark:text-gray-600">|</span><span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span></div>
-            <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span></div>
+            <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span><span class="hidden lg:inline ml-2">⚡ Performance optimized</span></div>
         </footer>
     </main>
 
@@ -245,8 +268,193 @@
                 isFetching: false,
                 calendarProfitData: {},
                 dailyStartEquity: 0,
+                notificationEnabled: false,
             };
 
+            // ========== PERFORMANCE MONITORING ==========
+            const perfMonitor = {
+                marks: {},
+                start(label) { this.marks[label] = performance.now(); },
+                end(label) {
+                    if (this.marks[label]) {
+                        const duration = performance.now() - this.marks[label];
+                        if (duration > 100) {
+                            console.warn(`⚠️ Slow operation: ${label} took ${duration.toFixed(2)}ms`);
+                        }
+                        delete this.marks[label];
+                    }
+                }
+            };
+
+            // ========== ANALYTICS TRACKING ==========
+            function trackEvent(action, label) {
+                try {
+                    const events = JSON.parse(localStorage.getItem('analytics_events') || '[]');
+                    events.push({
+                        action, label, timestamp: new Date().toISOString(), date: state.selectedDateStr
+                    });
+                    localStorage.setItem('analytics_events', JSON.stringify(events.slice(-1000)));
+                } catch(e) {}
+            }
+
+            // ========== NOTIFICATION ==========
+            function requestNotificationPermission() {
+                if ('Notification' in window) {
+                    Notification.requestPermission().then(perm => {
+                        state.notificationEnabled = perm === 'granted';
+                        showToast(state.notificationEnabled ? 'Notifikasi diaktifkan' : 'Notifikasi ditolak', 'info');
+                        trackEvent('notification', state.notificationEnabled ? 'enabled' : 'denied');
+                    });
+                } else {
+                    showToast('Browser tidak support notifikasi', 'error');
+                }
+            }
+
+            function showNotification(message) {
+                if (state.notificationEnabled && document.hidden) {
+                    new Notification('Trading Journal Pro', { body: message, icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233b82f6"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>' });
+                }
+            }
+
+            function checkForAlerts(trades) {
+                if (!trades || trades.length < 3) return;
+                const lastThree = trades.slice(-3);
+                const consecutiveLosses = lastThree.every(t => t.result === 'LOSS');
+                const consecutiveWins = lastThree.every(t => t.result === 'WIN');
+                if (consecutiveLosses) {
+                    showNotification('⚠️ Alert: 3 consecutive losses! Consider taking a break.');
+                }
+                if (consecutiveWins) {
+                    showNotification('🔥 Hot streak! 3 consecutive wins.');
+                }
+            }
+
+            // ========== BACKUP & RESTORE ==========
+            function saveToLocalBackup(data) {
+                try {
+                    const backups = JSON.parse(localStorage.getItem('trading_backups') || '[]');
+                    backups.unshift({ date: state.selectedDateStr, data: data, timestamp: new Date().toISOString() });
+                    localStorage.setItem('trading_backups', JSON.stringify(backups.slice(0, 30)));
+                } catch(e) {}
+            }
+
+            function restoreFromBackup(dateStr) {
+                try {
+                    const backups = JSON.parse(localStorage.getItem('trading_backups') || '[]');
+                    const backup = backups.find(b => b.date === dateStr);
+                    if (backup && backup.data) {
+                        state.currentData = backup.data;
+                        fullUpdate(backup.data);
+                        showToast('Data restored from backup', 'success');
+                        trackEvent('restore', dateStr);
+                        return true;
+                    }
+                } catch(e) {}
+                return false;
+            }
+
+            // ========== VALIDATION ==========
+            function validateTradeData(trade) {
+                const required = ['id', 'symbol', 'profit', 'result', 'time'];
+                const missing = required.filter(field => !trade[field]);
+                if (missing.length) {
+                    console.warn(`Trade ${trade.id} missing fields:`, missing);
+                    return false;
+                }
+                if (typeof trade.profit !== 'number' || isNaN(trade.profit)) {
+                    console.warn(`Invalid profit value for trade ${trade.id}`);
+                    return false;
+                }
+                return true;
+            }
+
+            // ========== ADVANCED STATS ==========
+            function calculateAdvancedStats(trades, startEquity) {
+                if (!trades.length) return { profitFactor: 0, expectancy: 0, maxDrawdown: 0, sharpeRatio: 0 };
+                
+                let grossProfit = 0, grossLoss = 0;
+                const returns = [];
+                let equity = startEquity;
+                let peak = equity;
+                let maxDrawdown = 0;
+                
+                trades.forEach(t => {
+                    const profit = t.profit || 0;
+                    if (profit > 0) grossProfit += profit;
+                    else if (profit < 0) grossLoss += Math.abs(profit);
+                    
+                    equity += profit;
+                    returns.push(profit / Math.abs(startEquity || 1));
+                    if (equity > peak) peak = equity;
+                    const drawdown = (peak - equity) / peak;
+                    if (drawdown > maxDrawdown) maxDrawdown = drawdown;
+                });
+                
+                const profitFactor = grossLoss === 0 ? (grossProfit > 0 ? Infinity : 0) : grossProfit / grossLoss;
+                const expectancy = trades.reduce((sum, t) => sum + (t.profit || 0), 0) / trades.length;
+                const avgReturn = returns.reduce((a,b) => a + b, 0) / returns.length;
+                const variance = returns.reduce((sum, r) => sum + Math.pow(r - avgReturn, 2), 0) / returns.length;
+                const sharpeRatio = Math.sqrt(252) * (avgReturn / Math.sqrt(variance || 1));
+                
+                return { profitFactor, expectancy, maxDrawdown: maxDrawdown * 100, sharpeRatio };
+            }
+
+            // ========== EXPORT FUNCTIONS ==========
+            async function exportToPDF() {
+                const element = document.getElementById('dataContent');
+                if (!element) return;
+                trackEvent('export', 'PDF');
+                showToast('Menyiapkan PDF...', 'info');
+                try {
+                    const opt = {
+                        margin: [0.5, 0.5, 0.5, 0.5],
+                        filename: `trading_journal_${state.selectedDateStr}.pdf`,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+                    };
+                    await html2pdf().set(opt).from(element).save();
+                    showToast('PDF berhasil diexport', 'success');
+                } catch(e) {
+                    showToast('Gagal export PDF', 'error');
+                }
+            }
+
+            function exportToJSON() {
+                const exportData = {
+                    date: state.selectedDateStr,
+                    data: state.currentData,
+                    exportDate: new Date().toISOString(),
+                    version: '4.0'
+                };
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `trading_data_${state.selectedDateStr}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                trackEvent('export', 'JSON');
+                showToast('JSON berhasil diexport', 'success');
+            }
+
+            function exportCSV() {
+                if (!state.filteredTrades.length) return showToast('Tidak ada data', 'error');
+                let csv = 'ID,Time,Symbol,Type,Lot,Entry,Exit,Profit,Status,Percentage\n';
+                state.filteredTrades.forEach(t => {
+                    const pct = ((t.profit || 0) / (state.dailyStartEquity || 1) * 100).toFixed(2);
+                    csv += `${t.id},${t.time},${t.symbol},${t.type},${t.lot},${t.entry_price},${t.exit_price},${t.profit},${t.result},${pct}%\n`;
+                });
+                const blob = new Blob([csv], {type: 'text/csv'});
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `trades_${state.selectedDateStr}.csv`;
+                a.click();
+                trackEvent('export', 'CSV');
+                showToast(`Diexport ${state.filteredTrades.length} trades`, 'success');
+            }
+
+            // ========== CORE FUNCTIONS ==========
             const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(val);
             const formatShortCurrency = (val) => { if (Math.abs(val) >= 1000) return '$' + (val / 1000).toFixed(1) + 'k'; return formatCurrency(val); };
             const formatDisplayDate = (dateStr) => { try { return new Date(dateStr + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); } catch (e) { return dateStr; } };
@@ -264,6 +472,7 @@
             }
 
             async function fetchDailyData(dateString) {
+                perfMonitor.start('fetchDailyData');
                 const url = `${CONFIG.DATA_BASE_URL}${dateString}.json`;
                 try {
                     const r = await fetch(url, { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
@@ -272,8 +481,9 @@
                     if (data.account_summary?.trading_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.trading_profit;
                     else if (data.account_summary?.net_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.net_profit;
                     if (data.trades) data.trades = data.trades.map(t => ({ ...t, profit: t.profit_loss || t.profit || 0, result: (t.status || t.result || 'UNKNOWN').toUpperCase() }));
+                    perfMonitor.end('fetchDailyData');
                     return data;
-                } catch (e) { return null; }
+                } catch (e) { perfMonitor.end('fetchDailyData'); return null; }
             }
 
             async function preloadCalendarData(year, month) {
@@ -290,16 +500,8 @@
                 if (promises.length > 0) await Promise.allSettled(promises);
             }
 
-            async function showCalendarLoading() {
-                const overlay = document.getElementById('calendarLoadingOverlay');
-                overlay.classList.remove('hidden');
-                await new Promise(r => setTimeout(r, 50));
-            }
-
-            async function hideCalendarLoading() {
-                const overlay = document.getElementById('calendarLoadingOverlay');
-                overlay.classList.add('hidden');
-            }
+            async function showCalendarLoading() { const overlay = document.getElementById('calendarLoadingOverlay'); overlay.classList.remove('hidden'); await new Promise(r => setTimeout(r, 50)); }
+            async function hideCalendarLoading() { const overlay = document.getElementById('calendarLoadingOverlay'); overlay.classList.add('hidden'); }
 
             function startAutoRefresh() {
                 if (state.refreshIntervalId) clearInterval(state.refreshIntervalId);
@@ -316,14 +518,15 @@
 
             function toggleAutoRefresh() {
                 state.autoRefreshEnabled = !state.autoRefreshEnabled; const knob = document.getElementById('autoRefreshKnob'), toggle = document.getElementById('autoRefreshToggle');
-                if (state.autoRefreshEnabled) { toggle.classList.remove('bg-gray-300','dark:bg-gray-600'); toggle.classList.add('bg-profit'); knob.classList.add('translate-x-5'); document.getElementById('countdownDisplay').classList.remove('hidden'); startAutoRefresh(); showToast('Auto-refresh ON (30s)', 'info'); }
-                else { toggle.classList.add('bg-gray-300','dark:bg-gray-600'); toggle.classList.remove('bg-profit'); knob.classList.remove('translate-x-5'); document.getElementById('countdownDisplay').classList.add('hidden'); stopAutoRefresh(); showToast('Auto-refresh OFF', 'info'); }
+                if (state.autoRefreshEnabled) { toggle.classList.remove('bg-gray-300','dark:bg-gray-600'); toggle.classList.add('bg-profit'); knob.classList.add('translate-x-5'); document.getElementById('countdownDisplay').classList.remove('hidden'); startAutoRefresh(); showToast('Auto-refresh ON (30s)', 'info'); trackEvent('autorefresh', 'on'); }
+                else { toggle.classList.add('bg-gray-300','dark:bg-gray-600'); toggle.classList.remove('bg-profit'); knob.classList.remove('translate-x-5'); document.getElementById('countdownDisplay').classList.add('hidden'); stopAutoRefresh(); showToast('Auto-refresh OFF', 'info'); trackEvent('autorefresh', 'off'); }
             }
 
             function updateLiveIndicator(active) { const m = active && state.autoRefreshEnabled ? 'remove' : 'add'; document.getElementById('mobileLiveIndicator')?.classList[m]('hidden'); document.getElementById('desktopLiveIndicator')?.classList[m]('hidden'); }
             function updateCountdownDisplay() { const d = document.getElementById('countdownDisplay'); if (state.autoRefreshEnabled) { d.classList.remove('hidden'); d.textContent = `Refresh dalam ${state.countdownValue}s...`; } }
 
             async function refreshCurrentDate(silent = false) {
+                perfMonitor.start('refreshCurrentDate');
                 if (state.isFetching) return; state.isFetching = true;
                 if (!silent) { document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden'); }
                 try {
@@ -331,17 +534,22 @@
                     const prevData = state.currentData; state.currentData = data;
                     if (!silent) document.getElementById('loadingState').classList.add('hidden');
                     if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
-                        document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
-                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
+                        const restored = restoreFromBackup(state.selectedDateStr);
+                        if (!restored) {
+                            document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
+                            document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
+                        }
                     } else {
                         state.dailyStartEquity = data.account_summary?.starting_balance || 0;
+                        saveToLocalBackup(data);
                         if (document.getElementById('dataContent').classList.contains('hidden')) {
                             document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data);
                         } else incrementalUpdate(data, prevData);
+                        checkForAlerts(data.trades);
                     }
                     document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`; document.getElementById('lastUpdatedTime').classList.remove('hidden'); renderCalendar();
                 } catch (e) { if (!silent) { document.getElementById('loadingState').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden'); document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); } }
-                finally { state.isFetching = false; }
+                finally { state.isFetching = false; perfMonitor.end('refreshCurrentDate'); }
             }
 
             async function silentRefresh() {
@@ -394,6 +602,14 @@
                 document.getElementById('statAvgLoss').textContent = formatShortCurrency(st.average_loss||0);
                 document.getElementById('sumBalance').textContent = formatShortCurrency(s.ending_balance||s.balance||0);
                 document.getElementById('sumStartEquity').textContent = formatShortCurrency(state.dailyStartEquity);
+                
+                // Advanced Stats
+                const advanced = calculateAdvancedStats(trades, state.dailyStartEquity);
+                document.getElementById('profitFactor').textContent = advanced.profitFactor === Infinity ? '∞' : advanced.profitFactor.toFixed(2);
+                document.getElementById('expectancy').textContent = formatShortCurrency(advanced.expectancy);
+                document.getElementById('maxDrawdown').textContent = advanced.maxDrawdown.toFixed(2) + '%';
+                document.getElementById('sharpeRatio').textContent = advanced.sharpeRatio.toFixed(2);
+                
                 const notes = data.notes || {}; document.getElementById('noteDaily').textContent = notes.daily_summary||'-'; document.getElementById('notePsych').textContent = notes.psychology||'-'; document.getElementById('noteStrategy').textContent = notes.strategy||'-';
                 document.getElementById('notesSection').classList.toggle('hidden', !(notes.daily_summary||notes.psychology||notes.strategy));
             }
@@ -403,6 +619,7 @@
                 if (state.filteredTrades.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="px-4 py-8 text-center text-gray-400 text-sm">Tidak ada trade.</td></tr>'; mobile.innerHTML = '<div class="p-8 text-center text-gray-400 text-sm">Tidak ada trade.</div>'; return; }
                 const startEq = state.dailyStartEquity || 1;
                 state.filteredTrades.forEach(t => {
+                    if (!validateTradeData(t)) return;
                     const isWin = t.result === 'WIN', isLoss = t.result === 'LOSS';
                     const pnlColor = isWin ? 'text-profit' : (isLoss ? 'text-loss' : 'text-bep');
                     const statusBadge = isWin ? 'bg-profit/10 text-profit border border-profit/20' : (isLoss ? 'bg-loss/10 text-loss border border-loss/20' : 'bg-bep/10 text-bep border border-bep/20');
@@ -485,13 +702,14 @@
                 document.getElementById('modalSwap').textContent=formatCurrency(trade.swap||0); document.getElementById('modalCommission').textContent=formatCurrency(trade.commission||0);
                 document.getElementById('modalSession').textContent=trade.session||'-'; document.getElementById('modalMarket').textContent=trade.market_type||'-'; document.getElementById('modalSource').textContent=trade.source||'-';
                 const modal=document.getElementById('tradeModal'),inner=modal.querySelector('div:nth-child(2)'); modal.classList.remove('hidden'); void modal.offsetWidth; modal.classList.remove('opacity-0'); inner.classList.remove('translate-y-full','md:translate-y-4'); inner.classList.add('translate-y-0'); window._currentModalTrade=trade;
+                trackEvent('view_trade', trade.id);
             }
 
             function closeTradeModal() { const modal=document.getElementById('tradeModal'),inner=modal.querySelector('div:nth-child(2)'); modal.classList.add('opacity-0'); inner.classList.remove('translate-y-0'); inner.classList.add('translate-y-full','md:translate-y-4'); setTimeout(()=>modal.classList.add('hidden'),300); }
             function copyTradeId() { if(window._currentModalTrade) navigator.clipboard.writeText(window._currentModalTrade.id).then(()=>showToast('Trade ID disalin','success')); }
-            function exportTradeDetail() { const trade=window._currentModalTrade; if(!trade)return; const t=`Trade ID: ${trade.id}\nTime: ${trade.time}\nSymbol: ${trade.symbol}\nType: ${trade.type}\nLot: ${trade.lot}\nEntry: ${trade.entry_price}\nExit: ${trade.exit_price}\nProfit: ${trade.profit}\nStatus: ${trade.result}`; const b=new Blob([t],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trade_${trade.id}.txt`; a.click(); showToast('Trade diexport','success'); }
-            function exportCSV() { if(!state.filteredTrades.length)return showToast('Tidak ada data','error'); let csv='ID,Time,Symbol,Type,Lot,Entry,Exit,Profit,Status,Percentage\n'; state.filteredTrades.forEach(t=>{const pct=((t.profit||0)/(state.dailyStartEquity||1)*100).toFixed(2); csv+=`${t.id},${t.time},${t.symbol},${t.type},${t.lot},${t.entry_price},${t.exit_price},${t.profit},${t.result},${pct}%\n`;}); const b=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trades_${state.selectedDateStr}.csv`; a.click(); showToast(`Diexport ${state.filteredTrades.length} trades`,'success'); }
-            function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.theme=document.documentElement.classList.contains('dark')?'dark':'light'; setTimeout(()=>{lucide.createIcons();if(state.currentData)renderCharts(true);},150); }
+            function exportTradeDetail() { const trade=window._currentModalTrade; if(!trade)return; const t=`Trade ID: ${trade.id}\nTime: ${trade.time}\nSymbol: ${trade.symbol}\nType: ${trade.type}\nLot: ${trade.lot}\nEntry: ${trade.entry_price}\nExit: ${trade.exit_price}\nProfit: ${trade.profit}\nStatus: ${trade.result}`; const b=new Blob([t],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trade_${trade.id}.txt`; a.click(); showToast('Trade diexport','success'); trackEvent('export_trade', trade.id); }
+
+            function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.theme=document.documentElement.classList.contains('dark')?'dark':'light'; setTimeout(()=>{lucide.createIcons();if(state.currentData)renderCharts(true);},150); trackEvent('theme', localStorage.theme); }
             function toggleMobileMenu(force) { const s=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay'); const t=force!==undefined?force:s.classList.contains('-translate-x-full'); if(t){s.classList.remove('-translate-x-full');o.classList.remove('hidden');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');} }
             function jumpToPreviousTradingDay() { const d=new Date(state.currentDate); d.setDate(d.getDate()-1); selectDate(getDateStr(d)); }
 
@@ -505,6 +723,7 @@
                 await refreshCurrentDate();
                 await hideCalendarLoading();
                 if (window.innerWidth < 1024) toggleMobileMenu(false);
+                trackEvent('select_date', dateStr);
             }
 
             async function navigateToMonth(year, month) {
@@ -525,11 +744,9 @@
                 document.getElementById('yearSelect').value = y;
                 grid.innerHTML = '';
                 const firstDayOfMonth = new Date(y, m, 1);
-                // FIX: getDay() returns 0=Sunday, 1=Monday, ..., 6=Saturday
-                // Header grid dimulai dari Minggu (Min), jadi offset = firstDayOfMonth.getDay()
+                // FIXED: offset langsung menggunakan getDay() karena header dimulai dari Minggu (index 0)
                 const offset = firstDayOfMonth.getDay();
                 const daysInMonth = new Date(y, m + 1, 0).getDate();
-                // Fill empty cells before first day of month
                 for (let i = 0; i < offset; i++) {
                     grid.innerHTML += '<div class="opacity-30"></div>';
                 }
@@ -556,6 +773,34 @@
 
             function hideSplash() { const s=document.getElementById('splashScreen'); s.classList.add('hidden-splash'); setTimeout(()=>{s.style.display='none';},500); }
 
+            // Keyboard Shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    refreshCurrentDate();
+                    showToast('Manual refresh triggered', 'info');
+                    trackEvent('shortcut', 'refresh');
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                    e.preventDefault();
+                    exportCSV();
+                    trackEvent('shortcut', 'export');
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                    e.preventDefault();
+                    selectDate(getTodayStr());
+                    trackEvent('shortcut', 'today');
+                }
+                if (e.key === 'ArrowLeft' && !e.target.matches('input, select, textarea')) {
+                    document.getElementById('prevMonth').click();
+                }
+                if (e.key === 'ArrowRight' && !e.target.matches('input, select, textarea')) {
+                    document.getElementById('nextMonth').click();
+                }
+                if (e.key === 'Escape') closeTradeModal();
+            });
+
+            // Event Listeners
             document.getElementById('prevMonth').onclick = async () => { const d = new Date(state.currentDate); d.setMonth(d.getMonth()-1); await navigateToMonth(d.getFullYear(), d.getMonth()); };
             document.getElementById('nextMonth').onclick = async () => { const d = new Date(state.currentDate); d.setMonth(d.getMonth()+1); await navigateToMonth(d.getFullYear(), d.getMonth()); };
             document.getElementById('monthSelect').onchange = async function() { await navigateToMonth(state.currentDate.getFullYear(), +this.value); };
@@ -564,6 +809,9 @@
             document.getElementById('autoRefreshToggle').onclick = toggleAutoRefresh;
             document.getElementById('refreshNowBtn').onclick = () => refreshCurrentDate();
             document.getElementById('exportCSVBtn').onclick = exportCSV;
+            document.getElementById('exportPDFBtn').onclick = exportToPDF;
+            document.getElementById('exportJSONBtn').onclick = exportToJSON;
+            document.getElementById('requestNotificationBtn').onclick = requestNotificationPermission;
             document.getElementById('closeModalBtn').onclick = closeTradeModal;
             document.getElementById('tradeModalBackdrop').onclick = closeTradeModal;
             document.getElementById('searchTrade').oninput = applyFilters;
@@ -576,9 +824,9 @@
             document.getElementById('sidebarOverlay').onclick = () => toggleMobileMenu(false);
             document.getElementById('copyTradeIdBtn').onclick = copyTradeId;
             document.getElementById('exportTradeBtn').onclick = exportTradeDetail;
+            
             window.selectDate = selectDate; window.openTradeModal = openTradeModal; window.refreshCurrentDate = refreshCurrentDate; window.getTodayStr = getTodayStr; window.jumpToPreviousTradingDay = jumpToPreviousTradingDay;
             window.addEventListener('resize', () => { if (state.currentData) renderCharts(true); });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTradeModal(); });
 
             async function init() {
                 document.getElementById('footerYear').textContent = new Date().getFullYear();
@@ -597,7 +845,13 @@
                 await hideCalendarLoading();
                 startAutoRefresh();
                 setTimeout(hideSplash, 800);
+                
+                // Register service worker for offline support
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js').catch(console.log);
+                }
             }
+            
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
             window.addEventListener('beforeunload', stopAutoRefresh);
         })();
