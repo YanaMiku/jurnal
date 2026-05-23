@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Trading Journal Pro · Dashboard</title>
-    <meta name="description" content="Trading Journal Pro — Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan. Dirancang oleh YanaMiku.">
-    <meta name="keywords" content="trading journal, jurnal trading, forex journal, gold trading, xauusd, equity curve, continuous equity">
+    <meta name="description" content="Trading Journal Pro — Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan.">
+    <meta name="keywords" content="trading journal, jurnal trading, forex journal, gold trading, xauusd, equity curve">
     <meta name="author" content="YanaMiku">
     <meta name="theme-color" content="#0B0F19">
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Trading Journal Pro">
-    <meta property="og:description" content="Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan.">
+    <meta property="og:description" content="Dashboard performa trading harian real-time.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="id_ID">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,8 +81,10 @@
         @media (max-width: 640px) { .chart-mobile { height: 170px !important; } }
         #splashScreen { transition: opacity 0.45s, visibility 0.45s; }
         #splashScreen.hidden-splash { opacity: 0; visibility: hidden; pointer-events: none; }
-        #calendarLoadingOverlay { transition: opacity 0.3s; }
-        #calendarLoadingOverlay.hidden { opacity: 0; pointer-events: none; }
+        .loader-dot { width: 8px; height: 8px; border-radius: 50%; background: #3B82F6; animation: dotPulse 1.4s infinite ease-in-out both; }
+        .loader-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loader-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes dotPulse { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden">
@@ -94,17 +96,16 @@
                 <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-profit border-2 border-white dark:border-dark-bg flex items-center justify-center"><div class="w-2 h-2 rounded-full bg-white live-indicator"></div></div>
             </div>
             <div class="text-center"><h2 class="text-lg font-bold tracking-tight">Trading Journal Pro</h2><p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Dashboard performa harian</p></div>
-            <div class="flex gap-1 mt-2"><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0s"></div><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.15s"></div><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.3s"></div></div>
+            <div class="flex gap-1.5 mt-2"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
             <p class="text-xxs text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
         </div>
     </div>
 
-    <!-- Calendar Loading Overlay -->
-    <div id="calendarLoadingOverlay" class="fixed inset-0 z-[998] flex items-center justify-center bg-white/60 dark:bg-dark-bg/60 backdrop-blur-sm hidden">
+    <!-- Loading Overlay untuk navigasi kalender -->
+    <div id="calendarLoadingOverlay" class="fixed inset-0 z-[998] flex items-center justify-center bg-white/70 dark:bg-dark-bg/70 backdrop-blur-sm hidden transition-opacity duration-300">
         <div class="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3 animate-fade-in">
             <div class="w-10 h-10 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
-            <p class="text-sm font-medium">Memuat data kalender...</p>
-            <p class="text-xxs text-gray-400" id="calendarProgress">0%</p>
+            <p class="text-sm font-medium">Memuat data...</p>
         </div>
     </div>
 
@@ -128,7 +129,7 @@
                     <select id="yearSelect" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none flex-1"></select>
                     <button id="jumpTodayBtn" class="px-2 py-1 bg-blue-100 dark:bg-blue-900/25 text-blue-700 dark:text-blue-400 rounded-lg text-tiny font-medium hover:bg-blue-200 dark:hover:bg-blue-900/45 transition">Today</button>
                 </div>
-                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
+                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium"><div>Ming</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
                 <div id="calendarGrid" class="grid grid-cols-7 gap-0.5 text-tiny"></div>
                 <div class="flex items-center justify-center gap-3 mt-3 text-tiny text-gray-400 dark:text-gray-500"><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-profit"></div>Win</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-loss"></div>Loss</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-bep"></div>BEP</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-neutral"></div>-</div></div>
             </div>
@@ -143,7 +144,7 @@
                 <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center"><span class="text-sm">Tema</span><button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button></div>
             </div>
         </div>
-        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v2.2</p></div>
+        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v3.0</p></div>
     </aside>
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
@@ -232,12 +233,25 @@
 
     <script>
         (function() {
-            const CONFIG = { DATA_BASE_PATH: './database/json/', AUTO_REFRESH_INTERVAL: 30000, MAX_HISTORY_DAYS: 90 };
+            const CONFIG = {
+                DATA_BASE_URL: 'https://raw.githubusercontent.com/YanaMiku/jurnal/refs/heads/main/database/json/',
+                AUTO_REFRESH_INTERVAL: 30000,
+                MAX_HISTORY_DAYS: 90
+            };
             const state = {
-                currentDate: new Date(), selectedDateStr: '', currentData: null, filteredTrades: [],
-                charts: { equity: null, result: null }, autoRefreshEnabled: true, refreshIntervalId: null,
-                countdownIntervalId: null, countdownValue: 30, isFetching: false, calendarProfitData: {},
-                dailyStartEquity: 0, continuousEquityCache: null, calendarReady: false
+                currentDate: new Date(),
+                selectedDateStr: '',
+                currentData: null,
+                filteredTrades: [],
+                charts: { equity: null, result: null },
+                autoRefreshEnabled: true,
+                refreshIntervalId: null,
+                countdownIntervalId: null,
+                countdownValue: 30,
+                isFetching: false,
+                calendarProfitData: {},
+                dailyStartEquity: 0,
+                continuousEquityCache: null
             };
 
             const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(val);
@@ -258,8 +272,16 @@
             }
 
             async function fetchDailyData(dateString) {
-                const url = `${CONFIG.DATA_BASE_PATH}${dateString}.json`;
-                try { const r = await fetch(url, { headers: { 'Accept': 'application/json' }, cache: 'no-store' }); if (!r.ok) return null; const data = await r.json(); if (data.account_summary?.trading_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.trading_profit; else if (data.account_summary?.net_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.net_profit; if (data.trades) data.trades = data.trades.map(t => ({ ...t, profit: t.profit_loss || t.profit || 0, result: (t.status || t.result || 'UNKNOWN').toUpperCase() })); return data; } catch (e) { return null; }
+                const url = `${CONFIG.DATA_BASE_URL}${dateString}.json`;
+                try {
+                    const r = await fetch(url, { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
+                    if (!r.ok) return null;
+                    const data = await r.json();
+                    if (data.account_summary?.trading_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.trading_profit;
+                    else if (data.account_summary?.net_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.net_profit;
+                    if (data.trades) data.trades = data.trades.map(t => ({ ...t, profit: t.profit_loss || t.profit || 0, result: (t.status || t.result || 'UNKNOWN').toUpperCase() }));
+                    return data;
+                } catch (e) { return null; }
             }
 
             async function preloadCalendarData(year, month) {
@@ -271,21 +293,9 @@
                     const ds = getDateStr(dateObj);
                     if (ds > todayStr) continue;
                     if (state.calendarProfitData[ds] !== undefined) continue;
-                    promises.push((async () => {
-                        await fetchDailyData(ds);
-                        return ds;
-                    })());
+                    promises.push(fetchDailyData(ds));
                 }
-                if (promises.length === 0) return;
-                const total = promises.length;
-                let completed = 0;
-                const progressEl = document.getElementById('calendarProgress');
-                const updateProgress = () => {
-                    completed++;
-                    if (progressEl) progressEl.textContent = `${Math.round(completed/total*100)}%`;
-                };
-                const trackedPromises = promises.map(p => p.then(res => { updateProgress(); return res; }));
-                await Promise.allSettled(trackedPromises);
+                if (promises.length > 0) await Promise.allSettled(promises);
             }
 
             async function showCalendarLoading() {
@@ -297,13 +307,10 @@
             async function hideCalendarLoading() {
                 const overlay = document.getElementById('calendarLoadingOverlay');
                 overlay.classList.add('hidden');
-                await new Promise(r => setTimeout(r, 300));
             }
 
             async function calculateContinuousEquity(targetDateStr) {
-                if (state.continuousEquityCache && state.continuousEquityCache.target === targetDateStr) {
-                    return state.continuousEquityCache;
-                }
+                if (state.continuousEquityCache && state.continuousEquityCache.target === targetDateStr) return state.continuousEquityCache;
                 let cursor = targetDateStr;
                 let equity = 0;
                 let foundStart = false;
@@ -539,12 +546,16 @@
             function jumpToPreviousTradingDay() { const d=new Date(state.currentDate); d.setDate(d.getDate()-1); selectDate(getDateStr(d)); }
 
             async function selectDate(dateStr) {
-                if (state.isFetching) return; state.selectedDateStr = dateStr; const [y,m,d] = dateStr.split('-'); state.currentDate = new Date(+y,+m-1,+d);
+                if (state.isFetching) return;
+                await showCalendarLoading();
+                state.selectedDateStr = dateStr; const [y,m,d] = dateStr.split('-'); state.currentDate = new Date(+y,+m-1,+d);
                 state.continuousEquityCache = null;
                 renderCalendar(); document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(dateStr);
                 document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden');
                 document.getElementById('searchTrade').value = ''; document.getElementById('filterType').value = 'all'; document.getElementById('filterResult').value = 'all';
-                await refreshCurrentDate(); if (window.innerWidth < 1024) toggleMobileMenu(false);
+                await refreshCurrentDate();
+                await hideCalendarLoading();
+                if (window.innerWidth < 1024) toggleMobileMenu(false);
             }
 
             async function navigateToMonth(year, month) {
@@ -627,10 +638,10 @@
                 const currentMonth = state.currentDate.getMonth();
                 await showCalendarLoading();
                 await preloadCalendarData(currentYear, currentMonth);
-                await hideCalendarLoading();
                 renderCalendar();
                 document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(state.selectedDateStr);
                 await refreshCurrentDate();
+                await hideCalendarLoading();
                 startAutoRefresh();
                 setTimeout(hideSplash, 800);
             }
