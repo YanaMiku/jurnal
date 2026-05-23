@@ -2,463 +2,217 @@
 <html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Dashboard Jurnal Trading | YanaMiku</title>
-    <meta name="description" content="Dashboard Jurnal Trading Premium YanaMiku. Analisis realtime, statistik lengkap, kurva ekuitas, dan manajemen risiko profesional.">
-    <meta name="keywords" content="Jurnal Trading, Trading Dashboard, Forex, XAUUSD, YanaMiku, Trading Analytics, MQL5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Trading Journal Pro · Dashboard</title>
+    <meta name="description" content="Trading Journal Pro — Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan. Dirancang oleh YanaMiku.">
+    <meta name="keywords" content="trading journal, jurnal trading, forex journal, gold trading, xauusd, equity curve, continuous equity">
     <meta name="author" content="YanaMiku">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#0B0F19">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:title" content="Trading Journal Pro">
+    <meta property="og:description" content="Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="YanaMiku Trading">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yanamiku.github.io/jurnal/">
-    <meta property="og:title" content="Dashboard Jurnal Trading | YanaMiku">
-    <meta property="og:description" content="Analisis trading harian dengan visualisasi data interaktif dan realtime.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/YanaMiku/jurnal/main/assets/preview.png">
-    
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yanamiku.github.io/jurnal/">
-    <meta property="twitter:title" content="Dashboard Jurnal Trading | YanaMiku">
-    <meta property="twitter:description" content="Analisis trading harian dengan visualisasi data interaktif dan realtime.">
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
-    
+    <meta name="apple-mobile-web-app-title" content="TradeJournal">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2'><polyline points='22 7 13.5 15.5 8.5 10.5 2 17'/><polyline points='16 7 22 7 22 13'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontSize: { 'xxs': '0.625rem', 'tiny': '0.7rem' },
                     colors: {
-                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' },
-                        dark: { bg: '#0b0f19', card: '#111827', border: '#1f2937' },
-                        profit: '#10b981', loss: '#ef4444'
-                    }
-                }
-            }
-        }
+                        dark: { bg: '#0B0F19', surface: '#111827', border: '#1F2937', card: '#0F172A' },
+                        profit: '#10B981', loss: '#EF4444', neutral: '#6B7280', bep: '#F59E0B', accent: '#3B82F6',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out', 'slide-up': 'slideUp 0.35s ease-out',
+                        'pulse-soft': 'pulseSoft 2s infinite', 'shimmer': 'shimmer 2s infinite', 'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(6px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(16px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.4' } },
+                        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+                        float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-6px)' } },
+                    },
+                },
+            },
+        };
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js">
+    </script>
+    <script src="https://unpkg.com/lucide@latest">
+    </script>
     <style>
-        :root {
-            --bg-color: #f8fafc;
-            --text-color: #0f172a;
-        }
-        .dark {
-            --bg-color: #0b0f19;
-            --text-color: #f8fafc;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            overflow-x: hidden;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        * { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body { background-color: #f3f4f6; color: #111827; transition: background-color 0.35s, color 0.35s; overscroll-behavior: none; }
+        .dark body { background-color: #0B0F19; color: #F9FAFB; }
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-        
-        /* Glassmorphism & Animations */
-        .glass-panel {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(31, 41, 55, 0.8);
-        }
-        .light .glass-panel {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        .slide-up { animation: slideUp 0.5s ease-out forwards; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .skeleton {
-            background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
-            background-size: 200% 100%;
-            animation: pulseBg 1.5s infinite;
-        }
-        .light .skeleton {
-            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
-            background-size: 200% 100%;
-        }
-        @keyframes pulseBg {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Calendar Grid */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; position: relative;}
-        .cal-day:hover { background: rgba(59, 130, 246, 0.2); }
-        .cal-day.active { background: #3b82f6; color: white; font-weight: bold; }
-        .cal-day.disabled { opacity: 0.3; cursor: not-allowed; }
-        .dot { width: 4px; height: 4px; border-radius: 50%; position: absolute; bottom: 4px; }
-        .dot.profit { background: #10b981; }
-        .dot.loss { background: #ef4444; }
-        
-        /* Modal Overlay */
-        .modal-overlay {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content {
-            transform: scale(0.95) translateY(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .modal-overlay.show .modal-content { transform: scale(1) translateY(0); }
-
-        /* Toast */
-        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 10px; }
-        .toast { transform: translateX(100%); opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-        .toast.show { transform: translateX(0); opacity: 1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #374151; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .glass-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(255,255,255,0.72); }
+        .dark .glass-header { background: rgba(17,24,39,0.78); }
+        .card-premium { transition: all 0.2s ease; border: 1px solid transparent; }
+        .card-premium:hover { border-color: rgba(59,130,246,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+        .dark .card-premium:hover { border-color: rgba(59,130,246,0.12); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .live-indicator { animation: pulseLive 1.8s infinite; }
+        @keyframes pulseLive { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .chart-container { touch-action: pan-x pan-y pinch-zoom; position: relative; width: 100%; }
+        .chart-container canvas { touch-action: pan-x pan-y pinch-zoom; }
+        #toast-container { position: fixed; bottom: 20px; right: 16px; z-index: 200; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { padding: 10px 16px; border-radius: 10px; font-weight: 500; font-size: 0.75rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); transform: translateX(130%); transition: transform 0.3s cubic-bezier(0.22,0.61,0.36,1); max-width: 300px; pointer-events: auto; }
+        .toast.show { transform: translateX(0); }
+        .toast-success { background: #10B981; color: #fff; } .toast-error { background: #EF4444; color: #fff; } .toast-info { background: #3B82F6; color: #fff; }
+        @media (max-width: 640px) { .chart-mobile { height: 170px !important; } }
+        #splashScreen { transition: opacity 0.45s, visibility 0.45s; }
+        #splashScreen.hidden-splash { opacity: 0; visibility: hidden; pointer-events: none; }
     </style>
 </head>
-<body class="antialiased font-sans text-sm selection:bg-brand-500 selection:text-white pb-20 md:pb-0">
+<body class="antialiased flex h-screen overflow-hidden">
 
-    <nav class="sticky top-0 z-40 glass-panel border-b border-dark-border shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white font-bold shadow-lg">
-                        Y
-                    </div>
-                    <span class="font-bold text-lg hidden sm:block tracking-wide">YanaMiku</span>
-                </div>
-                
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="flex items-center bg-dark-card rounded-lg p-1 border border-dark-border shadow-inner">
-                        <button onclick="changeDate(-1)" class="p-1.5 rounded hover:bg-gray-700/50 text-gray-400 hover:text-white transition tooltip" title="Hari Sebelumnya (Kiri)">
-                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
-                        </button>
-                        <button onclick="toggleCalendar()" id="current-date-btn" class="px-3 py-1.5 font-medium hover:bg-gray-700/50 rounded transition flex items-center gap-2">
-                            <i data-lucide="calendar" class="w-4 h-4 text-brand-500"></i>
-                            <span id="display-date">Memuat...</span>
-                        </button>
-                        <button onclick="changeDate(1)" id="next-date-btn" class="p-1.5 rounded hover:bg-gray-700/50 text-gray-400 hover:text-white transition tooltip" title="Hari Berikutnya (Kanan)">
-                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="w-px h-6 bg-dark-border mx-1"></div>
-                    
-                    <button onclick="fetchData(currentDateStr, false)" class="p-2 rounded-lg hover:bg-dark-border transition" title="Refresh (R)">
-                        <i data-lucide="refresh-cw" class="w-5 h-5 text-gray-400" id="refresh-icon"></i>
-                    </button>
-                    <button onclick="exportData()" class="p-2 rounded-lg hover:bg-dark-border transition hidden sm:block" title="Export CSV">
-                        <i data-lucide="download" class="w-5 h-5 text-gray-400"></i>
-                    </button>
-                    <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-dark-border transition" title="Toggle Tema (T)">
-                        <i data-lucide="moon" class="w-5 h-5 text-gray-400" id="theme-icon"></i>
-                    </button>
-                </div>
+    <div id="splashScreen" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-white dark:bg-dark-bg transition-all duration-500">
+        <div class="flex flex-col items-center gap-4 animate-fade-in">
+            <div class="relative">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/25"><i data-lucide="line-chart" class="w-7 h-7 text-white"></i></div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-profit border-2 border-white dark:border-dark-bg flex items-center justify-center"><div class="w-2 h-2 rounded-full bg-white live-indicator"></div></div>
             </div>
-        </div>
-        <div class="h-0.5 w-full bg-dark-border overflow-hidden">
-            <div id="polling-bar" class="h-full bg-brand-500 w-0 transition-all duration-1000 ease-linear"></div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        
-        <div id="loading-state" class="hidden space-y-6 slide-up">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="h-24 rounded-xl skeleton"></div>
-                <div class="h-24 rounded-xl skeleton"></div>
-                <div class="h-24 rounded-xl skeleton"></div>
-                <div class="h-24 rounded-xl skeleton"></div>
-                <div class="h-24 rounded-xl skeleton"></div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 h-80 rounded-xl skeleton"></div>
-                <div class="h-80 rounded-xl skeleton"></div>
-            </div>
-            <div class="h-64 rounded-xl skeleton"></div>
-        </div>
-
-        <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center slide-up">
-            <div class="w-48 h-48 mb-6 relative">
-                <div class="absolute inset-0 bg-brand-500/20 blur-3xl rounded-full"></div>
-                <svg class="w-full h-full text-gray-600 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-            </div>
-            <h2 class="text-2xl font-bold mb-2 text-gray-100" id="empty-title">Tidak Ada Data Trading</h2>
-            <p class="text-gray-400 max-w-md mb-8" id="empty-desc">Belum ada jurnal yang tercatat untuk tanggal ini. Libur trading atau data belum diunggah.</p>
-            <div class="flex gap-4">
-                <button onclick="changeDate(-1)" class="px-6 py-2.5 rounded-lg bg-dark-card border border-dark-border hover:border-gray-500 transition shadow-sm font-medium">
-                    Hari Sebelumnya
-                </button>
-                <button onclick="toggleCalendar()" class="px-6 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition shadow-lg shadow-brand-500/25 font-medium flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Buka Kalender
-                </button>
-            </div>
-        </div>
-
-        <div id="dashboard-content" class="hidden space-y-6">
-            
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 fade-in">
-                <div>
-                    <h1 class="text-2xl font-bold" id="greeting">Ringkasan Harian</h1>
-                    <p class="text-gray-400 text-sm mt-1" id="auto-insight">Menganalisis performa...</p>
-                </div>
-                <div class="flex gap-2" id="badges-container">
-                    </div>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 fade-in" style="animation-delay: 0.1s;">
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Net Profit</span>
-                        <div class="p-1.5 rounded-md bg-opacity-20" id="profit-icon-bg">
-                            <i data-lucide="dollar-sign" class="w-4 h-4" id="profit-icon"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold" id="stat-profit">$0.00</h3>
-                        <p class="text-xs mt-1" id="stat-profit-sub">--</p>
-                    </div>
-                </div>
-                
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Ekuitas Akhir</span>
-                        <div class="p-1.5 rounded-md bg-blue-500/20 text-blue-400">
-                            <i data-lucide="wallet" class="w-4 h-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold" id="stat-equity">$0.00</h3>
-                        <p class="text-xs text-gray-400 mt-1" id="stat-equity-sub">--</p>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Win Rate</span>
-                        <div class="p-1.5 rounded-md bg-purple-500/20 text-purple-400">
-                            <i data-lucide="target" class="w-4 h-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold" id="stat-winrate">0%</h3>
-                        <p class="text-xs text-gray-400 mt-1" id="stat-winrate-sub">0 Win / 0 Loss</p>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Pips Bersih</span>
-                        <div class="p-1.5 rounded-md bg-amber-500/20 text-amber-400">
-                            <i data-lucide="activity" class="w-4 h-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold" id="stat-pips">0.0</h3>
-                        <p class="text-xs text-gray-400 mt-1" id="stat-pips-sub">Total akumulasi</p>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-4 rounded-xl flex flex-col justify-between hidden md:flex lg:flex">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Total Trade</span>
-                        <div class="p-1.5 rounded-md bg-gray-500/20 text-gray-400">
-                            <i data-lucide="list-ordered" class="w-4 h-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold" id="stat-trades">0</h3>
-                        <p class="text-xs text-gray-400 mt-1" id="stat-trades-sub">Transaksi hari ini</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in" style="animation-delay: 0.2s;">
-                <div class="lg:col-span-2 glass-panel p-5 rounded-xl border border-dark-border">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-semibold flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-brand-500"></i> Kurva Ekuitas</h3>
-                        <select id="chart-type-selector" onchange="updateMainChart()" class="bg-dark-card border border-dark-border text-xs rounded-md px-2 py-1 outline-none focus:border-brand-500">
-                            <option value="cumulative">Kumulatif Berkelanjutan</option>
-                            <option value="daily">Pergerakan Harian</option>
-                        </select>
-                    </div>
-                    <div class="relative h-64 w-full">
-                        <canvas id="equityChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-xl border border-dark-border flex flex-col">
-                    <h3 class="font-semibold mb-4 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4 text-purple-500"></i> Distribusi Hasil</h3>
-                    <div class="relative h-48 w-full mb-4 flex-grow">
-                        <canvas id="distributionChart"></canvas>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mt-auto">
-                        <div class="bg-dark-card rounded-lg p-2 text-center border border-dark-border">
-                            <span class="text-[10px] text-gray-400 uppercase">Gross Profit</span>
-                            <div class="font-semibold text-profit" id="gross-profit">$0</div>
-                        </div>
-                        <div class="bg-dark-card rounded-lg p-2 text-center border border-dark-border">
-                            <span class="text-[10px] text-gray-400 uppercase">Gross Loss</span>
-                            <div class="font-semibold text-loss" id="gross-loss">$0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel rounded-xl border border-dark-border overflow-hidden fade-in" style="animation-delay: 0.3s;">
-                <div class="p-4 border-b border-dark-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <h3 class="font-semibold flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Riwayat Transaksi</h3>
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <div class="relative w-full sm:w-48">
-                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                            <input type="text" id="search-trade" placeholder="Cari pair, id..." onkeyup="filterTrades()" class="w-full bg-dark-card border border-dark-border rounded-lg pl-9 pr-3 py-1.5 text-sm focus:outline-none focus:border-brand-500 transition">
-                        </div>
-                        <select id="filter-result" onchange="filterTrades()" class="bg-dark-card border border-dark-border rounded-lg px-3 py-1.5 text-sm outline-none focus:border-brand-500">
-                            <option value="all">Semua</option>
-                            <option value="win">Win</option>
-                            <option value="loss">Loss</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-dark-card/50 text-gray-400 border-b border-dark-border">
-                            <tr>
-                                <th class="px-4 py-3 font-medium">Waktu</th>
-                                <th class="px-4 py-3 font-medium">Simbol</th>
-                                <th class="px-4 py-3 font-medium">Tipe</th>
-                                <th class="px-4 py-3 font-medium text-right">Lot</th>
-                                <th class="px-4 py-3 font-medium text-right">Entry</th>
-                                <th class="px-4 py-3 font-medium text-right">Exit</th>
-                                <th class="px-4 py-3 font-medium text-right">Pips</th>
-                                <th class="px-4 py-3 font-medium text-right">Profit</th>
-                                <th class="px-4 py-3 font-medium text-center">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="trade-list" class="divide-y divide-dark-border">
-                            </tbody>
-                    </table>
-                </div>
-                <div id="trade-empty" class="hidden p-8 text-center text-gray-500">
-                    Tidak ada transaksi yang sesuai kriteria.
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in" style="animation-delay: 0.4s;">
-                <div class="glass-panel p-5 rounded-xl border border-dark-border">
-                    <h3 class="font-semibold mb-3 flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4 text-amber-500"></i> Catatan Pasar</h3>
-                    <p class="text-sm text-gray-300 leading-relaxed" id="market-notes">Tidak ada catatan.</p>
-                </div>
-                <div class="glass-panel p-5 rounded-xl border border-dark-border">
-                    <h3 class="font-semibold mb-3 flex items-center gap-2"><i data-lucide="brain" class="w-4 h-4 text-pink-500"></i> Psikologi & Evaluasi</h3>
-                    <p class="text-sm text-gray-300 leading-relaxed" id="psychology-notes">Tidak ada evaluasi.</p>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <footer class="max-w-7xl mx-auto px-4 py-8 text-center text-gray-500 text-sm mt-auto">
-        <p>&copy; <span id="year">2026</span> YanaMiku. Sistem Jurnal Trading Otomatis.</p>
-    </footer>
-
-    <div id="calendar-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="modal-content bg-dark-card border border-dark-border rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden" onclick="event.stopPropagation()">
-            <div class="p-4 border-b border-dark-border flex justify-between items-center bg-gray-800/50">
-                <h3 class="font-semibold text-lg flex items-center gap-2"><i data-lucide="calendar-days" class="w-5 h-5"></i> Pilih Tanggal</h3>
-                <button onclick="toggleCalendar()" class="p-1 hover:bg-gray-700 rounded transition"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="p-5">
-                <div class="flex justify-between items-center mb-4">
-                    <button onclick="changeCalMonth(-1)" class="p-1.5 hover:bg-gray-800 rounded"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                    <span id="cal-month-year" class="font-medium">Mei 2026</span>
-                    <button onclick="changeCalMonth(1)" class="p-1.5 hover:bg-gray-800 rounded"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
-                </div>
-                <div class="cal-grid mb-2 text-center text-xs font-medium text-gray-400">
-                    <div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div><div>Min</div>
-                </div>
-                <div id="cal-days" class="cal-grid text-sm">
-                    </div>
-                <div class="mt-4 flex justify-center gap-4 text-xs text-gray-400">
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-profit"></span> Profit</div>
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-loss"></span> Loss</div>
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gray-500"></span> Break Even</div>
-                </div>
-            </div>
+            <div class="text-center"><h2 class="text-lg font-bold tracking-tight">Trading Journal Pro</h2><p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Dashboard performa harian</p></div>
+            <div class="flex gap-1 mt-2"><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0s"></div><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.15s"></div><div class="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style="animation-delay:0.3s"></div></div>
+            <p class="text-xxs text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
         </div>
     </div>
 
-    <div id="trade-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="modal-content bg-dark-card border border-dark-border rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
-            <div class="p-4 border-b border-dark-border flex justify-between items-center bg-gray-800/50">
-                <h3 class="font-semibold text-lg flex items-center gap-2">Detail Transaksi <span id="modal-trade-id" class="text-xs bg-gray-700 px-2 py-0.5 rounded text-gray-300">#000</span></h3>
-                <button onclick="closeTradeModal()" class="p-1 hover:bg-gray-700 rounded transition"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="p-5 overflow-y-auto custom-scrollbar flex-1 space-y-4">
-                <div class="flex justify-between items-center p-3 rounded-lg bg-gray-800/30 border border-gray-700/50">
-                    <div class="flex items-center gap-3">
-                        <div id="modal-trade-icon" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">B</div>
-                        <div>
-                            <div class="font-bold text-lg" id="modal-trade-symbol">XAUUSD</div>
-                            <div class="text-xs text-gray-400" id="modal-trade-time">2026-05-15 10:00:00</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-xl" id="modal-trade-profit">$0.00</div>
-                        <div class="text-xs font-medium" id="modal-trade-pips">0.0 pips</div>
-                    </div>
+    <div class="lg:hidden fixed top-0 left-0 w-full h-12 z-40 flex items-center justify-between px-3 glass-header border-b border-gray-200/60 dark:border-dark-border/60">
+        <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm"><i data-lucide="line-chart" class="w-3.5 h-3.5 text-white"></i></div><span class="font-bold text-sm tracking-tight">TradeJournal</span></div>
+        <div class="flex items-center gap-1.5"><div id="mobileLiveIndicator" class="hidden flex items-center gap-1 text-tiny text-profit"><div class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></div><span>LIVE</span></div><button id="mobileMenuBtn" class="p-1.5 rounded-lg bg-gray-100/70 dark:bg-gray-800/70" aria-label="Menu"><i data-lucide="menu" class="w-4 h-4"></i></button></div>
+    </div>
+
+    <aside id="sidebar" class="fixed lg:static top-0 left-0 w-72 lg:w-80 h-full bg-white dark:bg-dark-surface border-r border-gray-200 dark:border-dark-border z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col pt-12 lg:pt-0 text-sm">
+        <div class="p-4 lg:p-5 hidden lg:flex items-center justify-between border-b border-gray-200 dark:border-dark-border">
+            <div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4 h-4 text-white"></i></div><div><span class="font-bold text-base tracking-tight">TradeJournal</span><p class="text-xxs text-gray-400 leading-none">Pro Dashboard</p></div></div>
+            <div class="flex items-center gap-1"><div id="desktopLiveIndicator" class="hidden flex items-center gap-1 text-tiny text-profit mr-1"><div class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></div><span>LIVE</span></div><button id="themeToggle" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-label="Theme"><i data-lucide="moon" class="w-4 h-4 dark:hidden"></i><i data-lucide="sun" class="w-4 h-4 hidden dark:block text-yellow-400"></i></button></div>
+        </div>
+        <div class="p-4 flex-1 overflow-y-auto hide-scroll space-y-5">
+            <div>
+                <div class="flex justify-between items-center mb-3"><h2 class="font-semibold text-sm" id="calendarMonthYear">Bulan Tahun</h2><div class="flex gap-0.5"><button id="prevMonth" class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Prev"><i data-lucide="chevron-left" class="w-4 h-4"></i></button><button id="nextMonth" class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Next"><i data-lucide="chevron-right" class="w-4 h-4"></i></button></div></div>
+                <div class="flex gap-2 mb-2">
+                    <select id="monthSelect" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none flex-1">
+                        <option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">Mei</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Agu</option><option value="8">Sep</option><option value="9">Okt</option><option value="10">Nov</option><option value="11">Des</option>
+                    </select>
+                    <select id="yearSelect" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none flex-1"></select>
+                    <button id="jumpTodayBtn" class="px-2 py-1 bg-blue-100 dark:bg-blue-900/25 text-blue-700 dark:text-blue-400 rounded-lg text-tiny font-medium hover:bg-blue-200 dark:hover:bg-blue-900/45 transition">Today</button>
                 </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-gray-800/30 p-3 rounded-lg border border-gray-700/50">
-                        <span class="text-xs text-gray-400 block mb-1">Entry Price</span>
-                        <span class="font-mono font-medium" id="modal-trade-entry">0.00</span>
-                    </div>
-                    <div class="bg-gray-800/30 p-3 rounded-lg border border-gray-700/50">
-                        <span class="text-xs text-gray-400 block mb-1">Exit Price</span>
-                        <span class="font-mono font-medium" id="modal-trade-exit">0.00</span>
-                    </div>
-                    <div class="bg-gray-800/30 p-3 rounded-lg border border-gray-700/50">
-                        <span class="text-xs text-gray-400 block mb-1">Volume (Lot)</span>
-                        <span class="font-medium" id="modal-trade-lot">0.00</span>
-                    </div>
-                    <div class="bg-gray-800/30 p-3 rounded-lg border border-gray-700/50">
-                        <span class="text-xs text-gray-400 block mb-1">Sesi Market</span>
-                        <span class="font-medium" id="modal-trade-session">Unknown</span>
-                    </div>
-                </div>
+                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-0.5 text-tiny"></div>
+                <div class="flex items-center justify-center gap-3 mt-3 text-tiny text-gray-400 dark:text-gray-500"><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-profit"></div>Win</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-loss"></div>Loss</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-bep"></div>BEP</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-neutral"></div>-</div></div>
             </div>
-            <div class="p-4 border-t border-dark-border bg-gray-800/50 flex justify-end">
-                <button onclick="closeTradeModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition font-medium text-sm">Tutup</button>
+            <div class="p-3 bg-gray-50 dark:bg-gray-800/60 rounded-xl">
+                <div class="flex items-center justify-between mb-1.5"><span class="text-sm font-medium">Auto Refresh</span><button id="autoRefreshToggle" class="relative w-10 h-5 rounded-full bg-gray-300 dark:bg-gray-600 transition-colors duration-200 focus:outline-none" aria-label="Toggle refresh"><span id="autoRefreshKnob" class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transform transition-transform duration-200"></span></button></div>
+                <p class="text-tiny text-gray-500 dark:text-gray-400">Refresh setiap 30 detik</p>
+                <div id="countdownDisplay" class="hidden text-tiny text-blue-500 mt-1">Refresh dalam 30s...</div>
+            </div>
+            <div class="space-y-2">
+                <button id="exportCSVBtn" class="w-full py-2.5 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                <button id="refreshNowBtn" class="w-full py-2.5 px-3 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl flex items-center justify-center gap-2 font-medium transition text-sm text-blue-700 dark:text-blue-400"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now</button>
+                <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center"><span class="text-sm">Tema</span><button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button></div>
+            </div>
+        </div>
+        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v2.1</p></div>
+    </aside>
+
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
+
+    <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-dark-bg">
+        <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-dark-border glass-header sticky top-0 z-20 items-center justify-between">
+            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Continuous Equity Dashboard</p></div></div>
+            <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div></div>
+        </header>
+        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Continuous Equity Dashboard</p></div>
+
+        <div class="flex-1 overflow-y-auto p-2 lg:p-6" id="mainContentArea">
+            <div id="loadingState" class="hidden space-y-3 lg:space-y-5">
+                <div class="grid grid-cols-4 gap-1.5 lg:gap-4"><div class="h-14 lg:h-24 rounded-xl skeleton"></div><div class="h-14 lg:h-24 rounded-xl skeleton"></div><div class="h-14 lg:h-24 rounded-xl skeleton"></div><div class="h-14 lg:h-24 rounded-xl skeleton"></div></div>
+                <div class="grid grid-cols-3 gap-1.5 lg:gap-4"><div class="h-12 lg:h-20 rounded-xl skeleton"></div><div class="h-12 lg:h-20 rounded-xl skeleton"></div><div class="h-12 lg:h-20 rounded-xl skeleton"></div></div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-5"><div class="h-36 lg:h-64 rounded-xl skeleton lg:col-span-2"></div><div class="h-36 lg:h-64 rounded-xl skeleton"></div></div>
+                <div class="h-8 lg:h-10 rounded-xl skeleton"></div><div class="h-36 lg:h-52 rounded-xl skeleton"></div>
+            </div>
+
+            <div id="emptyState" class="hidden h-full flex flex-col items-center justify-center text-center fade-in py-10 lg:py-16">
+                <div class="relative mb-6"><div class="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-gray-100 dark:bg-gray-800/40 flex items-center justify-center animate-float"><i data-lucide="calendar-search" class="w-12 h-12 lg:w-16 lg:h-16 text-gray-300 dark:text-gray-600"></i></div><div class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-dark-surface shadow-md flex items-center justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-blue-500"></i></div></div>
+                <h3 class="text-lg lg:text-xl font-bold mb-2">No Trading Activity</h3><p class="text-sm text-gray-500 dark:text-gray-400 max-w-xs lg:max-w-sm">Tidak ada catatan trading untuk tanggal ini.</p>
+                <div class="mt-4 text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800/30 px-4 py-2 rounded-full"><span id="emptyDateDisplay"></span></div>
+                <div class="flex gap-3 mt-6"><button onclick="selectDate(getTodayStr())" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-blue-500/20 flex items-center gap-2"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Hari Ini</button><button onclick="jumpToPreviousTradingDay()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-sm font-medium transition flex items-center gap-2"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Hari Sebelumnya</button></div>
+            </div>
+
+            <div id="dataContent" class="hidden space-y-3 lg:space-y-5 fade-in">
+                <div class="grid grid-cols-4 gap-1.5 lg:gap-4">
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">WIN</p><h3 class="text-base lg:text-2xl font-bold text-profit" id="sumWin">0</h3><p class="text-xxs lg:text-xs text-profit mt-0.5" id="sumWinAmount">$0.00</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">LOSS</p><h3 class="text-base lg:text-2xl font-bold text-loss" id="sumLoss">0</h3><p class="text-xxs lg:text-xs text-loss mt-0.5" id="sumLossAmount">$0.00</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">BEP</p><h3 class="text-base lg:text-2xl font-bold text-bep" id="sumBEP">0</h3><p class="text-xxs lg:text-xs text-bep mt-0.5" id="sumBEPAmount">$0.00</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET P/L</p><h3 class="text-base lg:text-2xl font-bold" id="sumNetProfit">$0.00</h3><p class="text-xxs lg:text-xs mt-0.5" id="sumProfitPct">0%</p></div>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 lg:gap-4">
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-down-circle" class="w-3 h-3 text-blue-500"></i> DEPOSIT</p><h3 class="text-base lg:text-xl font-bold text-blue-500" id="sumDeposit">$0.00</h3></div>
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex items-center justify-center gap-1"><i data-lucide="arrow-up-circle" class="w-3 h-3 text-orange-500"></i> WITHDRAW</p><h3 class="text-base lg:text-xl font-bold text-orange-500" id="sumWithdraw">$0.00</h3></div>
+                    <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 font-medium">NET CASH</p><h3 class="text-base lg:text-xl font-bold" id="sumNetCash">$0.00</h3></div>
+                </div>
+                <div class="grid grid-cols-3 lg:grid-cols-6 gap-1.5 lg:gap-3">
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Total Trades</p><p class="font-bold text-sm lg:text-lg" id="sumTotalTrades">0</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Win Rate</p><p class="font-bold text-sm lg:text-lg" id="sumWinRate">0%</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Avg Win</p><p class="font-bold text-sm lg:text-lg text-profit" id="statAvgWin">$0</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Avg Loss</p><p class="font-bold text-sm lg:text-lg text-loss" id="statAvgLoss">$0</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Balance</p><p class="font-bold text-sm lg:text-lg" id="sumBalance">$0</p></div>
+                    <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Start Eq.</p><p class="font-bold text-sm lg:text-lg" id="sumStartEquity">$0</p></div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-5">
+                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium lg:col-span-2"><div class="flex justify-between items-center mb-2 lg:mb-4"><h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Kurva Ekuitas Berkelanjutan</h3><span class="text-xxs text-gray-400">Pinch 2 jari untuk zoom</span></div><div class="chart-container h-40 lg:h-64"><canvas id="equityChart"></canvas></div></div>
+                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium"><h3 class="font-semibold text-xs lg:text-sm mb-2 lg:mb-4 flex items-center gap-1.5"><i data-lucide="pie-chart" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Distribusi Hasil</h3><div class="h-32 lg:h-48 relative w-full flex justify-center"><canvas id="resultChart"></canvas></div><div class="mt-2 lg:mt-4 grid grid-cols-3 gap-1 lg:gap-2 text-xxs lg:text-xs"><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-profit font-semibold">Win<br><span id="pieWin">0</span></div><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-loss font-semibold">Loss<br><span id="pieLoss">0</span></div><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-bep font-semibold">BEP<br><span id="pieBEP">0</span></div></div></div>
+                </div>
+                <div id="notesSection" class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium hidden"><h3 class="font-semibold text-xs lg:text-sm mb-3 flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Catatan Harian</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Ringkasan</p><p class="text-sm font-medium" id="noteDaily">-</p></div><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Psikologi</p><p class="text-sm font-medium" id="notePsych">-</p></div><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Strategi</p><p class="text-sm font-medium" id="noteStrategy">-</p></div></div></div>
+                <div class="bg-white dark:bg-dark-card p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm flex flex-col md:flex-row gap-2 items-center justify-between">
+                    <div class="relative w-full md:w-48 lg:w-64"><i data-lucide="search" class="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3 h-3 lg:w-4 lg:h-4 text-gray-400"></i><input type="text" id="searchTrade" placeholder="Cari trade..." class="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg pl-7 lg:pl-9 pr-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"></div>
+                    <div class="flex gap-1.5 w-full md:w-auto overflow-x-auto hide-scroll"><select id="filterType" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"><option value="all">Semua Tipe</option><option value="buy">Buy</option><option value="sell">Sell</option></select><select id="filterResult" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1.5 lg:py-2 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"><option value="all">Semua Hasil</option><option value="WIN">Win</option><option value="LOSS">Loss</option><option value="BEP">BEP</option></select></div>
+                </div>
+                <div class="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm overflow-hidden">
+                    <div class="hidden md:block table-container">
+                        <table class="w-full text-left border-collapse whitespace-nowrap text-sm"><thead class="bg-gray-50 dark:bg-gray-900 text-xs uppercase text-gray-500 dark:text-gray-400"><tr><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">ID/Waktu</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">Symbol</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">Tipe</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">Lot</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">Entry</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold">Exit</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold text-right">P/L</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold text-center">STATUS</th><th class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold text-right">%</th></tr></thead><tbody id="tradeTableBody" class="divide-y divide-gray-100 dark:divide-gray-800"></tbody></table>
+                    </div>
+                    <div id="tradeMobileList" class="md:hidden divide-y divide-gray-100 dark:divide-gray-800"></div>
+                </div>
+                <div class="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm p-3 lg:p-5 card-premium"><div class="flex justify-between items-center mb-3"><h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Activity Log</h3><select id="filterActivityCategory" class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"><option value="all">All</option><option value="trade">Trade</option><option value="deposit">Deposit</option><option value="withdraw">Withdraw</option></select></div><div id="activityLogContainer" class="space-y-2 max-h-64 overflow-y-auto hide-scroll"></div></div>
+            </div>
+        </div>
+
+        <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
+            <div class="flex items-center gap-2"><span class="hidden lg:inline">Trading Journal Pro — Continuous Equity</span><span class="lg:hidden text-tiny">TradeJournal Pro</span><span class="text-gray-300 dark:text-gray-600">|</span><span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span></div>
+            <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span></div>
+        </footer>
+    </main>
+
+    <div id="tradeModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="tradeModalBackdrop"></div>
+        <div class="absolute bottom-0 md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-full md:w-[460px] bg-white dark:bg-dark-surface rounded-t-2xl md:rounded-2xl shadow-2xl transition-transform duration-300 translate-y-full md:translate-y-4 border border-gray-200 dark:border-dark-border flex flex-col max-h-[82vh]">
+            <div class="p-3 lg:p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center sticky top-0 bg-white dark:bg-dark-surface z-10 rounded-t-2xl"><div class="flex items-center gap-2.5"><div id="modalResultBadge" class="w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full"></div><h3 class="font-bold text-sm lg:text-base">Detail Trade <span id="modalTradeId" class="text-gray-500 font-normal text-tiny lg:text-sm ml-1"></span></h3></div><button id="closeModalBtn" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-label="Tutup"><i data-lucide="x" class="w-4 h-4 lg:w-5 lg:h-5"></i></button></div>
+            <div class="p-3 lg:p-5 overflow-y-auto hide-scroll flex-1 text-sm">
+                <div class="flex justify-between items-end mb-4"><div><p class="text-tiny text-gray-500 mb-0.5">Symbol & Waktu</p><h4 class="text-base lg:text-xl font-bold" id="modalSymbol">-</h4><p class="text-tiny" id="modalTime">-</p></div><div class="text-right"><p class="text-tiny text-gray-500 mb-0.5">Profit / Loss</p><h4 class="text-lg lg:text-2xl font-bold" id="modalProfit">$0.00</h4><span id="modalStatusBadge" class="text-xxs px-2 py-0.5 rounded-full font-bold uppercase">-</span></div></div>
+                <div class="grid grid-cols-2 gap-2 lg:gap-4 mb-4"><div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-xxs text-gray-500 uppercase">Tipe</span><p class="font-semibold text-sm lg:text-lg capitalize" id="modalType">-</p></div><div class="bg-gray-50 dark:bg-gray-900 p-2.5 lg:p-3 rounded-xl border border-gray-100 dark:border-gray-800"><span class="text-xxs text-gray-500 uppercase">Lot</span><p class="font-semibold text-sm lg:text-lg" id="modalLot">-</p></div></div>
+                <div class="grid grid-cols-3 gap-2 text-tiny mb-4"><div><span class="text-gray-500">Swap:</span> <span id="modalSwap" class="font-medium">$0.00</span></div><div><span class="text-gray-500">Commission:</span> <span id="modalCommission" class="font-medium">$0.00</span></div><div><span class="text-gray-500">Session:</span> <span id="modalSession" class="font-medium">-</span></div><div><span class="text-gray-500">Market:</span> <span id="modalMarket" class="font-medium">-</span></div><div class="col-span-3"><span class="text-gray-500">Source:</span> <span id="modalSource" class="font-medium">-</span></div></div>
+                <div class="flex gap-2 mt-4"><button id="copyTradeIdBtn" class="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5"><i data-lucide="copy" class="w-3 h-3"></i> Copy ID</button><button id="exportTradeBtn" class="flex-1 py-2.5 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl text-xs font-medium text-blue-700 dark:text-blue-400 transition flex items-center justify-center gap-1.5"><i data-lucide="download" class="w-3 h-3"></i> Export</button></div>
             </div>
         </div>
     </div>
@@ -466,533 +220,360 @@
     <div id="toast-container"></div>
 
     <script>
-        // === Core State ===
-        const STATE = {
-            currentDate: new Date(), // Set to actual current system date (May 23, 2026 based on prompt context, but new Date() gets user local time)
-            data: null,
-            pollingTimer: null,
-            theme: localStorage.getItem('theme') || 'dark',
-            cache: JSON.parse(localStorage.getItem('tradeCache') || '{}'),
-            charts: { equity: null, distribution: null },
-            calViewDate: new Date()
-        };
-
-        // Initialize Icons
-        lucide.createIcons();
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // === Formatters & Utilities ===
-        const fmtCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-        const fmtDateId = new Intl.DateTimeFormat('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const fmtMonthId = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' });
-        
-        function toISODate(date) {
-            const z = n => ('0' + n).slice(-2);
-            return `${date.getFullYear()}-${z(date.getMonth() + 1)}-${z(date.getDate())}`;
-        }
-        
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const colors = { info: 'bg-blue-500', success: 'bg-profit', error: 'bg-loss' };
-            toast.className = `toast ${colors[type]} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 text-sm font-medium z-50 max-w-xs`;
-            toast.innerHTML = `<i data-lucide="${type==='success'?'check-circle':type==='error'?'alert-triangle':'info'}" class="w-4 h-4"></i> ${message}`;
-            container.appendChild(toast);
-            lucide.createIcons();
-            
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // === Theme Management ===
-        function applyTheme() {
-            if (STATE.theme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('theme-icon').setAttribute('data-lucide', 'moon');
-            }
-            lucide.createIcons();
-            if(STATE.charts.equity) updateMainChart(); // Redraw charts with new colors
-        }
-        
-        function toggleTheme() {
-            STATE.theme = STATE.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', STATE.theme);
-            applyTheme();
-        }
-
-        // === Data Fetching Layer ===
-        function getApiUrl(dateStr) {
-            return `https://raw.githubusercontent.com/YanaMiku/jurnal/refs/heads/main/database/json/${dateStr}.json`;
-        }
-
-        async function fetchData(dateStr, isPolling = false) {
-            if (!isPolling) {
-                document.getElementById('loading-state').classList.remove('hidden');
-                document.getElementById('empty-state').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.add('hidden');
-            }
-            
-            document.getElementById('display-date').textContent = fmtDateId.format(STATE.currentDate);
-            
-            // Check future date
-            if (STATE.currentDate > new Date()) {
-                handleNoData(dateStr);
-                return;
-            }
-
-            try {
-                // cache "no-store" for realtime fetch
-                const response = await fetch(getApiUrl(dateStr), { cache: "no-store" });
-                if (!response.ok) throw new Error('Data not found');
-                
-                const data = await response.json();
-                STATE.data = data;
-                
-                // Save to cache for calendar dots
-                STATE.cache[dateStr] = {
-                    profit: data.account_summary.profit_harian,
-                    result: data.account_summary.profit_harian > 0 ? 'win' : (data.account_summary.profit_harian < 0 ? 'loss' : 'be')
-                };
-                localStorage.setItem('tradeCache', JSON.stringify(STATE.cache));
-
-                renderDashboard(data);
-                if (!isPolling) showToast('Data berhasil dimuat', 'success');
-            } catch (error) {
-                STATE.data = null;
-                if(!isPolling) handleNoData(dateStr);
-            } finally {
-                if (!isPolling) document.getElementById('loading-state').classList.add('hidden');
-                resetPollingBar();
-            }
-        }
-
-        function handleNoData(dateStr) {
-            document.getElementById('loading-state').classList.add('hidden');
-            document.getElementById('dashboard-content').classList.add('hidden');
-            document.getElementById('empty-state').classList.remove('hidden');
-            document.getElementById('empty-title').textContent = "Tidak Ada Data";
-            document.getElementById('empty-desc').textContent = `Belum ada jurnal trading tercatat untuk tanggal ${fmtDateId.format(STATE.currentDate)}.`;
-        }
-
-        // === Renderers ===
-        function renderDashboard(data) {
-            document.getElementById('empty-state').classList.add('hidden');
-            document.getElementById('dashboard-content').classList.remove('hidden');
-
-            const acc = data.account_summary;
-            const stat = data.statistics;
-
-            // Header Insight Generation
-            const isProfit = acc.profit_harian >= 0;
-            const textProfitClass = isProfit ? 'text-profit' : 'text-loss';
-            
-            // Stats
-            document.getElementById('stat-profit').textContent = fmtCurrency.format(acc.profit_harian);
-            document.getElementById('stat-profit').className = `text-2xl font-bold ${textProfitClass}`;
-            document.getElementById('stat-profit-sub').textContent = isProfit ? '+ Profit Harian' : '- Loss Harian';
-            document.getElementById('stat-profit-sub').className = `text-xs mt-1 ${textProfitClass} opacity-80`;
-            
-            const iconBg = document.getElementById('profit-icon-bg');
-            const icon = document.getElementById('profit-icon');
-            if (isProfit) {
-                iconBg.className = 'p-1.5 rounded-md bg-emerald-500/20 text-emerald-500';
-                icon.setAttribute('data-lucide', 'trending-up');
-            } else {
-                iconBg.className = 'p-1.5 rounded-md bg-rose-500/20 text-rose-500';
-                icon.setAttribute('data-lucide', 'trending-down');
-            }
-
-            document.getElementById('stat-equity').textContent = fmtCurrency.format(acc.equity_akhir);
-            document.getElementById('stat-equity-sub').textContent = `Awal: ${fmtCurrency.format(acc.equity_awal)}`;
-            
-            document.getElementById('stat-winrate').textContent = `${stat.win_rate}%`;
-            document.getElementById('stat-winrate-sub').textContent = `${stat.win} Win / ${stat.loss} Loss`;
-            
-            document.getElementById('stat-pips').textContent = stat.pips_bersih.toFixed(1);
-            document.getElementById('stat-pips').className = `text-2xl font-bold ${stat.pips_bersih >= 0 ? 'text-profit' : 'text-loss'}`;
-            
-            document.getElementById('stat-trades').textContent = stat.total_trade;
-
-            // Badges & Insights
-            document.getElementById('badges-container').innerHTML = `
-                <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-500/20 text-gray-400 border border-gray-500/30">${acc.currency}</span>
-                <span class="px-2.5 py-1 rounded-md text-xs font-medium ${isProfit ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30'} border">${isProfit ? 'PROFIT' : 'LOSS'}</span>
-            `;
-
-            let insightText = isProfit 
-                ? `Hari yang luar biasa! Pertumbuhan ekuitas sebesar ${((acc.profit_harian/acc.equity_awal)*100).toFixed(2)}% dengan ${stat.win} posisi profit.` 
-                : `Drawdown hari ini. Fokus pada pemulihan, risiko terukur, dan disiplin strategi.`;
-            document.getElementById('auto-insight').textContent = insightText;
-
-            document.getElementById('gross-profit').textContent = fmtCurrency.format(stat.gross_profit);
-            document.getElementById('gross-loss').textContent = fmtCurrency.format(stat.gross_loss);
-
-            // Notes
-            document.getElementById('market-notes').textContent = data.market_conditions || 'Tidak ada catatan kondisi pasar hari ini.';
-            document.getElementById('psychology-notes').textContent = data.psychology || 'Tidak ada catatan psikologi/evaluasi.';
-
-            renderTradeList(data.trades);
-            renderCharts(data);
-            lucide.createIcons();
-        }
-
-        function renderTradeList(trades) {
-            const tbody = document.getElementById('trade-list');
-            const emptyState = document.getElementById('trade-empty');
-            tbody.innerHTML = '';
-            
-            if (!trades || trades.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            emptyState.classList.add('hidden');
-
-            const searchTerm = document.getElementById('search-trade').value.toLowerCase();
-            const filterRes = document.getElementById('filter-result').value;
-
-            let count = 0;
-            trades.forEach(t => {
-                // Filtering
-                if (filterRes !== 'all' && t.result !== filterRes) return;
-                if (searchTerm && !t.symbol.toLowerCase().includes(searchTerm) && !t.id.toLowerCase().includes(searchTerm)) return;
-                
-                count++;
-                const isBuy = t.type.toLowerCase() === 'buy';
-                const isWin = t.result === 'win';
-                
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-dark-border/30 transition cursor-pointer group';
-                tr.onclick = () => openTradeModal(t);
-                
-                tr.innerHTML = `
-                    <td class="px-4 py-3 text-gray-400 group-hover:text-white transition">${t.time.split(' ')[1]}</td>
-                    <td class="px-4 py-3 font-medium">${t.symbol}</td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-0.5 rounded text-xs font-medium ${isBuy ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}">${t.type.toUpperCase()}</span>
-                    </td>
-                    <td class="px-4 py-3 text-right font-mono">${t.lot.toFixed(2)}</td>
-                    <td class="px-4 py-3 text-right font-mono text-gray-400">${t.entry}</td>
-                    <td class="px-4 py-3 text-right font-mono text-gray-400">${t.exit}</td>
-                    <td class="px-4 py-3 text-right font-medium ${t.pips >= 0 ? 'text-profit' : 'text-loss'}">${t.pips > 0 ? '+'+t.pips : t.pips}</td>
-                    <td class="px-4 py-3 text-right font-bold ${t.profit >= 0 ? 'text-profit' : 'text-loss'}">${fmtCurrency.format(t.profit)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <span class="w-2 h-2 rounded-full inline-block ${isWin ? 'bg-profit' : 'bg-loss'} shadow-[0_0_8px_${isWin?'#10b981':'#ef4444'}]"></span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            if (count === 0) emptyState.classList.remove('hidden');
-        }
-
-        // === Charts ===
-        function getChartColors() {
-            const isDark = document.documentElement.classList.contains('dark');
-            return {
-                text: isDark ? '#9ca3af' : '#4b5563',
-                grid: isDark ? '#1f2937' : '#e2e8f0',
-                profit: '#10b981',
-                loss: '#ef4444',
-                brand: '#3b82f6',
-                brandFade: isDark ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.2)'
+        (function() {
+            const CONFIG = { DATA_BASE_PATH: './database/json/', AUTO_REFRESH_INTERVAL: 30000, MAX_HISTORY_DAYS: 90 };
+            const state = {
+                currentDate: new Date(), selectedDateStr: '', currentData: null, filteredTrades: [],
+                charts: { equity: null, result: null }, autoRefreshEnabled: true, refreshIntervalId: null,
+                countdownIntervalId: null, countdownValue: 30, isFetching: false, calendarProfitData: {},
+                dailyStartEquity: 0, continuousEquityCache: null
             };
-        }
 
-        function renderCharts(data) {
-            updateMainChart();
-            
-            const colors = getChartColors();
-            Chart.defaults.color = colors.text;
-            Chart.defaults.font.family = 'Inter, sans-serif';
+            const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(val);
+            const formatShortCurrency = (val) => { if (Math.abs(val) >= 1000) return '$' + (val / 1000).toFixed(1) + 'k'; return formatCurrency(val); };
+            const formatDisplayDate = (dateStr) => { try { return new Date(dateStr + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); } catch (e) { return dateStr; } };
+            const formatTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const getTodayStr = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+            const getDateStr = (date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            const getPreviousDateStr = (dateStr) => { const [y,m,d] = dateStr.split('-'); const prev = new Date(+y, +m-1, +d); prev.setDate(prev.getDate()-1); return getDateStr(prev); };
+            const parseDateStr = (str) => { const [y,m,d] = str.split('-'); return new Date(+y, +m-1, +d); };
 
-            // Distribution Chart (Doughnut)
-            if (STATE.charts.distribution) STATE.charts.distribution.destroy();
-            const ctxDist = document.getElementById('distributionChart').getContext('2d');
-            STATE.charts.distribution = new Chart(ctxDist, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Win', 'Loss'],
-                    datasets: [{
-                        data: [data.statistics.win, data.statistics.loss],
-                        backgroundColor: [colors.profit, colors.loss],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '75%',
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 20 } }
-                    }
-                }
-            });
-        }
-
-        function updateMainChart() {
-            if (!STATE.data || !STATE.data.chart_data) return;
-            const data = STATE.data;
-            const type = document.getElementById('chart-type-selector').value;
-            const colors = getChartColors();
-            
-            let chartLabels = [];
-            let chartData = [];
-            let labelName = '';
-            let isArea = true;
-
-            if (type === 'cumulative' && data.chart_data.cumulative_equity) {
-                // Use historical cumulative equity if available
-                chartData = data.chart_data.cumulative_equity;
-                chartLabels = chartData.map((_, i) => i === 0 ? 'Start' : `T-${i}`);
-                labelName = 'Ekuitas Kumulatif';
-            } else {
-                // Use daily equity curve
-                chartData = data.chart_data.equity_curve || [data.account_summary.equity_awal, data.account_summary.equity_akhir];
-                chartLabels = chartData.map((_, i) => i === 0 ? 'Open' : `Trade ${i}`);
-                labelName = 'Ekuitas Harian';
+            function showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+                const icons = { success: 'check-circle', error: 'alert-circle', info: 'info' };
+                toast.className = `toast toast-${type}`; toast.innerHTML = `<i data-lucide="${icons[type]||'info'}" class="w-3.5 h-3.5"></i> ${message}`;
+                container.appendChild(toast); lucide.createIcons({ nodes: [toast] });
+                requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('show')));
+                setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
             }
 
-            if (STATE.charts.equity) STATE.charts.equity.destroy();
-            const ctxEq = document.getElementById('equityChart').getContext('2d');
-            
-            const gradient = ctxEq.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, colors.brandFade);
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            async function fetchDailyData(dateString) {
+                const url = `${CONFIG.DATA_BASE_PATH}${dateString}.json`;
+                try { const r = await fetch(url, { headers: { 'Accept': 'application/json' }, cache: 'no-store' }); if (!r.ok) return null; const data = await r.json(); if (data.account_summary?.trading_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.trading_profit; else if (data.account_summary?.net_profit !== undefined) state.calendarProfitData[dateString] = data.account_summary.net_profit; if (data.trades) data.trades = data.trades.map(t => ({ ...t, profit: t.profit_loss || t.profit || 0, result: (t.status || t.result || 'UNKNOWN').toUpperCase() })); return data; } catch (e) { return null; }
+            }
 
-            STATE.charts.equity = new Chart(ctxEq, {
-                type: 'line',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        label: labelName,
-                        data: chartData,
-                        borderColor: colors.brand,
-                        backgroundColor: gradient,
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#374151',
-                            borderWidth: 1,
-                            callbacks: { label: (ctx) => fmtCurrency.format(ctx.raw) }
+            async function calculateContinuousEquity(targetDateStr) {
+                if (state.continuousEquityCache && state.continuousEquityCache.target === targetDateStr) {
+                    return state.continuousEquityCache;
+                }
+                let cursor = targetDateStr;
+                let equity = 0;
+                let foundStart = false;
+                const visited = new Set();
+                for (let i = 0; i < CONFIG.MAX_HISTORY_DAYS; i++) {
+                    if (visited.has(cursor)) break;
+                    visited.add(cursor);
+                    const data = await fetchDailyData(cursor);
+                    if (data) {
+                        const deposits = data.deposits || [];
+                        const withdrawals = data.withdrawals || [];
+                        const trades = data.trades || [];
+                        const totalDeposit = deposits.reduce((a,d) => a + (d.amount||0), 0);
+                        const totalWithdraw = withdrawals.reduce((a,w) => a + (w.amount||0), 0);
+                        const tradingProfit = trades.reduce((a,t) => a + (t.profit||0), 0);
+                        if (!foundStart) {
+                            equity = (data.account_summary?.starting_balance || 0) + totalDeposit - totalWithdraw + tradingProfit;
+                            foundStart = true;
+                        } else {
+                            equity = equity + totalDeposit - totalWithdraw + tradingProfit;
                         }
-                    },
-                    scales: {
-                        y: { border: { display: false }, grid: { color: colors.grid } },
-                        x: { border: { display: false }, grid: { display: false }, ticks: { maxTicksLimit: 8 } }
+                    }
+                    const prev = getPreviousDateStr(cursor);
+                    if (prev === cursor) break;
+                    cursor = prev;
+                }
+                if (!foundStart) equity = 0;
+                const result = { target: targetDateStr, startEquity: equity, trades: [] };
+                const currentData = await fetchDailyData(targetDateStr);
+                if (currentData && currentData.trades) {
+                    let running = equity;
+                    result.trades = currentData.trades.map(t => {
+                        const tradeEquity = running;
+                        running += (t.profit || 0);
+                        return { ...t, equityAtTrade: tradeEquity, equityAfterTrade: running };
+                    });
+                    result.endEquity = running;
+                } else {
+                    result.endEquity = equity;
+                }
+                state.continuousEquityCache = result;
+                return result;
+            }
+
+            function startAutoRefresh() {
+                if (state.refreshIntervalId) clearInterval(state.refreshIntervalId);
+                if (state.countdownIntervalId) clearInterval(state.countdownIntervalId);
+                if (state.autoRefreshEnabled) {
+                    state.countdownValue = 30; updateCountdownDisplay();
+                    state.countdownIntervalId = setInterval(() => { state.countdownValue--; if (state.countdownValue <= 0) state.countdownValue = 30; updateCountdownDisplay(); }, 1000);
+                    state.refreshIntervalId = setInterval(async () => { if (!state.isFetching) { await silentRefresh(); state.countdownValue = 30; } }, CONFIG.AUTO_REFRESH_INTERVAL);
+                    updateLiveIndicator(true);
+                }
+            }
+
+            function stopAutoRefresh() { if (state.refreshIntervalId) clearInterval(state.refreshIntervalId); if (state.countdownIntervalId) clearInterval(state.countdownIntervalId); state.refreshIntervalId = null; state.countdownIntervalId = null; updateLiveIndicator(false); document.getElementById('countdownDisplay').classList.add('hidden'); }
+
+            function toggleAutoRefresh() {
+                state.autoRefreshEnabled = !state.autoRefreshEnabled; const knob = document.getElementById('autoRefreshKnob'), toggle = document.getElementById('autoRefreshToggle');
+                if (state.autoRefreshEnabled) { toggle.classList.remove('bg-gray-300','dark:bg-gray-600'); toggle.classList.add('bg-profit'); knob.classList.add('translate-x-5'); document.getElementById('countdownDisplay').classList.remove('hidden'); startAutoRefresh(); showToast('Auto-refresh ON (30s)', 'info'); }
+                else { toggle.classList.add('bg-gray-300','dark:bg-gray-600'); toggle.classList.remove('bg-profit'); knob.classList.remove('translate-x-5'); document.getElementById('countdownDisplay').classList.add('hidden'); stopAutoRefresh(); showToast('Auto-refresh OFF', 'info'); }
+            }
+
+            function updateLiveIndicator(active) { const m = active && state.autoRefreshEnabled ? 'remove' : 'add'; document.getElementById('mobileLiveIndicator')?.classList[m]('hidden'); document.getElementById('desktopLiveIndicator')?.classList[m]('hidden'); }
+            function updateCountdownDisplay() { const d = document.getElementById('countdownDisplay'); if (state.autoRefreshEnabled) { d.classList.remove('hidden'); d.textContent = `Refresh dalam ${state.countdownValue}s...`; } }
+
+            async function refreshCurrentDate(silent = false) {
+                if (state.isFetching) return; state.isFetching = true;
+                if (!silent) { document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden'); }
+                try {
+                    state.continuousEquityCache = null;
+                    const data = await fetchDailyData(state.selectedDateStr);
+                    const prevData = state.currentData; state.currentData = data;
+                    if (!silent) document.getElementById('loadingState').classList.add('hidden');
+                    if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
+                        document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
+                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
+                    } else {
+                        const eq = await calculateContinuousEquity(state.selectedDateStr);
+                        state.dailyStartEquity = eq.startEquity;
+                        if (document.getElementById('dataContent').classList.contains('hidden')) {
+                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data, eq);
+                        } else incrementalUpdate(data, prevData, eq);
+                    }
+                    document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`; document.getElementById('lastUpdatedTime').classList.remove('hidden'); renderCalendar();
+                } catch (e) { if (!silent) { document.getElementById('loadingState').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden'); document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); } }
+                finally { state.isFetching = false; }
+            }
+
+            async function silentRefresh() {
+                if (state.isFetching) return; state.isFetching = true;
+                try {
+                    const data = await fetchDailyData(state.selectedDateStr);
+                    if (!data && state.currentData) return;
+                    state.continuousEquityCache = null;
+                    const eq = await calculateContinuousEquity(state.selectedDateStr);
+                    state.dailyStartEquity = eq.startEquity;
+                    const prevData = state.currentData; state.currentData = data;
+                    if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
+                        document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
+                        document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
+                    } else {
+                        if (document.getElementById('dataContent').classList.contains('hidden')) {
+                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data, eq);
+                        } else incrementalUpdate(data, prevData, eq);
+                    }
+                    document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`; document.getElementById('lastUpdatedTime').classList.remove('hidden'); renderCalendar();
+                } catch (e) {} finally { state.isFetching = false; }
+            }
+
+            function fullUpdate(data, eq) { updateDashboard(data, eq); state.filteredTrades = [...(data.trades || [])]; renderTradeList(); renderActivityLog(); renderCharts(true, eq); }
+            function incrementalUpdate(newData, oldData, eq) {
+                if (JSON.stringify(newData.account_summary) !== JSON.stringify(oldData?.account_summary) || JSON.stringify(newData.statistics) !== JSON.stringify(oldData?.statistics) || JSON.stringify(newData.deposits) !== JSON.stringify(oldData?.deposits) || JSON.stringify(newData.withdrawals) !== JSON.stringify(oldData?.withdrawals) || JSON.stringify(newData.notes) !== JSON.stringify(oldData?.notes)) updateDashboard(newData, eq);
+                if (JSON.stringify(newData.trades) !== JSON.stringify(oldData?.trades)) { state.filteredTrades = [...(newData.trades || [])]; applyFilters(); renderActivityLog(); renderCharts(false, eq); }
+            }
+
+            function updateDashboard(data, eq) {
+                const s = data.account_summary || {}, st = data.statistics || {}, trades = data.trades || [], deposits = data.deposits || [], withdrawals = data.withdrawals || [];
+                const wins = trades.filter(t => t.result === 'WIN'), losses = trades.filter(t => t.result === 'LOSS'), beps = trades.filter(t => t.result === 'BEP');
+                const winTotal = wins.reduce((a,t) => a+(t.profit||0),0), lossTotal = losses.reduce((a,t) => a+(t.profit||0),0), bepTotal = beps.reduce((a,t) => a+(t.profit||0),0);
+                document.getElementById('sumWin').textContent = wins.length; document.getElementById('sumWinAmount').textContent = formatShortCurrency(winTotal);
+                document.getElementById('sumLoss').textContent = losses.length; document.getElementById('sumLossAmount').textContent = formatShortCurrency(lossTotal);
+                document.getElementById('sumBEP').textContent = beps.length; document.getElementById('sumBEPAmount').textContent = formatShortCurrency(bepTotal);
+                const net = s.trading_profit || s.net_profit || 0;
+                const profitEl = document.getElementById('sumNetProfit'); profitEl.textContent = formatCurrency(net); profitEl.className = `text-base lg:text-2xl font-bold ${net>0?'text-profit':(net<0?'text-loss':'text-bep')}`;
+                document.getElementById('sumProfitPct').textContent = `${net>=0?'+':''}${s.profit_percent||0}%`;
+                document.getElementById('sumProfitPct').className = `text-xxs lg:text-xs mt-0.5 ${net>0?'text-profit':(net<0?'text-loss':'text-bep')}`;
+                const totalDeposit = deposits.reduce((a,d)=>a+d.amount,0)||s.deposit||0, totalWithdraw = withdrawals.reduce((a,w)=>a+w.amount,0)||s.withdraw||0;
+                document.getElementById('sumDeposit').textContent = formatCurrency(totalDeposit); document.getElementById('sumWithdraw').textContent = formatCurrency(totalWithdraw);
+                const netCash = totalDeposit - totalWithdraw; const netCashEl = document.getElementById('sumNetCash'); netCashEl.textContent = formatCurrency(netCash); netCashEl.className = `text-base lg:text-xl font-bold ${netCash>0?'text-profit':(netCash<0?'text-loss':'')}`;
+                const hs = document.getElementById('headerStatus'), hst = document.getElementById('headerStatusText'); hs.classList.remove('hidden'); const dot = hs.querySelector('div');
+                if (net > 0) { dot.className = 'w-1.5 h-1.5 rounded-full bg-profit animate-pulse'; hst.textContent = 'PROFIT'; hst.className = 'text-profit text-tiny lg:text-sm'; }
+                else if (net < 0) { dot.className = 'w-1.5 h-1.5 rounded-full bg-loss animate-pulse'; hst.textContent = 'LOSS'; hst.className = 'text-loss text-tiny lg:text-sm'; }
+                else if (trades.length > 0) { dot.className = 'w-1.5 h-1.5 rounded-full bg-bep'; hst.textContent = 'BEP'; hst.className = 'text-bep text-tiny lg:text-sm'; }
+                else { dot.className = 'w-1.5 h-1.5 rounded-full bg-neutral'; hst.textContent = 'NO DATA'; hst.className = 'text-neutral text-tiny lg:text-sm'; }
+                document.getElementById('sumTotalTrades').textContent = st.total_trades || trades.length;
+                document.getElementById('sumWinRate').textContent = `${st.win_rate||0}%`;
+                document.getElementById('statAvgWin').textContent = formatShortCurrency(st.average_win||0);
+                document.getElementById('statAvgLoss').textContent = formatShortCurrency(st.average_loss||0);
+                document.getElementById('sumBalance').textContent = formatShortCurrency(s.ending_balance||s.balance||0);
+                document.getElementById('sumStartEquity').textContent = formatShortCurrency(state.dailyStartEquity);
+                const notes = data.notes || {}; document.getElementById('noteDaily').textContent = notes.daily_summary||'-'; document.getElementById('notePsych').textContent = notes.psychology||'-'; document.getElementById('noteStrategy').textContent = notes.strategy||'-';
+                document.getElementById('notesSection').classList.toggle('hidden', !(notes.daily_summary||notes.psychology||notes.strategy));
+            }
+
+            function renderTradeList() {
+                const tbody = document.getElementById('tradeTableBody'), mobile = document.getElementById('tradeMobileList'); tbody.innerHTML = ''; mobile.innerHTML = '';
+                if (state.filteredTrades.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="px-4 py-8 text-center text-gray-400 text-sm">Tidak ada trade.</td></tr>'; mobile.innerHTML = '<div class="p-8 text-center text-gray-400 text-sm">Tidak ada trade.</div>'; return; }
+                const startEq = state.dailyStartEquity || 1;
+                state.filteredTrades.forEach(t => {
+                    const isWin = t.result === 'WIN', isLoss = t.result === 'LOSS';
+                    const pnlColor = isWin ? 'text-profit' : (isLoss ? 'text-loss' : 'text-bep');
+                    const statusBadge = isWin ? 'bg-profit/10 text-profit border border-profit/20' : (isLoss ? 'bg-loss/10 text-loss border border-loss/20' : 'bg-bep/10 text-bep border border-bep/20');
+                    const typeColor = t.type === 'buy' ? 'text-blue-500' : 'text-purple-500';
+                    const pct = ((t.profit || 0) / startEq * 100);
+                    const pctColor = pct > 0 ? 'text-profit' : (pct < 0 ? 'text-loss' : 'text-bep');
+                    const pctStr = `${pct>=0?'+':''}${pct.toFixed(2)}%`;
+                    const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer"; tr.onclick = () => openTradeModal(t);
+                    tr.innerHTML = `<td class="px-3 lg:px-5 py-2.5 lg:py-3"><div class="font-medium text-sm">#${t.id}</div><div class="text-xxs text-gray-500">${t.time}</div></td><td class="px-3 lg:px-5 py-2.5 lg:py-3 font-semibold text-sm">${t.symbol}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 uppercase text-xs font-bold ${typeColor}">${t.type}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 text-sm">${t.lot}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 font-mono text-sm">${t.entry_price}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 font-mono text-sm">${t.exit_price}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 text-right font-bold ${pnlColor} text-sm">${formatCurrency(t.profit)}</td><td class="px-3 lg:px-5 py-2.5 lg:py-3 text-center"><span class="inline-block px-2 py-0.5 rounded-full text-xxs font-bold ${statusBadge}">${t.result}</span></td><td class="px-3 lg:px-5 py-2.5 lg:py-3 text-right font-mono text-xs font-medium ${pctColor}">${pctStr}</td>`;
+                    tbody.appendChild(tr);
+                    const card = document.createElement('div'); card.className = "p-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/40 transition cursor-pointer"; card.onclick = () => openTradeModal(t);
+                    card.innerHTML = `<div class="flex justify-between items-start mb-1.5"><div class="flex items-center gap-1.5 flex-wrap"><span class="uppercase text-xxs font-bold px-1.5 py-0.5 rounded ${t.type==='buy'?'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400':'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">${t.type}</span><span class="font-bold text-sm">${t.symbol}</span><span class="text-xxs text-gray-400">#${t.id}</span></div><span class="inline-block px-2 py-0.5 rounded-full text-xxs font-bold ${statusBadge}">${t.result}</span></div><div class="flex justify-between text-tiny text-gray-500 mb-1.5"><span>${t.time}</span><span class="font-bold ${pnlColor}">${formatCurrency(t.profit)} <span class="${pctColor}">(${pctStr})</span></span></div><div class="flex justify-between text-tiny font-mono bg-gray-50 dark:bg-gray-900 p-1.5 rounded-lg"><div>Entry: ${t.entry_price}</div><div>Exit: ${t.exit_price} (${t.lot}L)</div></div>`;
+                    mobile.appendChild(card);
+                });
+            }
+
+            function applyFilters() { if (!state.currentData) return; const term = document.getElementById('searchTrade').value.toLowerCase(), type = document.getElementById('filterType').value, result = document.getElementById('filterResult').value; state.filteredTrades = (state.currentData.trades||[]).filter(t => (t.symbol?.toLowerCase().includes(term)||t.id?.toString().includes(term)) && (type==='all'||t.type===type) && (result==='all'||t.result===result)); renderTradeList(); }
+
+            function renderActivityLog() {
+                const container = document.getElementById('activityLogContainer'), category = document.getElementById('filterActivityCategory').value, activities = state.currentData?.activity_history || [];
+                let filtered = category === 'all' ? activities : activities.filter(a => a.category === category); container.innerHTML = '';
+                if (filtered.length === 0) { container.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Tidak ada aktivitas.</div>'; return; }
+                filtered.forEach(act => {
+                    const cat = act.category; let icon='activity', colorClass='text-gray-400', bgClass='bg-gray-100 dark:bg-gray-800/40';
+                    if (cat==='trade'){icon='line-chart';colorClass='text-blue-500';bgClass='bg-blue-50 dark:bg-blue-900/15';}else if(cat==='deposit'){icon='arrow-down-circle';colorClass='text-green-500';bgClass='bg-green-50 dark:bg-green-900/15';}else if(cat==='withdraw'){icon='arrow-up-circle';colorClass='text-orange-500';bgClass='bg-orange-50 dark:bg-orange-900/15';}
+                    const desc = act.description||act.symbol||cat, amount = act.amount||act.profit_loss||0, amountColor = amount>0?'text-profit':(amount<0?'text-loss':'text-gray-600 dark:text-gray-300');
+                    container.innerHTML += `<div class="flex items-center gap-3 p-2.5 ${bgClass} rounded-xl"><div class="w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm"><i data-lucide="${icon}" class="w-4 h-4 ${colorClass}"></i></div><div class="flex-1 min-w-0"><div class="flex justify-between text-xs"><span class="font-medium truncate">${desc}</span><span class="font-bold ml-2 ${amountColor}">${formatCurrency(amount)}</span></div><div class="flex justify-between text-xxs text-gray-500 mt-0.5"><span>${act.time||''}</span><span class="uppercase">${cat}</span></div></div></div>`;
+                });
+                lucide.createIcons({ nodes: Array.from(container.querySelectorAll('[data-lucide]')) });
+            }
+
+            function renderCharts(forceRebuild = false, eq) {
+                const isDark = document.documentElement.classList.contains('dark'), textColor = isDark?'#9ca3af':'#4b5563', gridColor = isDark?'#374151':'#e5e7eb';
+                const ctxE = document.getElementById('equityChart')?.getContext('2d');
+                if (ctxE && eq) {
+                    let eqData = [eq.startEquity];
+                    eq.trades.forEach(t => eqData.push(t.equityAfterTrade));
+                    if (eqData.length === 1) eqData.push(eqData[0]);
+                    const labels = eqData.map((_,i) => i===0?'Start':(i===eqData.length-1?'End':`T${i}`));
+                    if (forceRebuild || !state.charts.equity) {
+                        if (state.charts.equity) state.charts.equity.destroy();
+                        const grad = ctxE.createLinearGradient(0,0,0,350);
+                        grad.addColorStop(0, 'rgba(16,185,129,0.12)'); grad.addColorStop(0.5, 'rgba(239,68,68,0.04)'); grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        state.charts.equity = new Chart(ctxE, {
+                            type:'line', data:{labels, datasets:[{label:'Equity',data:eqData,borderColor:'#10B981',backgroundColor:grad,borderWidth:2.5,tension:0.35,fill:true,pointRadius:window.innerWidth<640?2:4,pointBackgroundColor:isDark?'#111827':'#fff',pointBorderColor:'#10B981',segment:{borderColor:(ctx)=>{if(ctx.p0DataIndex===0)return'#10B981';return ctx.p0.parsed.y<=ctx.p1.parsed.y?'#10B981':'#EF4444';}}}]},
+                            options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},interaction:{mode:'nearest',axis:'x',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>formatCurrency(ctx.parsed.y)}},zoom:{pan:{enabled:true,mode:'x',modifierKey:null},zoom:{wheel:{enabled:true},pinch:{enabled:true},drag:{enabled:true,backgroundColor:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'},mode:'x'}}},scales:{y:{grid:{color:gridColor},ticks:{color:textColor,font:{size:window.innerWidth<640?8:11},callback:(v)=>'$'+v}},x:{grid:{display:false},ticks:{color:textColor,font:{size:window.innerWidth<640?7:10},maxTicksLimit:8}}}}
+                        });
+                    } else {
+                        const chart = state.charts.equity; chart.data.labels = labels; chart.data.datasets[0].data = eqData;
+                        chart.data.datasets[0].segment = { borderColor: (ctx) => { if(ctx.p0DataIndex===0)return'#10B981'; return ctx.p0.parsed.y<=ctx.p1.parsed.y?'#10B981':'#EF4444'; } };
+                        chart.update('none');
                     }
                 }
-            });
-        }
-
-        // === Navigation & Polling ===
-        function changeDate(delta) {
-            STATE.currentDate.setDate(STATE.currentDate.getDate() + delta);
-            const dateStr = toISODate(STATE.currentDate);
-            fetchData(dateStr);
-            checkNavButtons();
-        }
-        
-        function setDate(dateStr) {
-            STATE.currentDate = new Date(dateStr);
-            fetchData(dateStr);
-            checkNavButtons();
-            closeCalendarModal();
-        }
-
-        function checkNavButtons() {
-            const today = toISODate(new Date());
-            const curr = toISODate(STATE.currentDate);
-            const nextBtn = document.getElementById('next-date-btn');
-            if (curr >= today) {
-                nextBtn.classList.add('opacity-30', 'cursor-not-allowed');
-                nextBtn.disabled = true;
-            } else {
-                nextBtn.classList.remove('opacity-30', 'cursor-not-allowed');
-                nextBtn.disabled = false;
-            }
-        }
-
-        function filterTrades() {
-            if (STATE.data && STATE.data.trades) renderTradeList(STATE.data.trades);
-        }
-
-        // === Modal Trade ===
-        function openTradeModal(trade) {
-            const isBuy = trade.type.toLowerCase() === 'buy';
-            const isWin = trade.profit >= 0;
-            
-            document.getElementById('modal-trade-id').textContent = '#' + trade.id.split('-')[1];
-            document.getElementById('modal-trade-symbol').textContent = trade.symbol;
-            document.getElementById('modal-trade-time').textContent = trade.time;
-            
-            const icon = document.getElementById('modal-trade-icon');
-            icon.textContent = isBuy ? 'B' : 'S';
-            icon.className = `w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${isBuy ? 'bg-blue-500/20 text-blue-500' : 'bg-purple-500/20 text-purple-500'}`;
-            
-            document.getElementById('modal-trade-profit').textContent = fmtCurrency.format(trade.profit);
-            document.getElementById('modal-trade-profit').className = `font-bold text-xl ${isWin ? 'text-profit' : 'text-loss'}`;
-            
-            document.getElementById('modal-trade-pips').textContent = (trade.pips > 0 ? '+' : '') + trade.pips + ' pips';
-            document.getElementById('modal-trade-pips').className = `text-xs font-medium ${isWin ? 'text-profit' : 'text-loss'}`;
-            
-            document.getElementById('modal-trade-entry').textContent = trade.entry;
-            document.getElementById('modal-trade-exit').textContent = trade.exit;
-            document.getElementById('modal-trade-lot').textContent = trade.lot.toFixed(2);
-            document.getElementById('modal-trade-session').textContent = trade.session || '-';
-            
-            document.getElementById('trade-modal').classList.add('show');
-        }
-
-        function closeTradeModal() {
-            document.getElementById('trade-modal').classList.remove('show');
-        }
-
-        // === Calendar Modal ===
-        function toggleCalendar() {
-            const modal = document.getElementById('calendar-modal');
-            if (modal.classList.contains('show')) {
-                closeCalendarModal();
-            } else {
-                STATE.calViewDate = new Date(STATE.currentDate);
-                renderCalendar();
-                modal.classList.add('show');
-            }
-        }
-        
-        function closeCalendarModal() {
-            document.getElementById('calendar-modal').classList.remove('show');
-        }
-
-        function changeCalMonth(delta) {
-            STATE.calViewDate.setMonth(STATE.calViewDate.getMonth() + delta);
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const year = STATE.calViewDate.getFullYear();
-            const month = STATE.calViewDate.getMonth();
-            document.getElementById('cal-month-year').textContent = fmtMonthId.format(STATE.calViewDate);
-            
-            const container = document.getElementById('cal-days');
-            container.innerHTML = '';
-            
-            const firstDay = new Date(year, month, 1).getDay(); // 0=Sun, 1=Mon...
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const startOffset = firstDay === 0 ? 6 : firstDay - 1; // ID cal starts on Monday
-            
-            const todayStr = toISODate(new Date());
-            const currSelStr = toISODate(STATE.currentDate);
-
-            // Empty slots
-            for (let i = 0; i < startOffset; i++) {
-                container.innerHTML += `<div></div>`;
+                const ctxR = document.getElementById('resultChart')?.getContext('2d');
+                if (ctxR) {
+                    const trades = state.currentData?.trades || []; let w=0,l=0,be=0; trades.forEach(t=>{if(t.result==='WIN')w++;else if(t.result==='LOSS')l++;else be++;});
+                    document.getElementById('pieWin').textContent = w; document.getElementById('pieLoss').textContent = l; document.getElementById('pieBEP').textContent = be;
+                    if (forceRebuild || !state.charts.result) {
+                        if (state.charts.result) state.charts.result.destroy();
+                        state.charts.result = new Chart(ctxR, { type:'doughnut', data:{labels:['WIN','LOSS','BEP'],datasets:[{data:[w,l,be],backgroundColor:['#10B981','#EF4444','#F59E0B'],borderWidth:0}]}, options:{responsive:true,maintainAspectRatio:false,cutout:'65%',animation:{duration:400},plugins:{legend:{position:'bottom',labels:{color:textColor,padding:14,usePointStyle:true,font:{size:window.innerWidth<640?9:11}}}}} });
+                    } else { state.charts.result.data.datasets[0].data = [w,l,be]; state.charts.result.update('none'); }
+                }
             }
 
-            // Days
-            for (let i = 1; i <= daysInMonth; i++) {
-                const date = new Date(year, month, i);
-                const dStr = toISODate(date);
-                const isFuture = dStr > todayStr;
-                const isSelected = dStr === currSelStr;
-                
-                const dayEl = document.createElement('div');
-                dayEl.className = `cal-day ${isSelected ? 'active' : ''} ${isFuture ? 'disabled' : ''}`;
-                dayEl.textContent = i;
-                
-                if (!isFuture) {
-                    dayEl.onclick = () => setDate(dStr);
-                    // Add dot if cache exists
-                    if (STATE.cache[dStr]) {
-                        const res = STATE.cache[dStr].result;
-                        const dot = document.createElement('div');
-                        dot.className = `dot ${res === 'win' ? 'profit' : (res === 'loss' ? 'loss' : '')}`;
-                        dayEl.appendChild(dot);
+            function openTradeModal(trade) {
+                document.getElementById('modalTradeId').textContent=`#${trade.id}`; document.getElementById('modalSymbol').textContent=trade.symbol; document.getElementById('modalTime').textContent=trade.time;
+                const isWin=trade.result==='WIN',isLoss=trade.result==='LOSS',pnlColor=isWin?'text-profit':(isLoss?'text-loss':'text-bep'),badgeColor=isWin?'bg-profit':(isLoss?'bg-loss':'bg-bep');
+                document.getElementById('modalProfit').textContent=formatCurrency(trade.profit); document.getElementById('modalProfit').className=`text-lg lg:text-2xl font-bold ${pnlColor}`;
+                document.getElementById('modalResultBadge').className=`w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full ${badgeColor}`;
+                document.getElementById('modalStatusBadge').textContent=trade.result; document.getElementById('modalStatusBadge').className=`text-xxs px-2 py-0.5 rounded-full font-bold uppercase ${badgeColor==='bg-profit'?'bg-profit/10 text-profit border border-profit/20':(badgeColor==='bg-loss'?'bg-loss/10 text-loss border border-loss/20':'bg-bep/10 text-bep border border-bep/20')}`;
+                document.getElementById('modalType').textContent=trade.type; document.getElementById('modalLot').textContent=trade.lot;
+                document.getElementById('modalSwap').textContent=formatCurrency(trade.swap||0); document.getElementById('modalCommission').textContent=formatCurrency(trade.commission||0);
+                document.getElementById('modalSession').textContent=trade.session||'-'; document.getElementById('modalMarket').textContent=trade.market_type||'-'; document.getElementById('modalSource').textContent=trade.source||'-';
+                const modal=document.getElementById('tradeModal'),inner=modal.querySelector('div:nth-child(2)'); modal.classList.remove('hidden'); void modal.offsetWidth; modal.classList.remove('opacity-0'); inner.classList.remove('translate-y-full','md:translate-y-4'); inner.classList.add('translate-y-0'); window._currentModalTrade=trade;
+            }
+
+            function closeTradeModal() { const modal=document.getElementById('tradeModal'),inner=modal.querySelector('div:nth-child(2)'); modal.classList.add('opacity-0'); inner.classList.remove('translate-y-0'); inner.classList.add('translate-y-full','md:translate-y-4'); setTimeout(()=>modal.classList.add('hidden'),300); }
+            function copyTradeId() { if(window._currentModalTrade) navigator.clipboard.writeText(window._currentModalTrade.id).then(()=>showToast('Trade ID disalin','success')); }
+            function exportTradeDetail() { const trade=window._currentModalTrade; if(!trade)return; const t=`Trade ID: ${trade.id}\nTime: ${trade.time}\nSymbol: ${trade.symbol}\nType: ${trade.type}\nLot: ${trade.lot}\nEntry: ${trade.entry_price}\nExit: ${trade.exit_price}\nProfit: ${trade.profit}\nStatus: ${trade.result}`; const b=new Blob([t],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trade_${trade.id}.txt`; a.click(); showToast('Trade diexport','success'); }
+            function exportCSV() { if(!state.filteredTrades.length)return showToast('Tidak ada data','error'); let csv='ID,Time,Symbol,Type,Lot,Entry,Exit,Profit,Status,Percentage\n'; state.filteredTrades.forEach(t=>{const pct=((t.profit||0)/(state.dailyStartEquity||1)*100).toFixed(2); csv+=`${t.id},${t.time},${t.symbol},${t.type},${t.lot},${t.entry_price},${t.exit_price},${t.profit},${t.result},${pct}%\n`;}); const b=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trades_${state.selectedDateStr}.csv`; a.click(); showToast(`Diexport ${state.filteredTrades.length} trades`,'success'); }
+            function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.theme=document.documentElement.classList.contains('dark')?'dark':'light'; setTimeout(()=>{lucide.createIcons();if(state.currentData)renderCharts(true, state.continuousEquityCache);},150); }
+            function toggleMobileMenu(force) { const s=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay'); const t=force!==undefined?force:s.classList.contains('-translate-x-full'); if(t){s.classList.remove('-translate-x-full');o.classList.remove('hidden');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');} }
+            function jumpToPreviousTradingDay() { const d=new Date(state.currentDate); d.setDate(d.getDate()-1); selectDate(getDateStr(d)); }
+
+            async function selectDate(dateStr) {
+                if (state.isFetching) return; state.selectedDateStr = dateStr; const [y,m,d] = dateStr.split('-'); state.currentDate = new Date(+y,+m-1,+d);
+                state.continuousEquityCache = null;
+                renderCalendar(); document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(dateStr);
+                document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden');
+                document.getElementById('searchTrade').value = ''; document.getElementById('filterType').value = 'all'; document.getElementById('filterResult').value = 'all';
+                await refreshCurrentDate(); if (window.innerWidth < 1024) toggleMobileMenu(false);
+            }
+
+            async function fetchMonthCalendarData(year, month) { const days=new Date(year,month+1,0).getDate(); const ps=[]; for(let d=1;d<=days;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; if(state.calendarProfitData[ds]!==undefined)continue; ps.push(fetchDailyData(ds).catch(()=>{}));} await Promise.allSettled(ps); renderCalendar(); }
+
+            function renderCalendar() {
+                const grid = document.getElementById('calendarGrid');
+                const label = document.getElementById('calendarMonthYear');
+                const y = state.currentDate.getFullYear();
+                const m = state.currentDate.getMonth();
+                label.textContent = new Date(y, m).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                document.getElementById('monthSelect').value = m;
+                document.getElementById('yearSelect').value = y;
+                grid.innerHTML = '';
+                const firstDayOfMonth = new Date(y, m, 1);
+                const startDay = firstDayOfMonth.getDay();
+                const dim = new Date(y, m + 1, 0).getDate();
+                const offset = startDay === 0 ? 6 : startDay - 1;
+                for (let i = 0; i < offset; i++) grid.innerHTML += '<div></div>';
+                const todayStr = getTodayStr();
+                for (let i = 1; i <= dim; i++) {
+                    const dateObj = new Date(y, m, i);
+                    const ds = getDateStr(dateObj);
+                    const sel = ds === state.selectedDateStr;
+                    const isToday = ds === todayStr;
+                    const profit = state.calendarProfitData[ds];
+                    let dot = '';
+                    if (profit !== undefined) {
+                        const cls = profit > 0 ? 'bg-profit' : (profit < 0 ? 'bg-loss' : 'bg-bep');
+                        dot = `<div class="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full ${cls} mt-0.5 mx-auto"></div>`;
                     }
+                    const todayRing = isToday && !sel ? 'ring-1 ring-blue-400 dark:ring-blue-500' : '';
+                    grid.innerHTML += `<button onclick="selectDate('${ds}')" class="w-full aspect-square flex flex-col items-center justify-center rounded-lg transition text-tiny ${sel ? 'bg-blue-500 text-white font-bold shadow-md shadow-blue-500/30' : 'hover:bg-gray-200 dark:hover:bg-gray-800 ' + todayRing}">${i}${dot}</button>`;
                 }
-                
-                container.appendChild(dayEl);
             }
-        }
 
-        // === Polling & Utilities ===
-        function startPolling() {
-            if (STATE.pollingTimer) clearInterval(STATE.pollingTimer);
-            resetPollingBar();
-            STATE.pollingTimer = setInterval(() => {
-                const dateStr = toISODate(STATE.currentDate);
-                if (dateStr <= toISODate(new Date())) { // Only poll if not future
-                    fetchData(dateStr, true);
-                }
-            }, 30000); // 30 seconds
-        }
+            function populateYearSelect() { const s=document.getElementById('yearSelect'); const cy=new Date().getFullYear(); s.innerHTML=''; for(let y=cy-5;y<=cy+2;y++){s.innerHTML+=`<option value="${y}">${y}</option>`;} s.value=state.currentDate.getFullYear(); }
 
-        function resetPollingBar() {
-            const bar = document.getElementById('polling-bar');
-            bar.style.transition = 'none';
-            bar.style.width = '0%';
-            setTimeout(() => {
-                bar.style.transition = 'width 30s linear';
-                bar.style.width = '100%';
-            }, 50);
-        }
+            function hideSplash() { const s=document.getElementById('splashScreen'); s.classList.add('hidden-splash'); setTimeout(()=>{s.style.display='none';},500); }
 
-        function exportData() {
-            if (!STATE.data || !STATE.data.trades) {
-                showToast('Tidak ada data untuk di-export', 'error');
-                return;
+            document.getElementById('prevMonth').onclick = () => { state.currentDate.setMonth(state.currentDate.getMonth()-1); renderCalendar(); fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth()); };
+            document.getElementById('nextMonth').onclick = () => { state.currentDate.setMonth(state.currentDate.getMonth()+1); renderCalendar(); fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth()); };
+            document.getElementById('monthSelect').onchange = function() { state.currentDate.setMonth(+this.value); renderCalendar(); fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth()); };
+            document.getElementById('yearSelect').onchange = function() { state.currentDate.setFullYear(+this.value); renderCalendar(); fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth()); };
+            document.getElementById('jumpTodayBtn').onclick = () => selectDate(getTodayStr());
+            document.getElementById('autoRefreshToggle').onclick = toggleAutoRefresh;
+            document.getElementById('refreshNowBtn').onclick = () => refreshCurrentDate();
+            document.getElementById('exportCSVBtn').onclick = exportCSV;
+            document.getElementById('closeModalBtn').onclick = closeTradeModal;
+            document.getElementById('tradeModalBackdrop').onclick = closeTradeModal;
+            document.getElementById('searchTrade').oninput = applyFilters;
+            document.getElementById('filterType').onchange = applyFilters;
+            document.getElementById('filterResult').onchange = applyFilters;
+            document.getElementById('filterActivityCategory').onchange = renderActivityLog;
+            document.getElementById('themeToggle').onclick = toggleTheme;
+            document.getElementById('themeToggleMobile').onclick = toggleTheme;
+            document.getElementById('mobileMenuBtn').onclick = () => toggleMobileMenu();
+            document.getElementById('sidebarOverlay').onclick = () => toggleMobileMenu(false);
+            document.getElementById('copyTradeIdBtn').onclick = copyTradeId;
+            document.getElementById('exportTradeBtn').onclick = exportTradeDetail;
+            window.selectDate = selectDate; window.openTradeModal = openTradeModal; window.refreshCurrentDate = refreshCurrentDate; window.getTodayStr = getTodayStr; window.jumpToPreviousTradingDay = jumpToPreviousTradingDay;
+            window.addEventListener('resize', () => { if (state.currentData) renderCharts(true, state.continuousEquityCache); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTradeModal(); });
+
+            async function init() {
+                document.getElementById('footerYear').textContent = new Date().getFullYear();
+                populateYearSelect();
+                lucide.createIcons();
+                if (localStorage.theme === 'light') document.documentElement.classList.remove('dark');
+                if (state.autoRefreshEnabled) { document.getElementById('autoRefreshToggle').classList.remove('bg-gray-300','dark:bg-gray-600'); document.getElementById('autoRefreshToggle').classList.add('bg-profit'); document.getElementById('autoRefreshKnob').classList.add('translate-x-5'); document.getElementById('countdownDisplay').classList.remove('hidden'); }
+                state.selectedDateStr = getTodayStr(); const [y,m,d] = state.selectedDateStr.split('-'); state.currentDate = new Date(+y,+m-1,+d);
+                renderCalendar(); document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(state.selectedDateStr);
+                await refreshCurrentDate(); fetchMonthCalendarData(state.currentDate.getFullYear(), state.currentDate.getMonth());
+                startAutoRefresh(); setTimeout(hideSplash, 800);
             }
-            const trades = STATE.data.trades;
-            let csv = "ID,Waktu,Simbol,Tipe,Lot,Entry,Exit,Pips,Profit,Sesi,Hasil\n";
-            trades.forEach(t => {
-                csv += `${t.id},${t.time},${t.symbol},${t.type},${t.lot},${t.entry},${t.exit},${t.pips},${t.profit},${t.session||''},${t.result}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Jurnal_YanaMiku_${toISODate(STATE.currentDate)}.csv`;
-            a.click();
-            showToast('Data CSV berhasil diunduh', 'success');
-        }
-
-        // Keyboard Shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || document.getElementById('trade-modal').classList.contains('show')) return;
-            if (e.key === 'ArrowLeft') changeDate(-1);
-            if (e.key === 'ArrowRight' && toISODate(STATE.currentDate) < toISODate(new Date())) changeDate(1);
-            if (e.key.toLowerCase() === 't') toggleTheme();
-            if (e.key.toLowerCase() === 'r') fetchData(toISODate(STATE.currentDate), false);
-            if (e.key.toLowerCase() === 's') { e.preventDefault(); document.getElementById('search-trade').focus(); }
-            if (e.key === 'Escape') { closeTradeModal(); closeCalendarModal(); }
-        });
-
-        // Initialize
-        applyTheme();
-        checkNavButtons();
-        fetchData(toISODate(STATE.currentDate));
-        startPolling();
-
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+            window.addEventListener('beforeunload', stopAutoRefresh);
+        })();
     </script>
 </body>
 </html>
