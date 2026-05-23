@@ -388,9 +388,8 @@ Private Use Only - Designed by YanaMiku
 ## 📞 Kontak & Support
 
 Untuk pertanyaan, saran, atau laporan bug:
-- GitHub Issues: [Repository Link]
-- Email: [Contact Email]
-- Telegram: [Group Link]
+- GitHub Issues: [ ISSUES ](https://github.com/YanaMiku/jurnal/issues)
+- WhatsApp: [ Contact ](https://wa.me/6285793589243)
 
 ---
 
