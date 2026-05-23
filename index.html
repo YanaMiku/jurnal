@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Trading Journal Pro · Dashboard</title>
-    <meta name="description" content="Trading Journal Pro — Dashboard performa trading harian real-time dengan kurva ekuitas berkelanjutan.">
+    <meta name="description" content="Trading Journal Pro — Dashboard performa trading harian real-time. Dirancang oleh YanaMiku.">
     <meta name="keywords" content="trading journal, jurnal trading, forex journal, gold trading, xauusd, equity curve">
     <meta name="author" content="YanaMiku">
     <meta name="theme-color" content="#0B0F19">
@@ -101,7 +101,6 @@
         </div>
     </div>
 
-    <!-- Loading Overlay untuk navigasi kalender -->
     <div id="calendarLoadingOverlay" class="fixed inset-0 z-[998] flex items-center justify-center bg-white/70 dark:bg-dark-bg/70 backdrop-blur-sm hidden transition-opacity duration-300">
         <div class="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3 animate-fade-in">
             <div class="w-10 h-10 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
@@ -129,7 +128,7 @@
                     <select id="yearSelect" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-tiny focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none flex-1"></select>
                     <button id="jumpTodayBtn" class="px-2 py-1 bg-blue-100 dark:bg-blue-900/25 text-blue-700 dark:text-blue-400 rounded-lg text-tiny font-medium hover:bg-blue-200 dark:hover:bg-blue-900/45 transition">Today</button>
                 </div>
-                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium"><div>Ming</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
+                <div class="grid grid-cols-7 gap-0.5 text-center text-tiny text-gray-400 dark:text-gray-500 mb-1.5 font-medium"><div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div></div>
                 <div id="calendarGrid" class="grid grid-cols-7 gap-0.5 text-tiny"></div>
                 <div class="flex items-center justify-center gap-3 mt-3 text-tiny text-gray-400 dark:text-gray-500"><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-profit"></div>Win</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-loss"></div>Loss</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-bep"></div>BEP</div><div class="flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-neutral"></div>-</div></div>
             </div>
@@ -151,10 +150,10 @@
 
     <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-dark-bg">
         <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-dark-border glass-header sticky top-0 z-20 items-center justify-between">
-            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Continuous Equity Dashboard</p></div></div>
+            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div></div>
             <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div></div>
         </header>
-        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Continuous Equity Dashboard</p></div>
+        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div>
 
         <div class="flex-1 overflow-y-auto p-2 lg:p-6" id="mainContentArea">
             <div id="loadingState" class="hidden space-y-3 lg:space-y-5">
@@ -192,7 +191,7 @@
                     <div class="bg-white dark:bg-dark-card p-2 lg:p-3 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium text-center"><p class="text-xxs lg:text-xs text-gray-500">Start Eq.</p><p class="font-bold text-sm lg:text-lg" id="sumStartEquity">$0</p></div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-5">
-                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium lg:col-span-2"><div class="flex justify-between items-center mb-2 lg:mb-4"><h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Kurva Ekuitas Berkelanjutan</h3><span class="text-xxs text-gray-400">Pinch 2 jari untuk zoom</span></div><div class="chart-container h-40 lg:h-64"><canvas id="equityChart"></canvas></div></div>
+                    <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium lg:col-span-2"><div class="flex justify-between items-center mb-2 lg:mb-4"><h3 class="font-semibold text-xs lg:text-sm flex items-center gap-1.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Kurva Ekuitas</h3><span class="text-xxs text-gray-400">Pinch 2 jari untuk zoom</span></div><div class="chart-container h-40 lg:h-64"><canvas id="equityChart"></canvas></div></div>
                     <div class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium"><h3 class="font-semibold text-xs lg:text-sm mb-2 lg:mb-4 flex items-center gap-1.5"><i data-lucide="pie-chart" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Distribusi Hasil</h3><div class="h-32 lg:h-48 relative w-full flex justify-center"><canvas id="resultChart"></canvas></div><div class="mt-2 lg:mt-4 grid grid-cols-3 gap-1 lg:gap-2 text-xxs lg:text-xs"><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-profit font-semibold">Win<br><span id="pieWin">0</span></div><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-loss font-semibold">Loss<br><span id="pieLoss">0</span></div><div class="bg-gray-50 dark:bg-gray-800/60 p-1.5 lg:p-2 rounded-lg text-center text-bep font-semibold">BEP<br><span id="pieBEP">0</span></div></div></div>
                 </div>
                 <div id="notesSection" class="bg-white dark:bg-dark-card p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-gray-100 dark:border-dark-border shadow-sm card-premium hidden"><h3 class="font-semibold text-xs lg:text-sm mb-3 flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500"></i> Catatan Harian</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Ringkasan</p><p class="text-sm font-medium" id="noteDaily">-</p></div><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Psikologi</p><p class="text-sm font-medium" id="notePsych">-</p></div><div class="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl"><p class="text-xxs text-gray-500 uppercase mb-1">Strategi</p><p class="text-sm font-medium" id="noteStrategy">-</p></div></div></div>
@@ -211,7 +210,7 @@
         </div>
 
         <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
-            <div class="flex items-center gap-2"><span class="hidden lg:inline">Trading Journal Pro — Continuous Equity</span><span class="lg:hidden text-tiny">TradeJournal Pro</span><span class="text-gray-300 dark:text-gray-600">|</span><span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span></div>
+            <div class="flex items-center gap-2"><span class="hidden lg:inline">Trading Journal Pro — Real-time Dashboard</span><span class="lg:hidden text-tiny">TradeJournal Pro</span><span class="text-gray-300 dark:text-gray-600">|</span><span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span></div>
             <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span></div>
         </footer>
     </main>
@@ -236,7 +235,6 @@
             const CONFIG = {
                 DATA_BASE_URL: 'https://raw.githubusercontent.com/YanaMiku/jurnal/refs/heads/main/database/json/',
                 AUTO_REFRESH_INTERVAL: 30000,
-                MAX_HISTORY_DAYS: 90
             };
             const state = {
                 currentDate: new Date(),
@@ -251,7 +249,6 @@
                 isFetching: false,
                 calendarProfitData: {},
                 dailyStartEquity: 0,
-                continuousEquityCache: null
             };
 
             const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(val);
@@ -260,7 +257,6 @@
             const formatTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const getTodayStr = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
             const getDateStr = (date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
-            const getPreviousDateStr = (dateStr) => { const [y,m,d] = dateStr.split('-'); const prev = new Date(+y, +m-1, +d); prev.setDate(prev.getDate()-1); return getDateStr(prev); };
 
             function showToast(message, type = 'success') {
                 const container = document.getElementById('toast-container'); const toast = document.createElement('div');
@@ -309,52 +305,6 @@
                 overlay.classList.add('hidden');
             }
 
-            async function calculateContinuousEquity(targetDateStr) {
-                if (state.continuousEquityCache && state.continuousEquityCache.target === targetDateStr) return state.continuousEquityCache;
-                let cursor = targetDateStr;
-                let equity = 0;
-                let foundStart = false;
-                const visited = new Set();
-                for (let i = 0; i < CONFIG.MAX_HISTORY_DAYS; i++) {
-                    if (visited.has(cursor)) break;
-                    visited.add(cursor);
-                    const data = await fetchDailyData(cursor);
-                    if (data) {
-                        const deposits = data.deposits || [];
-                        const withdrawals = data.withdrawals || [];
-                        const trades = data.trades || [];
-                        const totalDeposit = deposits.reduce((a,d) => a + (d.amount||0), 0);
-                        const totalWithdraw = withdrawals.reduce((a,w) => a + (w.amount||0), 0);
-                        const tradingProfit = trades.reduce((a,t) => a + (t.profit||0), 0);
-                        if (!foundStart) {
-                            equity = (data.account_summary?.starting_balance || 0) + totalDeposit - totalWithdraw + tradingProfit;
-                            foundStart = true;
-                        } else {
-                            equity = equity + totalDeposit - totalWithdraw + tradingProfit;
-                        }
-                    }
-                    const prev = getPreviousDateStr(cursor);
-                    if (prev === cursor) break;
-                    cursor = prev;
-                }
-                if (!foundStart) equity = 0;
-                const result = { target: targetDateStr, startEquity: equity, trades: [] };
-                const currentData = await fetchDailyData(targetDateStr);
-                if (currentData && currentData.trades) {
-                    let running = equity;
-                    result.trades = currentData.trades.map(t => {
-                        const tradeEquity = running;
-                        running += (t.profit || 0);
-                        return { ...t, equityAtTrade: tradeEquity, equityAfterTrade: running };
-                    });
-                    result.endEquity = running;
-                } else {
-                    result.endEquity = equity;
-                }
-                state.continuousEquityCache = result;
-                return result;
-            }
-
             function startAutoRefresh() {
                 if (state.refreshIntervalId) clearInterval(state.refreshIntervalId);
                 if (state.countdownIntervalId) clearInterval(state.countdownIntervalId);
@@ -381,7 +331,6 @@
                 if (state.isFetching) return; state.isFetching = true;
                 if (!silent) { document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden'); }
                 try {
-                    state.continuousEquityCache = null;
                     const data = await fetchDailyData(state.selectedDateStr);
                     const prevData = state.currentData; state.currentData = data;
                     if (!silent) document.getElementById('loadingState').classList.add('hidden');
@@ -389,11 +338,10 @@
                         document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
                         document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
                     } else {
-                        const eq = await calculateContinuousEquity(state.selectedDateStr);
-                        state.dailyStartEquity = eq.startEquity;
+                        state.dailyStartEquity = data.account_summary?.starting_balance || 0;
                         if (document.getElementById('dataContent').classList.contains('hidden')) {
-                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data, eq);
-                        } else incrementalUpdate(data, prevData, eq);
+                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data);
+                        } else incrementalUpdate(data, prevData);
                     }
                     document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`; document.getElementById('lastUpdatedTime').classList.remove('hidden'); renderCalendar();
                 } catch (e) { if (!silent) { document.getElementById('loadingState').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden'); document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); } }
@@ -405,29 +353,27 @@
                 try {
                     const data = await fetchDailyData(state.selectedDateStr);
                     if (!data && state.currentData) return;
-                    state.continuousEquityCache = null;
-                    const eq = await calculateContinuousEquity(state.selectedDateStr);
-                    state.dailyStartEquity = eq.startEquity;
+                    state.dailyStartEquity = data?.account_summary?.starting_balance || 0;
                     const prevData = state.currentData; state.currentData = data;
                     if (!data || (!data.trades && !data.deposits && !data.withdrawals)) {
                         document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.remove('hidden');
                         document.getElementById('emptyDateDisplay').textContent = formatDisplayDate(state.selectedDateStr); document.getElementById('headerStatus').classList.add('hidden');
                     } else {
                         if (document.getElementById('dataContent').classList.contains('hidden')) {
-                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data, eq);
-                        } else incrementalUpdate(data, prevData, eq);
+                            document.getElementById('dataContent').classList.remove('hidden'); document.getElementById('emptyState').classList.add('hidden'); fullUpdate(data);
+                        } else incrementalUpdate(data, prevData);
                     }
                     document.getElementById('lastUpdatedTime').textContent = `Update: ${formatTime()}`; document.getElementById('lastUpdatedTime').classList.remove('hidden'); renderCalendar();
                 } catch (e) {} finally { state.isFetching = false; }
             }
 
-            function fullUpdate(data, eq) { updateDashboard(data, eq); state.filteredTrades = [...(data.trades || [])]; renderTradeList(); renderActivityLog(); renderCharts(true, eq); }
-            function incrementalUpdate(newData, oldData, eq) {
-                if (JSON.stringify(newData.account_summary) !== JSON.stringify(oldData?.account_summary) || JSON.stringify(newData.statistics) !== JSON.stringify(oldData?.statistics) || JSON.stringify(newData.deposits) !== JSON.stringify(oldData?.deposits) || JSON.stringify(newData.withdrawals) !== JSON.stringify(oldData?.withdrawals) || JSON.stringify(newData.notes) !== JSON.stringify(oldData?.notes)) updateDashboard(newData, eq);
-                if (JSON.stringify(newData.trades) !== JSON.stringify(oldData?.trades)) { state.filteredTrades = [...(newData.trades || [])]; applyFilters(); renderActivityLog(); renderCharts(false, eq); }
+            function fullUpdate(data) { updateDashboard(data); state.filteredTrades = [...(data.trades || [])]; renderTradeList(); renderActivityLog(); renderCharts(true); }
+            function incrementalUpdate(newData, oldData) {
+                if (JSON.stringify(newData.account_summary) !== JSON.stringify(oldData?.account_summary) || JSON.stringify(newData.statistics) !== JSON.stringify(oldData?.statistics) || JSON.stringify(newData.deposits) !== JSON.stringify(oldData?.deposits) || JSON.stringify(newData.withdrawals) !== JSON.stringify(oldData?.withdrawals) || JSON.stringify(newData.notes) !== JSON.stringify(oldData?.notes)) updateDashboard(newData);
+                if (JSON.stringify(newData.trades) !== JSON.stringify(oldData?.trades)) { state.filteredTrades = [...(newData.trades || [])]; applyFilters(); renderActivityLog(); renderCharts(false); }
             }
 
-            function updateDashboard(data, eq) {
+            function updateDashboard(data) {
                 const s = data.account_summary || {}, st = data.statistics || {}, trades = data.trades || [], deposits = data.deposits || [], withdrawals = data.withdrawals || [];
                 const wins = trades.filter(t => t.result === 'WIN'), losses = trades.filter(t => t.result === 'LOSS'), beps = trades.filter(t => t.result === 'BEP');
                 const winTotal = wins.reduce((a,t) => a+(t.profit||0),0), lossTotal = losses.reduce((a,t) => a+(t.profit||0),0), bepTotal = beps.reduce((a,t) => a+(t.profit||0),0);
@@ -492,24 +438,32 @@
                 lucide.createIcons({ nodes: Array.from(container.querySelectorAll('[data-lucide]')) });
             }
 
-            function renderCharts(forceRebuild = false, eq) {
+            function renderCharts(forceRebuild = false) {
                 const isDark = document.documentElement.classList.contains('dark'), textColor = isDark?'#9ca3af':'#4b5563', gridColor = isDark?'#374151':'#e5e7eb';
                 const ctxE = document.getElementById('equityChart')?.getContext('2d');
-                if (ctxE && eq) {
-                    let eqData = [eq.startEquity];
-                    eq.trades.forEach(t => eqData.push(t.equityAfterTrade));
-                    if (eqData.length === 1) eqData.push(eqData[0]);
-                    const labels = eqData.map((_,i) => i===0?'Start':(i===eqData.length-1?'End':`T${i}`));
+                if (ctxE) {
+                    let eqData = state.currentData?.chart_data?.equity_curve;
+                    if (!eqData && state.currentData?.trades) {
+                        let eq = state.currentData.account_summary?.starting_balance || 0;
+                        eqData = [eq];
+                        state.currentData.trades.forEach(t => { eq += (t.profit || 0); eqData.push(eq); });
+                    }
+                    if (!eqData || eqData.length === 0) eqData = [state.dailyStartEquity || 0];
+                    const labels = eqData.map((_,i) => i===0?'Start':`T${i}`);
                     if (forceRebuild || !state.charts.equity) {
                         if (state.charts.equity) state.charts.equity.destroy();
+                        const eqColor = eqData[eqData.length-1] >= eqData[0] ? '#10B981' : '#EF4444';
                         const grad = ctxE.createLinearGradient(0,0,0,350);
-                        grad.addColorStop(0, 'rgba(16,185,129,0.12)'); grad.addColorStop(0.5, 'rgba(239,68,68,0.04)'); grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        grad.addColorStop(0, eqColor==='#10B981'?'rgba(16,185,129,0.18)':'rgba(239,68,68,0.18)');
+                        grad.addColorStop(1, 'rgba(0,0,0,0)');
                         state.charts.equity = new Chart(ctxE, {
-                            type:'line', data:{labels, datasets:[{label:'Equity',data:eqData,borderColor:'#10B981',backgroundColor:grad,borderWidth:2.5,tension:0.35,fill:true,pointRadius:window.innerWidth<640?2:4,pointBackgroundColor:isDark?'#111827':'#fff',pointBorderColor:'#10B981',segment:{borderColor:(ctx)=>{if(ctx.p0DataIndex===0)return'#10B981';return ctx.p0.parsed.y<=ctx.p1.parsed.y?'#10B981':'#EF4444';}}}]},
+                            type:'line', data:{labels, datasets:[{label:'Equity',data:eqData,borderColor:eqColor,backgroundColor:grad,borderWidth:2.5,tension:0.35,fill:true,pointRadius:window.innerWidth<640?2:4,pointBackgroundColor:isDark?'#111827':'#fff',pointBorderColor:eqColor,segment:{borderColor:(ctx)=>{if(ctx.p0DataIndex===0)return'#10B981';return ctx.p0.parsed.y<=ctx.p1.parsed.y?'#10B981':'#EF4444';}}}]},
                             options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},interaction:{mode:'nearest',axis:'x',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>formatCurrency(ctx.parsed.y)}},zoom:{pan:{enabled:true,mode:'x',modifierKey:null},zoom:{wheel:{enabled:true},pinch:{enabled:true},drag:{enabled:true,backgroundColor:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'},mode:'x'}}},scales:{y:{grid:{color:gridColor},ticks:{color:textColor,font:{size:window.innerWidth<640?8:11},callback:(v)=>'$'+v}},x:{grid:{display:false},ticks:{color:textColor,font:{size:window.innerWidth<640?7:10},maxTicksLimit:8}}}}
                         });
                     } else {
                         const chart = state.charts.equity; chart.data.labels = labels; chart.data.datasets[0].data = eqData;
+                        const eqColor = eqData[eqData.length-1] >= eqData[0] ? '#10B981' : '#EF4444';
+                        chart.data.datasets[0].borderColor = eqColor; chart.data.datasets[0].pointBorderColor = eqColor;
                         chart.data.datasets[0].segment = { borderColor: (ctx) => { if(ctx.p0DataIndex===0)return'#10B981'; return ctx.p0.parsed.y<=ctx.p1.parsed.y?'#10B981':'#EF4444'; } };
                         chart.update('none');
                     }
@@ -541,7 +495,7 @@
             function copyTradeId() { if(window._currentModalTrade) navigator.clipboard.writeText(window._currentModalTrade.id).then(()=>showToast('Trade ID disalin','success')); }
             function exportTradeDetail() { const trade=window._currentModalTrade; if(!trade)return; const t=`Trade ID: ${trade.id}\nTime: ${trade.time}\nSymbol: ${trade.symbol}\nType: ${trade.type}\nLot: ${trade.lot}\nEntry: ${trade.entry_price}\nExit: ${trade.exit_price}\nProfit: ${trade.profit}\nStatus: ${trade.result}`; const b=new Blob([t],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trade_${trade.id}.txt`; a.click(); showToast('Trade diexport','success'); }
             function exportCSV() { if(!state.filteredTrades.length)return showToast('Tidak ada data','error'); let csv='ID,Time,Symbol,Type,Lot,Entry,Exit,Profit,Status,Percentage\n'; state.filteredTrades.forEach(t=>{const pct=((t.profit||0)/(state.dailyStartEquity||1)*100).toFixed(2); csv+=`${t.id},${t.time},${t.symbol},${t.type},${t.lot},${t.entry_price},${t.exit_price},${t.profit},${t.result},${pct}%\n`;}); const b=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`trades_${state.selectedDateStr}.csv`; a.click(); showToast(`Diexport ${state.filteredTrades.length} trades`,'success'); }
-            function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.theme=document.documentElement.classList.contains('dark')?'dark':'light'; setTimeout(()=>{lucide.createIcons();if(state.currentData)renderCharts(true, state.continuousEquityCache);},150); }
+            function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.theme=document.documentElement.classList.contains('dark')?'dark':'light'; setTimeout(()=>{lucide.createIcons();if(state.currentData)renderCharts(true);},150); }
             function toggleMobileMenu(force) { const s=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay'); const t=force!==undefined?force:s.classList.contains('-translate-x-full'); if(t){s.classList.remove('-translate-x-full');o.classList.remove('hidden');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');} }
             function jumpToPreviousTradingDay() { const d=new Date(state.currentDate); d.setDate(d.getDate()-1); selectDate(getDateStr(d)); }
 
@@ -549,7 +503,6 @@
                 if (state.isFetching) return;
                 await showCalendarLoading();
                 state.selectedDateStr = dateStr; const [y,m,d] = dateStr.split('-'); state.currentDate = new Date(+y,+m-1,+d);
-                state.continuousEquityCache = null;
                 renderCalendar(); document.getElementById('selectedDateTitleMobile').textContent = formatDisplayDate(dateStr);
                 document.getElementById('loadingState').classList.remove('hidden'); document.getElementById('dataContent').classList.add('hidden'); document.getElementById('emptyState').classList.add('hidden');
                 document.getElementById('searchTrade').value = ''; document.getElementById('filterType').value = 'all'; document.getElementById('filterResult').value = 'all';
@@ -624,7 +577,7 @@
             document.getElementById('copyTradeIdBtn').onclick = copyTradeId;
             document.getElementById('exportTradeBtn').onclick = exportTradeDetail;
             window.selectDate = selectDate; window.openTradeModal = openTradeModal; window.refreshCurrentDate = refreshCurrentDate; window.getTodayStr = getTodayStr; window.jumpToPreviousTradingDay = jumpToPreviousTradingDay;
-            window.addEventListener('resize', () => { if (state.currentData) renderCharts(true, state.continuousEquityCache); });
+            window.addEventListener('resize', () => { if (state.currentData) renderCharts(true); });
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTradeModal(); });
 
             async function init() {
