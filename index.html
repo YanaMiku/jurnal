@@ -20,8 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -48,12 +47,9 @@
             },
         };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js">
-    </script>
-    <script src="https://unpkg.com/lucide@latest">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * { -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -143,7 +139,7 @@
                 <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center"><span class="text-sm">Tema</span><button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button></div>
             </div>
         </div>
-        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v3.0</p></div>
+        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v3.1</p></div>
     </aside>
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
@@ -167,7 +163,7 @@
                 <div class="relative mb-6"><div class="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-gray-100 dark:bg-gray-800/40 flex items-center justify-center animate-float"><i data-lucide="calendar-search" class="w-12 h-12 lg:w-16 lg:h-16 text-gray-300 dark:text-gray-600"></i></div><div class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-dark-surface shadow-md flex items-center justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-blue-500"></i></div></div>
                 <h3 class="text-lg lg:text-xl font-bold mb-2">No Trading Activity</h3><p class="text-sm text-gray-500 dark:text-gray-400 max-w-xs lg:max-w-sm">Tidak ada catatan trading untuk tanggal ini.</p>
                 <div class="mt-4 text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800/30 px-4 py-2 rounded-full"><span id="emptyDateDisplay"></span></div>
-                <div class="flex gap-3 mt-6"><button onclick="selectDate(getTodayStr())" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-blue-500/20 flex items-center gap-2"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Hari Ini</button><button onclick="jumpToPreviousTradingDay()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-sm font-medium transition flex items-center gap-2"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Hari Sebelumnya</button></div>
+                <div class="flex gap-3 mt-6"><button onclick="window.selectDate && selectDate(getTodayStr())" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-blue-500/20 flex items-center gap-2"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Hari Ini</button><button onclick="window.jumpToPreviousTradingDay && jumpToPreviousTradingDay()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-sm font-medium transition flex items-center gap-2"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Hari Sebelumnya</button></div>
             </div>
 
             <div id="dataContent" class="hidden space-y-3 lg:space-y-5 fade-in">
@@ -529,12 +525,16 @@
                 document.getElementById('yearSelect').value = y;
                 grid.innerHTML = '';
                 const firstDayOfMonth = new Date(y, m, 1);
-                const startDay = firstDayOfMonth.getDay();
-                const dim = new Date(y, m + 1, 0).getDate();
-                const offset = startDay === 0 ? 6 : startDay - 1;
-                for (let i = 0; i < offset; i++) grid.innerHTML += '<div></div>';
+                // FIX: getDay() returns 0=Sunday, 1=Monday, ..., 6=Saturday
+                // Header grid dimulai dari Minggu (Min), jadi offset = firstDayOfMonth.getDay()
+                const offset = firstDayOfMonth.getDay();
+                const daysInMonth = new Date(y, m + 1, 0).getDate();
+                // Fill empty cells before first day of month
+                for (let i = 0; i < offset; i++) {
+                    grid.innerHTML += '<div class="opacity-30"></div>';
+                }
                 const todayStr = getTodayStr();
-                for (let i = 1; i <= dim; i++) {
+                for (let i = 1; i <= daysInMonth; i++) {
                     const dateObj = new Date(y, m, i);
                     const ds = getDateStr(dateObj);
                     const sel = ds === state.selectedDateStr;
