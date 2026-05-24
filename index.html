@@ -13,10 +13,19 @@
     <meta property="og:description" content="Dashboard performa trading harian real-time.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="id_ID">
+    
+    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="TradeJournal">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2'><polyline points='22 7 13.5 15.5 8.5 10.5 2 17'/><polyline points='16 7 22 7 22 13'/></svg>">
+    <meta name="application-name" content="Trading Journal Pro">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons untuk PWA -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGwSURBVHgB7Zc9T8JAGMefUt+KCy5OJn6AEEfnJj+AjI5O/AQmfgJmfgJmfgJmfgJmfgJmfgLUD2DiwpKJ0R9gLaFp27s+99IWTGjSXtqk7f2T3j3X+/W5l2sLx3EcJ5NKpVKavwvBYDBo1o1heuFyuZz/HMDpdKp0Oh3uQyZKKpVKzRo1EIlEeJzHmM6gZwIymQwXwFcqlWl3DYRCIcMw1uk0mUy+0y+JRCJ/EAYCgS81lZMTi8V4PBwOL3w+n/UmAcFgkMfD4TDLsjz/ggsEAk+hUIjZbPZ1ypRSqRT3+XyfnHhMy+fzPklCWVbQNM3Uhff5fM9kNptlkUhEURQWF0+n02nKJmmi6zobDAanUxAaZhiGKYrCUuG2/TqdTlclSImiKNzr9bKUxCmPx3MdDAYjeqZQKLCqqrJ8Pq+qqspDoZBZqSVJYtVqlTmOwwKBgCmqqvJIJCKkUqlv+lQURZZKpVi1WmUul4t1u92W+XxeCIVCYjab/ZKwKIpMURQml8syKpVKc3m9XuZ2u1k8Hv/qg2EYLJPJMFmWmVQqZTYWjUaZJEnM6/V+6HpmsR8KhRjLsizhcDjm+2WgKIo0Go3M/QtGvhNbG8gYwQAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><polyline points='22 7 13.5 15.5 8.5 10.5 2 17'/><polyline points='16 7 22 7 22 13'/></svg>">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -89,6 +98,16 @@
         .performance-badge { position: relative; overflow: hidden; }
         .performance-badge::after { content: ''; position: absolute; top: -50%; left: -60%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg); animation: shine 3s infinite; }
         @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        
+        /* PWA Install Button Style */
+        .install-button {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            transition: all 0.3s ease;
+        }
+        .install-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+        }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden">
@@ -102,6 +121,7 @@
             <div class="text-center"><h2 class="text-lg font-bold tracking-tight">Trading Journal Pro</h2><p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Dashboard performa harian</p></div>
             <div class="flex gap-1.5 mt-2"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
             <p class="text-xxs text-gray-400 mt-4">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></p>
+            <p class="text-xxs text-blue-500 mt-2">✨ Dapat diinstall sebagai Aplikasi ✨</p>
         </div>
     </div>
 
@@ -109,6 +129,21 @@
         <div class="bg-white dark:bg-dark-surface rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3 animate-fade-in">
             <div class="w-10 h-10 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
             <p class="text-sm font-medium">Memuat data...</p>
+        </div>
+    </div>
+
+    <!-- PWA Install Prompt (Mobile) -->
+    <div id="pwaInstallPrompt" class="fixed bottom-20 left-4 right-4 z-50 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border p-4 transform transition-transform duration-300 translate-y-full lg:hidden">
+        <div class="flex items-start gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg flex-shrink-0"><i data-lucide="line-chart" class="w-6 h-6 text-white"></i></div>
+            <div class="flex-1">
+                <h4 class="font-bold text-sm">Install Aplikasi</h4>
+                <p class="text-xxs text-gray-500 mt-0.5">Install Trading Journal Pro di home screen untuk akses cepat</p>
+                <div class="flex gap-2 mt-3">
+                    <button id="installPWA" class="install-button flex-1 py-2 rounded-xl text-white text-xs font-medium">Install</button>
+                    <button id="dismissInstall" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-xs">Nanti</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -149,20 +184,22 @@
                     <button id="exportJSONBtn" class="py-2.5 px-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs"><i data-lucide="code" class="w-3.5 h-3.5"></i> JSON</button>
                     <button id="refreshNowBtn" class="py-2.5 px-2 bg-blue-100 dark:bg-blue-900/25 hover:bg-blue-200 dark:hover:bg-blue-900/45 rounded-xl flex items-center justify-center gap-1 font-medium transition text-xs text-blue-700 dark:text-blue-400"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh</button>
                 </div>
+                <!-- PWA Install Button Desktop -->
+                <button id="installPWADesktop" class="install-button hidden lg:flex w-full py-2.5 px-3 rounded-xl items-center justify-center gap-2 font-medium transition text-sm text-white shadow-lg"><i data-lucide="download" class="w-3.5 h-3.5"></i> Install App</button>
                 <div class="lg:hidden mt-3 pt-3 border-t border-gray-200 dark:border-dark-border flex justify-between items-center"><span class="text-sm">Tema</span><button id="themeToggleMobile" class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800"><i data-lucide="moon" class="w-3.5 h-3.5 dark:hidden"></i><i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block text-yellow-400"></i></button></div>
             </div>
         </div>
-        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v4.0</p></div>
+        <div class="p-3 border-t border-gray-200 dark:border-dark-border text-center"><p class="text-xxs text-gray-400">Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span> · v4.0 PWA</p></div>
     </aside>
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden backdrop-blur-xs" aria-hidden="true"></div>
 
     <main class="flex-1 flex flex-col h-full relative pt-12 lg:pt-0 overflow-hidden bg-gray-50 dark:bg-dark-bg">
         <header class="hidden lg:flex px-6 py-3 border-b border-gray-200 dark:border-dark-border glass-header sticky top-0 z-20 items-center justify-between">
-            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div></div>
-            <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div><div class="text-xxs text-gray-400 hidden lg:block">⌨️ Ctrl+R | Ctrl+E | Ctrl+D | ←/→</div></div>
+            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20"><i data-lucide="line-chart" class="w-4.5 h-4.5 text-white"></i></div><div><h1 class="text-lg font-bold tracking-tight leading-none">Trading Journal Pro</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard · PWA Ready</p></div></div>
+            <div class="flex items-center gap-3"><div id="lastUpdatedTime" class="text-xxs text-gray-400 hidden">Update: --</div><div id="headerStatus" class="hidden items-center gap-1.5 text-tiny px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 font-medium"><div class="w-1.5 h-1.5 rounded-full"></div><span id="headerStatusText">No Data</span></div></div>
         </header>
-        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard</p></div>
+        <div class="lg:hidden px-3 py-2 bg-white dark:bg-dark-surface border-b border-gray-100 dark:border-dark-border"><h1 class="text-base font-bold" id="selectedDateTitleMobile">Pilih Tanggal</h1><p class="text-xxs text-gray-500 dark:text-gray-400">Real-time Dashboard · PWA</p></div>
 
         <div class="flex-1 overflow-y-auto p-2 lg:p-6" id="mainContentArea">
             <div id="loadingState" class="hidden space-y-3 lg:space-y-5">
@@ -229,7 +266,7 @@
 
         <footer class="flex flex-col lg:flex-row items-center justify-between px-4 lg:px-6 py-2.5 border-t border-gray-200 dark:border-dark-border bg-white/80 dark:bg-dark-surface/80 backdrop-blur-sm text-xxs text-gray-400 gap-1 lg:gap-0">
             <div class="flex items-center gap-2"><span class="hidden lg:inline">Trading Journal Pro — Real-time Dashboard</span><span class="lg:hidden text-tiny">TradeJournal Pro</span><span class="text-gray-300 dark:text-gray-600">|</span><span class="flex items-center gap-1 text-profit"><span class="w-1.5 h-1.5 rounded-full bg-profit live-indicator"></span> LIVE</span></div>
-            <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span><span class="hidden lg:inline ml-2">⚡ Performance optimized</span></div>
+            <div class="flex items-center gap-1"><span>Design by <span class="font-medium text-gray-500 dark:text-gray-300">YanaMiku</span></span><span>&copy; <span id="footerYear">2026</span></span><span class="hidden lg:inline ml-2">📱 Install as App</span></div>
         </footer>
     </main>
 
@@ -250,6 +287,50 @@
 
     <script>
         (function() {
+            // PWA Installation
+            let deferredPrompt = null;
+            const pwaInstallPrompt = document.getElementById('pwaInstallPrompt');
+            const installPWABtn = document.getElementById('installPWA');
+            const installPWADesktop = document.getElementById('installPWADesktop');
+            const dismissInstall = document.getElementById('dismissInstall');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (pwaInstallPrompt) pwaInstallPrompt.classList.remove('hidden', 'translate-y-full');
+                if (installPWADesktop) installPWADesktop.classList.remove('hidden');
+                setTimeout(() => {
+                    if (pwaInstallPrompt) pwaInstallPrompt.classList.remove('translate-y-full');
+                }, 100);
+            });
+
+            async function installPWA() {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast('Aplikasi berhasil diinstall!', 'success');
+                    if (pwaInstallPrompt) pwaInstallPrompt.classList.add('translate-y-full');
+                    setTimeout(() => {
+                        if (pwaInstallPrompt) pwaInstallPrompt.classList.add('hidden');
+                    }, 300);
+                }
+                deferredPrompt = null;
+            }
+
+            if (installPWABtn) installPWABtn.addEventListener('click', installPWA);
+            if (installPWADesktop) installPWADesktop.addEventListener('click', installPWA);
+            if (dismissInstall) {
+                dismissInstall.addEventListener('click', () => {
+                    pwaInstallPrompt.classList.add('translate-y-full');
+                    setTimeout(() => pwaInstallPrompt.classList.add('hidden'), 300);
+                });
+            }
+
+            window.addEventListener('appinstalled', () => {
+                showToast('Terima kasih telah menginstall aplikasi!', 'success');
+            });
+
             const CONFIG = {
                 DATA_BASE_URL: 'https://raw.githubusercontent.com/YanaMiku/jurnal/refs/heads/main/database/json/',
                 AUTO_REFRESH_INTERVAL: 30000,
@@ -771,33 +852,6 @@
             function populateYearSelect() { const s=document.getElementById('yearSelect'); const cy=new Date().getFullYear(); s.innerHTML=''; for(let y=cy-5;y<=cy+2;y++){s.innerHTML+=`<option value="${y}">${y}</option>`;} s.value=state.currentDate.getFullYear(); }
 
             function hideSplash() { const s=document.getElementById('splashScreen'); s.classList.add('hidden-splash'); setTimeout(()=>{s.style.display='none';},500); }
-
-            // Keyboard Shortcuts
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
-                    e.preventDefault();
-                    refreshCurrentDate();
-                    showToast('Manual refresh triggered', 'info');
-                    trackEvent('shortcut', 'refresh');
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-                    e.preventDefault();
-                    exportCSV();
-                    trackEvent('shortcut', 'export');
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-                    e.preventDefault();
-                    selectDate(getTodayStr());
-                    trackEvent('shortcut', 'today');
-                }
-                if (e.key === 'ArrowLeft' && !e.target.matches('input, select, textarea')) {
-                    document.getElementById('prevMonth').click();
-                }
-                if (e.key === 'ArrowRight' && !e.target.matches('input, select, textarea')) {
-                    document.getElementById('nextMonth').click();
-                }
-                if (e.key === 'Escape') closeTradeModal();
-            });
 
             // Event Listeners
             document.getElementById('prevMonth').onclick = async () => { const d = new Date(state.currentDate); d.setMonth(d.getMonth()-1); await navigateToMonth(d.getFullYear(), d.getMonth()); };
