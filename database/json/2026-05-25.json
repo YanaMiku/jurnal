@@ -1,0 +1,322 @@
+{
+  "date": "2026-05-25",
+  "platform": {
+    "name": "MetaTrader 5",
+    "account_currency": "USD"
+  },
+  "account_summary": {
+    "profit": 314.90,
+    "deposit": 0.00,
+    "withdraw": 0.00,
+    "swap": 0.00,
+    "commission": 0.00,
+    "balance": 2335.36,
+    "starting_balance": 2275.61,
+    "ending_balance": 2335.36,
+    "trading_profit": 59.75,
+    "net_profit": 59.75,
+    "profit_percent": 2.63
+  },
+  "statistics": {
+    "total_trades": 11,
+    "winning_trades": 7,
+    "losing_trades": 4,
+    "break_even_trades": 0,
+    "win_rate": 63.64,
+    "gross_profit": 314.90,
+    "gross_loss": -253.40,
+    "largest_win": 91.70,
+    "largest_loss": -174.75,
+    "average_win": 44.99,
+    "average_loss": -63.35,
+    "average_bep": 0.00,
+    "net_profit": 59.75,
+    "buy_trades": 2,
+    "sell_trades": 9
+  },
+  "deposits": [],
+  "withdrawals": [],
+  "activity_history": [
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "LOSS",
+      "profit_loss": -50.00,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "LOSS",
+      "profit_loss": -10.00,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "LOSS",
+      "profit_loss": -174.75,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 27.75,
+      "description": "buy 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 47.95,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 91.70,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 24.95,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 6.70,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "LOSS",
+      "profit_loss": -18.70,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 56.70,
+      "description": "sell 0.05 XAUUSDc"
+    },
+    {
+      "category": "trade",
+      "symbol": "XAUUSDc",
+      "status": "WIN",
+      "profit_loss": 57.45,
+      "description": "buy 0.05 XAUUSDc"
+    }
+  ],
+  "trades": [
+    {
+      "id": "TRD-0001",
+      "time": "01:47:38",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4552.95,
+      "exit_price": 4562.95,
+      "profit_loss": -50.00,
+      "status": "LOSS",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "Asian",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0002",
+      "time": "01:47:38",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4560.95,
+      "exit_price": 4562.95,
+      "profit_loss": -10.00,
+      "status": "LOSS",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "Asian",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0003",
+      "time": "01:47:38",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4528.00,
+      "exit_price": 4562.95,
+      "profit_loss": -174.75,
+      "status": "LOSS",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "Asian",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0004",
+      "time": "02:05:55",
+      "symbol": "XAUUSDc",
+      "type": "buy",
+      "lot": 0.05,
+      "entry_price": 4562.68,
+      "exit_price": 4568.23,
+      "profit_loss": 27.75,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "Asian",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0005",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4568.25,
+      "exit_price": 4558.66,
+      "profit_loss": 47.95,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0016",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4577.00,
+      "exit_price": 4558.66,
+      "profit_loss": 91.70,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0007",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4563.65,
+      "exit_price": 4558.66,
+      "profit_loss": 24.95,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0008",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4560.00,
+      "exit_price": 4558.66,
+      "profit_loss": 6.70,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0009",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4554.92,
+      "exit_price": 4558.66,
+      "profit_loss": -18.70,
+      "status": "LOSS",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0010",
+      "time": "15:13:22",
+      "symbol": "XAUUSDc",
+      "type": "sell",
+      "lot": 0.05,
+      "entry_price": 4570.00,
+      "exit_price": 4558.66,
+      "profit_loss": 56.70,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    },
+    {
+      "id": "TRD-0011",
+      "time": "18:25:34",
+      "symbol": "XAUUSDc",
+      "type": "buy",
+      "lot": 0.05,
+      "entry_price": 4562.51,
+      "exit_price": 4574.00,
+      "profit_loss": 57.45,
+      "status": "WIN",
+      "swap": 0.00,
+      "commission": 0.00,
+      "session": "New York",
+      "market_type": "Gold",
+      "source": "MT5 History Screenshot"
+    }
+  ],
+  "chart_data": {
+    "equity_curve": [
+      2275.61,
+      2225.61,
+      2215.61,
+      2040.86,
+      2068.61,
+      2116.56,
+      2208.26,
+      2233.21,
+      2239.91,
+      2221.21,
+      2277.91,
+      2335.36
+    ],
+    "profit_distribution": {
+      "win": 7,
+      "loss": 4,
+      "bep": 0
+    }
+  },
+  "notes": {
+    "daily_summary": "Sesi trading diawali dengan drawdown besar di sesi Asia akibat kesalahan arah pada posisi sell massal, memicu kerugian hingga -174.75 USD. Namun, eksekusi pemulihan yang disiplin di sesi New York dengan memanfaatkan pergerakan tren sell beruntun berhasil menutupi kerugian awal dan mengamankan profit harian.",
+    "psychology": "Not available from screenshot.",
+    "strategy": "Not available from screenshot."
+  }
+}
